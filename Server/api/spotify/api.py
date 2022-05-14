@@ -42,7 +42,8 @@ def get_user_playlist():
         if token == {}:
             return {}
         update_token(token)
-    bearer = {'Accept': 'application/json',
+    bearer = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36',
+              'Accept': 'application/json',
               'Content-Type' : 'application/json',
               'Authorization' : f'Bearer {session["access_token"]}'}
     r = requests.get("https://api.spotify.com/v1/me/playlists", headers=bearer)
