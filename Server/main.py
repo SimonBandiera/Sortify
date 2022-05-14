@@ -47,8 +47,6 @@ def dashboard():
 def sort(playlist_id):
     return playlist_id
 
-
-
 @app.route("/logout")
 def logout():
     session.pop("access_token", None)
