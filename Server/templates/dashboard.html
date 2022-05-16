@@ -9,7 +9,7 @@
         <span>You have no playlist</span>
     {% else %}
         {% for item in user_playlist['items'] %}
-            <div>
+            <div >
                 <img src="{{item['images'][0]['url']}}" width="320" height="320">
                 <p>name : {{item['name']}} <br> number of tracks : {{item['tracks']['total']}}</p>
             </div>
