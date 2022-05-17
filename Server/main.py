@@ -124,7 +124,7 @@ def dashboard():
     if user_playlist == {}:
         return render_template("error.html", error="Request error")
     have_next = sess[id]["next_dashboard"] is not None
-    have_previous = sess[id]["previous_dashboard"] is not None
+    have_previous = sess[id]["previous_dashboard"]  
     return render_template("dashboard.html", user_playlist=user_playlist, next=have_next, previous=have_previous,
                            no_playlist=len(user_playlist["items"]) == 0)
 
