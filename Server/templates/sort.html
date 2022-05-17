@@ -9,19 +9,24 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            var socket = io.connect('http://127.0.0.1:5000', { transports: ['websocket', 'polling', 'flashsocket'] });
+            var socket = io.connect('http://127.0.0.1:5000', {transports: ['websocket', 'polling', 'flashsocket']});
 
             socket.on('connect', function () {
                 socket.send('User has connected!');
             });
-
+            socket.on('start', function (info) {
+                $("#max").text(info);
+            });
             socket.on('finish', function () {
-                socket.send('end')
+                window.location.replace("http://127.0.0.1:5000/create/{{playlist_id}}")
+            });
+            socket.on('update', function () {
+                $("#actual").text((Number($("#actual").text()) + 1).toString());
             });
         });
     </script>
 </head>
 <body>
-
+<p><span id="actual">0</span>/<span id="max"></span></p>
 </body>
 </html>
