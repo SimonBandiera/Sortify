@@ -35,8 +35,7 @@ def refresh_access_token(refresh_token):
         return {}
     return r.json()
 
-
-def get_user_playlist(sess):
+def get_user_playlist(sess, url):
     sess["next_dashboard"] = None
     sess["previous_dashboard"] = None
     if sess["expires_in"] <= time():
@@ -50,7 +49,7 @@ def get_user_playlist(sess):
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {sess["access_token"]}'
     }
-    r = requests.get("https://api.spotify.com/v1/me/playlists", headers=bearer)
+    r = requests.get(url, headers=bearer)
     if r.status_code != 200:
         return {}
     value = r.json()

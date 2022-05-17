@@ -109,12 +109,18 @@ def callback_spotify():
 
 @app.route("/dashboard")
 def dashboard():
+    temp = "https://api.spotify.com/v1/me/playlists"
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
         return redirect(url_for("index"))
     if "access_token" not in sess[id]:
         return redirect("/")
-    user_playlist = get_user_playlist(sess[id])
+    if 'pos' in request.args:
+        if request.args["pos"] == "next" and sess[id]["next_dashboard"] is not None:
+            temp = sess[id]["next_dashboard"]
+        elif request.args["pos"] == "previous" and sess[id]["previous_dashboard"] is not None:
+            temp = sess[id]["previous_dashboard"]
+    user_playlist = get_user_playlist(sess[id], temp)
     if user_playlist == {}:
         return render_template("error.html", error="Request error")
     have_next = sess[id]["next_dashboard"] is not None
