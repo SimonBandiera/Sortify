@@ -32,6 +32,7 @@
     
         <!--main-->
         <div class="container mx-auto">
+
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 place-items-center pt-4">
                 {% if no_playlist %}
                     <span>You have no playlist</span>
@@ -57,11 +58,28 @@
                     {% endfor %}
                 {% endif %}
             </div>
-        </div>
 
-        {% if next %}
-            <a> cnbdhysiuvbfeiugbviuyr </a>
-        {% endif %}
+            <div class="flex justif-between">
+                {% if next %}
+                    <div class="pt-4">
+                        <a
+                            class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                            href="/dashboard?pos=next">
+                            <input type="button" value="Next"/>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if previous %}
+                    <div class="pt-4">
+                        <a
+                            class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                            href="/dashboard?pos=next">
+                            <input type="button" value="Previous"/>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </body>
 </html>
 

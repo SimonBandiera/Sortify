@@ -518,6 +518,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   right: 0px;
 }
 
+.left-0 {
+  left: 0px;
+}
+
 .m-6 {
   margin: 1.5rem;
 }
@@ -634,6 +638,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .rounded-sm {
   border-radius: 0.125rem;
+}
+
+.rounded-2xl {
+  border-radius: 1rem;
+}
+
+.rounded-xl {
+  border-radius: 0.75rem;
 }
 
 .bg-gray-900 {
