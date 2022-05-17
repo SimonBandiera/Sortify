@@ -82,5 +82,10 @@ def get_playlist_track(playlist_id, sess):
         max = r.json()["total"]
         param["offset"] += 100
         tracks += r.json()["items"]
-    return [track for track in tracks if "album" not in track["track"]]
+
+    liste = []
+    for track in tracks:
+        if track["track"] is not None and "album" not in track["track"]:
+            liste.append(track)
+    return liste
 

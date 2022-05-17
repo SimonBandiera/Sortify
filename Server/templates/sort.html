@@ -15,18 +15,22 @@
                 socket.send('User has connected!');
             });
             socket.on('start', function (info) {
-                $("#max").text(info);
+                if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
+                    $("#max").text(info['max']);
+                }
             });
             socket.on('finish', function () {
                 window.location.replace("http://127.0.0.1:5000/create/{{playlist_id}}")
             });
-            socket.on('update', function () {
-                $("#actual").text((Number($("#actual").text()) + 1).toString());
+            socket.on('update', function (info) {
+                if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
+                    $("#actual").text((Number($("#actual").text()) + 1).toString());
+                }
             });
         });
     </script>
 </head>
 <body>
-<p><span id="actual">0</span>/<span id="max"></span></p>
+    <p><span id="actual">0</span>/<span id="max"></span></p>
 </body>
 </html>

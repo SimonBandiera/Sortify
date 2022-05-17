@@ -44,7 +44,7 @@ def thread_test2(q):
                 info[tag] = set()
                 info[tag].add(task[2])
         with app.test_request_context('/sort/' + task[4]):
-            socketio.emit("update")
+            socketio.emit("update", {'id' : task[4], 'playlist_id' : task[5]})
         q.task_done()
 
 def thread_test(q):
@@ -54,15 +54,18 @@ def thread_test(q):
         sess = task[1]
         tracks = get_playlist_track(playlist_id, sess)
         info = {}
+        time.sleep(0.5)
         with app.test_request_context('/sort/' + playlist_id):
-            socketio.emit("start", str(len(tracks)))
+            socketio.emit("start", {'max' : str(len(tracks)), 'playlist_id' : playlist_id, 'id' : task[2]})
         for track in tracks:
             queue_test.put((track["track"]["name"], track["track"]["artists"][0]["name"],
-                            track["track"]["href"], info, playlist_id))
+                            track["track"]["href"], info, task[2], playlist_id))
         queue_test.join()
         with app.test_request_context('/sort/' + playlist_id):
             socketio.emit("finish")
         sess[playlist_id] = info
+        sess['tracks'] = {}
+        sess['tracks'][playlist_id] = tracks
         print(f"finish {playlist_id}")
         q.task_done()
 
@@ -127,8 +130,8 @@ def sort(playlist_id):
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
         return redirect(url_for("index"))
-    queue.put([playlist_id, sess[id]])
-    return render_template("sort.html", playlist_id=playlist_id)
+    queue.put([playlist_id, sess[id], id])
+    return render_template("sort.html", playlist_id=playlist_id, id=id)
 
 @app.route("/create/<playlist_id>")
 def create(playlist_id):
@@ -137,7 +140,7 @@ def create(playlist_id):
         return redirect(url_for("index"))
     if playlist_id not in sess[id]:
         return redirect(url_for("dashboard"))
-    return render_template("create.html", info=sess[id][playlist_id])
+    return render_template("create.html", info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
 
 
 @app.route("/logout")
