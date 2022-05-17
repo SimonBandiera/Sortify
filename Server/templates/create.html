@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
+<form>
+    {% for key in info %}
+    <label>
+        <span>{{key}}</span>
+        <input type="checkbox" name="tag" value="{{key}}">
+    </label>
+    <br>
+    {% endfor %}
+    <input type="button" value="Submit">
+</body>
+</html>

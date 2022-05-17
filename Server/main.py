@@ -3,16 +3,16 @@ from flask import Flask, session, render_template, url_for, request, redirect, m
 from api.spotify.api import get_access_token, refresh_access_token, update_token, get_user_playlist, get_playlist_track
 from api.spotify.key import ClientSecret, ClientID
 from flask_socketio import SocketIO, emit, send
-from api.lastfm.lastfm import Lastfm
-from api.lastfm.key import API_KEY,SHARED_SECRET
+from api.lastfm_scraping.lastfm_scraping import get_tags_from_urls, search_track
 from threading import Thread
 import queue
 import pprint
+import time
 
 app = Flask(__name__)
 socketio = SocketIO(app, manage_session=False, async_mode='threading', cors_allowed_origins="*")
 BASE_URL = "http://localhost:5000"
-global sess
+global sess, end
 sess = {}
 
 
@@ -31,27 +31,48 @@ def check_cookie(id):
     return 0
 
 
+def thread_test2(q):
+    while True:
+        task = q.get()
+        info = task[3]
+        all_url = search_track(task[0], task[1])
+        tags = get_tags_from_urls(all_url)
+        for tag in tags:
+            if tag in info:
+                info[tag].add(task[2])
+            else:
+                info[tag] = set()
+                info[tag].add(task[2])
+        with app.test_request_context('/sort/' + task[4]):
+            socketio.emit("update")
+        q.task_done()
+
 def thread_test(q):
     while True:
         task = q.get()
         playlist_id = task[0]
         sess = task[1]
-        lastfm = Lastfm(API_KEY, SHARED_SECRET)
         tracks = get_playlist_track(playlist_id, sess)
-        print(tracks[0]["track"]["name"])
-        
-        pprint.pprint(lastfm.search_music(tracks[0]["track"]["name"]))
-
+        info = {}
+        with app.test_request_context('/sort/' + playlist_id):
+            socketio.emit("start", str(len(tracks)))
+        for track in tracks:
+            queue_test.put((track["track"]["name"], track["track"]["artists"][0]["name"],
+                            track["track"]["href"], info, playlist_id))
+        queue_test.join()
         with app.test_request_context('/sort/' + playlist_id):
             socketio.emit("finish")
+        sess[playlist_id] = info
         print(f"finish {playlist_id}")
         q.task_done()
 
+queue_test = queue.Queue()
+for i in range(4):
+    Thread(target=thread_test2, args=(queue_test,), daemon=True).start()
 
 queue = queue.Queue()
 worker = Thread(target=thread_test, args=(queue,), daemon=True)
 worker.start()
-
 
 @app.route('/')
 def index():
@@ -105,7 +126,16 @@ def sort(playlist_id):
     if id is None or check_cookie(id):
         return redirect(url_for("index"))
     queue.put([playlist_id, sess[id]])
-    return render_template("sort.html")
+    return render_template("sort.html", playlist_id=playlist_id)
+
+@app.route("/create/<playlist_id>")
+def create(playlist_id):
+    id = request.cookies.get("id")
+    if id is None or check_cookie(id):
+        return redirect(url_for("index"))
+    if playlist_id not in sess[id]:
+        return redirect(url_for("dashboard"))
+    return render_template("create.html", info=sess[id][playlist_id])
 
 
 @app.route("/logout")
@@ -113,12 +143,7 @@ def logout():
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
         return redirect(url_for("index"))
-    sess[id].pop("access_token", None)
-    sess[id].pop("expires_in", None)
-    sess[id].pop("refresh_token", None)
-    sess[id].pop("next_dashboard", None)
-    sess[id].pop("previous_dashboard", None)
-    sess[id].pop("thread", None)
+    sess[id] = {}
     return redirect("/")
 
 
