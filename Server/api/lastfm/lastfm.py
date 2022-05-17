@@ -5,8 +5,7 @@
 ## lastfm.py
 ##
 
-from key import API_KEY, SHARED_SECRET
-from lib import *
+from api.lastfm.lib import *
 
 class Lastfm:
     def __init__(self, api_key, secret):
@@ -47,6 +46,7 @@ class Lastfm:
 
 
 if __name__ == '__main__':
+    from key import API_KEY, SHARED_SECRET
     musique = Lastfm(API_KEY, SHARED_SECRET)
     tags = musique.get_tag('Mustard', "Ballin' feat (with dbzuafez) dzbudz")
     print(tags)

@@ -1,5 +1,6 @@
 from api.spotify.key import ClientSecret, ClientID, header_basic, basic
 import requests
+import pprint
 from time import time
 
 BASE_URL = "http://localhost:5000"
@@ -39,7 +40,7 @@ def get_user_playlist(sess):
     sess["next_dashboard"] = None
     sess["previous_dashboard"] = None
     if sess["expires_in"] <= time():
-        token = refresh_access_token()
+        token = refresh_access_token(sess["refresh_token"])
         if token == {}:
             return {}
         update_token(token, sess)
@@ -59,17 +60,27 @@ def get_user_playlist(sess):
 
 
 def get_playlist_track(playlist_id, sess):
+    tracks = []
     if sess["expires_in"] <= time():
-        token = refresh_access_token()
+        token = refresh_access_token(sess["refresh_token"])
         if token == {}:
             return {}
         update_token(token, sess)
-    param = {"fields": "items(track(name%2Chref%2Cartists(name)))%2Ctotal%2Climit"}
+    param = {"fields": "items(track(name,href,artists(name))),total,limit",
+             "offset": 0}
     bearer = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36',
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {sess["access_token"]}'
     }
-    r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", params=param, headers=bearer)
-    print(r.json())
+    max = 1
+    while param["offset"] < max:
+        r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", params=param, headers=bearer)
+        if r.status_code != 200:
+            return {}
+        max = r.json()["total"]
+        param["offset"] += 100
+        tracks += r.json()["items"]
+    return [track for track in tracks if "album" not in track["track"]]
+

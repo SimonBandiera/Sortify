@@ -42,5 +42,4 @@ def clean_string(string):
         string = string[: string.find("feat")]
     if string.find("Feat"):
         string = string[: string.find("Feat")]
-    print(string)
     return string

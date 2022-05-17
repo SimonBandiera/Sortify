@@ -3,9 +3,11 @@ from flask import Flask, session, render_template, url_for, request, redirect, m
 from api.spotify.api import get_access_token, refresh_access_token, update_token, get_user_playlist, get_playlist_track
 from api.spotify.key import ClientSecret, ClientID
 from flask_socketio import SocketIO, emit, send
-import secrets
+from api.lastfm.lastfm import Lastfm
+from api.lastfm.key import API_KEY,SHARED_SECRET
 from threading import Thread
 import queue
+import pprint
 
 app = Flask(__name__)
 socketio = SocketIO(app, manage_session=False, async_mode='threading', cors_allowed_origins="*")
@@ -34,7 +36,12 @@ def thread_test(q):
         task = q.get()
         playlist_id = task[0]
         sess = task[1]
-        get_playlist_track(playlist_id, sess)
+        lastfm = Lastfm(API_KEY, SHARED_SECRET)
+        tracks = get_playlist_track(playlist_id, sess)
+        print(tracks[0]["track"]["name"])
+        
+        pprint.pprint(lastfm.search_music(tracks[0]["track"]["name"]))
+
         with app.test_request_context('/sort/' + playlist_id):
             socketio.emit("finish")
         print(f"finish {playlist_id}")
@@ -89,7 +96,7 @@ def dashboard():
     have_next = sess[id]["next_dashboard"] is not None
     have_previous = sess[id]["previous_dashboard"] is not None
     return render_template("dashboard.html", user_playlist=user_playlist, next=have_next, previous=have_previous,
-                           no_playlist=len(user_playlist["items"]) == 0, )
+                           no_playlist=len(user_playlist["items"]) == 0)
 
 
 @app.route("/sort/<playlist_id>")
