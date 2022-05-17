@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
+        <link rel="preload" href="static/src/header.png" as="image">
         <meta name="description" content="" />
         <meta name="keywords" content="" />
         <title>Sortify</title>
@@ -17,7 +18,7 @@
         </style>
     </head>
 
-    <body class="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed" style="background-image : url('static/src/header.png')">
+    <body class="text-indigo-400 m-6 bg-cover bg-fixed min-h-5/6" style="background-image : url('static/src/header.png')">
         <div class="h-full">
         <!--Nav-->
             <div class="w-full container mx-auto">
@@ -30,10 +31,9 @@
             </div>
 
             <!--Main-->
-            <div class="container pt-24 md:pt-36 mx-auto flex flex-wrap justify-center flex-col md:flex-row items-center">
-                <!--Left Col-->
+            <div class="container pt-24 md:pt-20 m-auto flex flex-wrap justify-center flex-col md:flex-row items-center">
                 <div class="flex flex-col w-full xl:w-2/5 justify-center pt-20 lg:items-start overflow-y-hidden">
-                    <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-center">
+                    <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center">
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                         Sort</span>
                         your playlist based on songs'
@@ -54,14 +54,14 @@
                         </div>
                     </div>
                 </div>
-
-                <!--Footer-->
-                <div class="w-full pt-60 text-sm text-center md:text-right fade-in">
-                    <a class="text-gray-500 no-underline hover:no-underline">Epitech hub project -</a>
-                    <a class="no-underline hover:no-underline" href="https://github.com/SimonBandiera" target="_blank">Simon Bandiera</a>
-                    <a class="text-gray-500 no-underline hover:no-underline">,</a>
-                    <a class="no-underline hover:no-underline" href="https://github.com/HForGames" target="_blank">Hugo Galan</a>
-                </div>
+                
+            </div>
+            <!--Footer-->
+            <div class="w-full mx-6 my-6 absolute bottom-0 right-0 text-sm text-center md:text-right fade-in">
+                <a class="text-gray-500 no-underline hover:no-underline">Epitech hub project -</a>
+                <a class="no-underline hover:no-underline" href="https://github.com/SimonBandiera" target="_blank">Simon Bandiera</a>
+                <a class="text-gray-500 no-underline hover:no-underline">,</a>
+                <a class="no-underline hover:no-underline" href="https://github.com/HForGames" target="_blank">Hugo Galan</a>
             </div>
         </div>
     </body>

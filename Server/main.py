@@ -91,6 +91,8 @@ def dashboard():
     return render_template("dashboard.html", user_playlist=user_playlist, next=have_next, previous=have_previous,
                            no_playlist=len(user_playlist["items"]) == 0, )
 
+# /dashboard?pos=next
+# /dashboard?pos=previous
 
 @app.route("/sort/<playlist_id>")
 def sort(playlist_id):
