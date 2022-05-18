@@ -1,37 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Loading</title>
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <title>Loading...</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
-            var socket = io.connect('http://127.0.0.1:5000', {transports: ['websocket', 'polling', 'flashsocket']});
+            html {
+                font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            }
+        </style>
 
-            socket.on('connect', function () {
-                socket.send('User has connected!');
+        <script type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                var socket = io.connect('http://127.0.0.1:5000', {transports: ['websocket', 'polling', 'flashsocket']});
+                var actual = 0;
+                var max = 0;
+        
+                socket.on('connect', function () {
+                    socket.send('User has connected!');
+                });
+                socket.on('start', function (info) {
+                    if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
+                        max = Number(info['max']);
+                    }
+                });
+                socket.on('finish', function () {
+                    window.location.replace("http://127.0.0.1:5000/create/{{playlist_id}}")
+                });
+                socket.on('update', function (info) {
+                    if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
+                        actual++;
+                        var some = ((actual * 100) / max) | 0;
+                        var tamere = 'width: ';
+                        console.log(tamere.concat('', some.toString(), '%'));
+                        $("#pt").attr('style', tamere.concat('', some.toString(), '%'));
+                        $("#pt").text(''.concat('', some.toString(), '%'));
+                    }
+                });
             });
-            socket.on('start', function (info) {
-                if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
-                    $("#max").text(info['max']);
-                }
-            });
-            socket.on('finish', function () {
-                window.location.replace("http://127.0.0.1:5000/create/{{playlist_id}}")
-            });
-            socket.on('update', function (info) {
-                if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
-                    $("#actual").text((Number($("#actual").text()) + 1).toString());
-                }
-            });
-        });
-    </script>
-</head>
-<body>
-    <p><span id="actual">0</span>/<span id="max"></span></p>
-    <p><span id="actual" + 1>0</span></p>
-</body>
+        </script>
+    </head>
+
+    <body class="m-6 bg-cover bg-fixed" style="background-image : url('../static/src/header.png')">
+        <div class="container mx-auto relative " style="height: 90vh;">
+            <div class="pt-4">
+                <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-left">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                    Load</span>ing...
+                </h1>
+                <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pt-5">
+                    Fetching the genres of your music, please wait.
+                </p>
+                <p class="text-white text-sm md:text-md lg:text-lg text-opacity-30">
+                    Note that this can take up to 50 milliseconds per song to handle.
+                </p>
+            </div>
+
+            <div class="w-full bg-white bg-opacity-0 rounded-full dark:bg-gray-700 h-6 absolute bottom-0 left-0">
+                <div id="pt" class="bg-gradient-to-r from-purple-800 to-green-500 text-lg font-medium text-blue-100 text-center p-0.5 leading-none rounded-md transition-width duration-700 ease h-6 my-auto pt-1" style="width: 0%">
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
