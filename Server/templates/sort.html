@@ -37,8 +37,11 @@
                         max = Number(info['max']);
                     }
                 });
-                socket.on('finish', function () {
-                    window.location.replace("http://127.0.0.1:5000/create/{{playlist_id}}")
+                socket.on('finish', function (info) {
+                    console.log("finish");
+                    if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
+                        window.location.replace("http://127.0.0.1:5000/create/{{playlist_id}}")
+                    }
                 });
                 socket.on('update', function (info) {
                     if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
