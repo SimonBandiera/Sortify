@@ -53,7 +53,6 @@ def get_user_playlist(sess, url):
     if r.status_code != 200:
         return {}
     value = r.json()
-    pprint.pprint(r.json())
     sess["next_dashboard"] = value["next"]
     sess["previous_dashboard"] = value["previous"]
     return r.json()
