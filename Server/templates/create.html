@@ -3,26 +3,56 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>Create</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
+        <script src="{{ url_for('static', filename='dist/draggable.js') }}" defer></script>
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
+        <link rel="preload" href="../static/src/header.png" as="image">
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <title>Dashboard</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+            html {
+                font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            }
+        </style>
     </head>
-
-    <body>
-        <form>
-            {% for key in info %}
-                {% for track in tracks %}
-                    {% for href in info[key] %}
-                        {% if track['track']['href'] == href%}    
-                            <a>{{ track['track']['name'] }}</a> <br>
-                        {% endif %}
-                    {% endfor %}
+    
+    <body class="m-10 bg-cover bg-fixed h-90 flex items-center" style="background-image : url('../static/src/header.png')">
+        
+        <div class="bg-gray-800 rounded-lg container m-auto pt-8 h-5/6">
+            <div class="mx-10 grid grid-cols-10 gap-4 place-items-left h-full border-2 border-black overflow-auto">
+                {% for key in info %}
+                    <label class="border-2 border-black">
+                        <span>{{key}}</span>
+                        <input type="checkbox" name="tag" value="{{key}}">
+                    </label>
                 {% endfor %}
-                <label>
-                    <span>{{key}}</span>
-                    <input type="checkbox" name="tag" value="{{key}}">
-                </label>
-                <br>
-            {% endfor %}
-            <input type="button" value="Submit">
-    </body>
+            </div>
+        </div> 
 
+    </body>
 </html>
+
+<!--        
+    <form>
+        {% for key in info %}
+            {% for track in tracks %}
+                {% for href in info[key] %}
+                    {% if track['track']['href'] == href%}    
+                        <a>{{ track['track']['name'] }}</a> <br>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <label>
+                <span>{{key}}</span>
+                <input type="checkbox" name="tag" value="{{key}}">
+            </label>
+            <br>
+        {% endfor %}
+        <input type="button" value="Submit">
+    </form>
+-->

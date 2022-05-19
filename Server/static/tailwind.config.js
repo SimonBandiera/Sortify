@@ -10,6 +10,10 @@ module.exports = {
         transitionProperty: {
             'width': 'width'
         },
+        height: {
+          '90': '90vh',
+          '95': '95vh',
+        }
     },
   },
   plugins: [],
