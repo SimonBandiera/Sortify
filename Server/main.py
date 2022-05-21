@@ -57,7 +57,6 @@ def thread_test2(q):
 
 def get_all_data(q, task):
     global actual
-    print(f"run {task[0]}")
     playlist_id = task[0]
     sess = task[1]
     tracks = get_playlist_track(playlist_id, sess)
@@ -81,7 +80,6 @@ def get_all_data(q, task):
     sess[playlist_id] = info
     sess['tracks'] = {}
     sess['tracks'][playlist_id] = tracks
-    print(f"finish {playlist_id}")
     actual[playlist_id + task[2]] = -1
     sys.exit(0)
 
@@ -98,7 +96,6 @@ def thread_test(q):
 queuer = queue.Queue()
 worker = Thread(target=thread_test, args=(queuer,), daemon=True)
 worker.start()
-
 
 @app.route('/')
 def index():
@@ -184,4 +181,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, host="0.0.0.0", port="80", debug=True, ssl_context=('../cert.pem', '../key.pem'))
