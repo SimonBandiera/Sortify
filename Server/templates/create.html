@@ -19,6 +19,10 @@
                 font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             }
         </style>
+        <script>
+            var genres = [];
+            var index = 0;
+        </script>
     </head>
     
     <body class="bg-cover bg-fixed h-screen overflow-hidden text-white" style="background-image : url('../static/src/header.png')">
@@ -43,11 +47,35 @@
                     {% endfor %}
                     <script>
                         function myFunction(key) {
+                            let j = 0;
                             if (document.getElementById(key).classList.contains("bg-gray-600")) {
                                 document.getElementById(key).className = "border-2 border-white border-opacity-20 pt-3 rounded-xl h-12 truncate text-justify hover:scale-105 duration-300 ease-in-out";
+                                for (let i = 0; genres[i]; i++) {
+                                    if (genres[i] == key) {
+                                        for (j = i; genres[j]; j++) {
+                                            genres[j] = genres[j + 1];
+                                        }
+                                    }
+                                }
+                                index -= 1;
+                                genres = genres.filter(element => {
+                                    return element !== undefined;
+                                });
                             } else {
                                 document.getElementById(key).className += " scale-105 bg-gray-600";
+                                genres[index] = key;
+                                index += 1;
                             }
+                            
+                            document.getElementById("recap").innerHTML = genres;
+                            if (genres.length === 0) {
+                                document.getElementById("submit_button").className += " opacity-0";
+                                document.getElementById("submit_button_inner").disabled = true;
+                            } else {
+                                document.getElementById("submit_button").className = "bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out";
+                                document.getElementById("submit_button_inner").disabled = false;
+                            }
+                            
                         }
                     </script>
                     <p id="demo"></p>
@@ -58,16 +86,32 @@
                 <p class="text-white text-sm font-bold sm:text-lg md:text-1xl lg:text-3xl pt-10 pl-10">
                     Your Playlist name
                 </p>
+                <div class="h-full w-96">
+                    <p id="recap">
+
+                    </p>
+                </div>
             </div>
 
             <div class="bg-gray-800 bg-opacity-75 rounded-lg h-full w-full col-[span_30] xl:col-[span_50]">
                 <div class="flex justify-center items-center h-full">
-                    <form class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                          action="/signup" method="post" id="signup">
-                        Create your playlist
+                    <form id="main_form" action="">
                     </form>
-                </div>   
+                    <a id="submit_button" class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out opacity-0">
+                        <button id="submit_button_inner" onclick="myfunction2()">Create your playlist</button>
+                    </a>
+                </div>
             </div>
+            <script>
+                document.getElementById("submit_button_inner").disabled = true;
+
+                function myfunction2() {
+                    let form = document.getElementById("main_form");
+                    form.value = genres;
+                    console.log(form.value)
+                    form.submit();
+                }
+            </script>
         </div>
 
     </body>

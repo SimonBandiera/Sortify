@@ -1,7 +1,7 @@
 import asyncio
 import sys
 import urllib
-from flask import Flask, session, render_template, url_for, request, redirect, make_response
+from flask import Flask, session, render_template, url_for, request, redirect, make_response, Markup
 from api.spotify.api import get_access_token, refresh_access_token, update_token, get_user_playlist, get_playlist_track
 from api.spotify.key import ClientSecret, ClientID
 from flask_socketio import SocketIO, emit, send
@@ -171,6 +171,7 @@ def create(playlist_id):
         return redirect(url_for("index"))
     if playlist_id not in sess[id]:
         return redirect(url_for("dashboard"))
+    print(sess[id][playlist_id])
     return render_template("create.html", info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
 
 
