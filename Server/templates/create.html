@@ -19,25 +19,106 @@
                 font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             }
         </style>
+        <script>
+            var genres = [];
+            var index = 0;
+        </script>
     </head>
     
-    <body class="m-10 bg-cover bg-fixed h-90 flex items-center" style="background-image : url('../static/src/header.png')">
+    <body class="bg-cover bg-fixed h-screen overflow-hidden text-white" style="background-image : url('../static/src/header.png')">
         
-        <div class="bg-gray-800 rounded-lg container m-auto pt-8 h-5/6">
-            <div class="mx-10 grid grid-cols-10 gap-4 place-items-left h-full border-2 border-black overflow-auto">
-                {% for key in info %}
-                    <label class="border-2 border-black">
-                        <span>{{key}}</span>
-                        <input type="checkbox" name="tag" value="{{key}}">
-                    </label>
-                {% endfor %}
+        <div class="pt-4 container mx-auto">
+            <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-left">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                Last</span> step
+            </h1>
+            <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pt-5">
+                Choose the genres that you want to add to your new playlist by clicking on them.
+            </p>
+        </div>
+
+        <div class="h-full grid grid-row md:grid-rows-3 grid-flow-col gap-4 container m-auto pt-8 pb-80">
+            <div class="bg-gray-800 bg-opacity-75 rounded-lg h-full w-full overflow-auto scrollbar row-span-3 justify-self-start" style="direction:rtl;">
+                <div class="m-10 grid grid-cols-1 lg:grid-cols-2 gap-y-2 gap-x-5" style="direction:ltr;">
+                    {% for key in info %}
+                        <label class="border-2 border-white border-opacity-20 pt-3 rounded-xl h-12 truncate text-justify hover:scale-105 duration-300 ease-in-out" onclick="myFunction('{{ key }}')" id="{{key}}" >
+                            <span class="mx-4">{{key}}</span>
+                        </label>
+                    {% endfor %}
+                    <script>
+                        function myFunction(key) {
+                            let j = 0;
+                            if (document.getElementById(key).classList.contains("bg-gray-600")) {
+                                document.getElementById(key).className = "border-2 border-white border-opacity-20 pt-3 rounded-xl h-12 truncate text-justify hover:scale-105 duration-300 ease-in-out";
+                                for (let i = 0; genres[i]; i++) {
+                                    if (genres[i] == key) {
+                                        for (j = i; genres[j]; j++) {
+                                            genres[j] = genres[j + 1];
+                                        }
+                                    }
+                                }
+                                index -= 1;
+                                genres = genres.filter(element => {
+                                    return element !== undefined;
+                                });
+                            } else {
+                                document.getElementById(key).className += " scale-105 bg-gray-600";
+                                genres[index] = key;
+                                index += 1;
+                            }
+                            
+                            document.getElementById("recap").innerHTML = genres;
+                            if (genres.length === 0) {
+                                document.getElementById("submit_button").className += " opacity-0";
+                                document.getElementById("submit_button_inner").disabled = true;
+                            } else {
+                                document.getElementById("submit_button").className = "bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out";
+                                document.getElementById("submit_button_inner").disabled = false;
+                            }
+                            
+                        }
+                    </script>
+                    <p id="demo"></p>
+                </div>
             </div>
-        </div> 
+
+            <div class="bg-gray-800 bg-opacity-75 rounded-lg h-full w-full row-span-2 col-[span_30] xl:col-[span_50]">
+                <p class="text-white text-sm font-bold sm:text-lg md:text-1xl lg:text-3xl pt-10 pl-10">
+                    Your Playlist name
+                </p>
+                <div class="h-full w-96">
+                    <p id="recap">
+
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 bg-opacity-75 rounded-lg h-full w-full col-[span_30] xl:col-[span_50]">
+                <div class="flex justify-center items-center h-full">
+                    <form id="main_form" action="">
+                    </form>
+                    <a id="submit_button" class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out opacity-0">
+                        <button id="submit_button_inner" onclick="myfunction2()">Create your playlist</button>
+                    </a>
+                </div>
+            </div>
+            <script>
+                document.getElementById("submit_button_inner").disabled = true;
+
+                function myfunction2() {
+                    let form = document.getElementById("main_form");
+                    form.value = genres;
+                    console.log(form.value)
+                    form.submit();
+                }
+            </script>
+        </div>
 
     </body>
 </html>
-
+    
 <!--        
+        document.getElementById(key.toString()).className += "scale-105";
     <form>
         {% for key in info %}
             {% for track in tracks %}
@@ -55,4 +136,25 @@
         {% endfor %}
         <input type="button" value="Submit">
     </form>
+-->
+
+<!--
+     style="direction:rtl;"
+                <div class="mx-10 grid grid-cols-1 gap-y-2" style="direction:ltr;">
+                    {% for key in info %}
+                        <label class="border-2 border-white border-opacity-20 pt-3 rounded-xl h-12 truncate text-justify hover:scale-105 duration-300 ease-in-out" onclick="myFunction('{{ key }}')" id="{{key}}" >
+                            <span class="mx-4">{{key}}</span>
+                        </label>
+                    {% endfor %}
+                    <script>
+                        function myFunction(key) {
+                            if (document.getElementById(key).classList.contains("bg-gray-600")) {
+                                document.getElementById(key).className = "border-2 border-white border-opacity-20 pt-3 rounded-xl h-12 truncate text-justify hover:scale-105 duration-300 ease-in-out";
+                            } else {
+                                document.getElementById(key).className += " scale-105 bg-gray-600";
+                            }
+                        }
+                    </script>
+                    <p id="demo"></p>
+                </div>
 -->

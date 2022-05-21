@@ -33,23 +33,20 @@
                 });
                 socket.on('start', function (info) {
                     if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
-                        console.log(info);
                         max = Number(info['max']);
+                        console.log(((max * 300) / 1000))
                     }
                 });
                 socket.on('finish', function (info) {
-                    console.log("finish");
                     if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
                         window.location.replace("http://127.0.0.1:5000/create/{{playlist_id}}")
                     }
                 });
                 socket.on('update', function (info) {
                     if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
-                        console.log(info);
                         actual = info['actual']
                         var some = ((actual * 100) / max) | 0;
                         var tamere = 'width: ';
-                        console.log(tamere.concat('', some.toString(), '%'));
                         $("#pt").attr('style', tamere.concat('', some.toString(), '%'));
                         $("#pt").text(''.concat('', some.toString(), '%'));
                     }
