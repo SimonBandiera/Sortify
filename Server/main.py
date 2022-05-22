@@ -97,6 +97,7 @@ queuer = queue.Queue()
 worker = Thread(target=thread_test, args=(queuer,), daemon=True)
 worker.start()
 
+
 @app.route('/')
 def index():
     id = request.cookies.get("id")
@@ -161,15 +162,21 @@ def sort(playlist_id):
     return render_template("sort.html", playlist_id=playlist_id, id=id)
 
 
-@app.route("/create/<playlist_id>")
+@app.route("/create/<playlist_id>", methods=['GET', 'POST'])
 def create(playlist_id):
-    id = request.cookies.get("id")
-    if id is None or check_cookie(id):
-        return redirect(url_for("index"))
-    if playlist_id not in sess[id]:
-        return redirect(url_for("dashboard"))
-    print(sess[id][playlist_id])
-    return render_template("create.html", info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
+    if request.method == 'GET':
+        id = request.cookies.get("id")
+        if id is None or check_cookie(id):
+            return redirect(url_for("index"))
+        if playlist_id not in sess[id]:
+            return redirect(url_for("dashboard"))
+        return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
+    if request.method == 'POST':
+        id = request.cookies.get("id")
+        if id is None or check_cookie(id):
+            return redirect(url_for("index"))
+        print(request.args, request.form, request.data, request.url, request.headers, request.view_args)
+        return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
 
 
 @app.route("/logout")

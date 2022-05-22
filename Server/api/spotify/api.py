@@ -35,6 +35,7 @@ def refresh_access_token(refresh_token):
         return {}
     return r.json()
 
+
 def get_user_playlist(sess, url):
     sess["next_dashboard"] = None
     sess["previous_dashboard"] = None
@@ -87,4 +88,3 @@ def get_playlist_track(playlist_id, sess):
         if track["track"] is not None and "album" not in track["track"]:
             liste.append(track)
     return liste
-
