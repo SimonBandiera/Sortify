@@ -2,12 +2,13 @@ import asyncio
 import sys
 import urllib
 from flask import Flask, session, render_template, url_for, request, redirect, make_response, Markup
-from api.spotify.api import get_access_token, refresh_access_token, update_token, get_user_playlist, get_playlist_track
+from api.spotify.api import get_access_token, refresh_access_token, update_token, get_user_playlist, get_playlist_track, create_playlist
 from api.spotify.key import ClientSecret, ClientID
 from flask_socketio import SocketIO, emit, send
 from api.lastfm_scraping.lastfm_scraping import get_tags_from_urls, search_track
 from threading import Thread
 import queue
+import pprint
 
 app = Flask(__name__)
 socketio = SocketIO(app, manage_session=False, async_mode='threading', cors_allowed_origins="*")
@@ -71,7 +72,7 @@ def get_all_data(q, task):
         threads.append(Thread(target=thread_test2, args=(queue_test,), daemon=True).start())
     for track in tracks:
         queue_test.put((track["track"]["name"], track["track"]["artists"][0]["name"],
-                        track["track"]["href"], info, task[2], playlist_id, max))
+                        track["track"]["uri"], info, task[2], playlist_id, max))
     for i in range(4):
         queue_test.put([])
     queue_test.join()
@@ -158,6 +159,8 @@ def sort(playlist_id):
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
         return redirect(url_for("index"))
+    if playlist_id in sess[id]:
+        return redirect(f"/create/{playlist_id}")
     queuer.put([playlist_id, sess[id], id])
     return render_template("sort.html", playlist_id=playlist_id, id=id)
 
@@ -175,9 +178,24 @@ def create(playlist_id):
         id = request.cookies.get("id")
         if id is None or check_cookie(id):
             return redirect(url_for("index"))
-        print(request.args, request.form, request.data, request.url, request.headers, request.view_args)
-        return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
+        songs = set()
+        for key in request.form:
+            for song in sess[id][playlist_id][key]:
+                songs.add(song)
+        info = create_playlist(sess[id], songs, "test")
+        if info == {}:
+            return render_template("error.html", error="Request error")
+        sess[id]["info" + playlist_id] = info
+        sess[id]["tracks"].pop(playlist_id, None)
+        sess[id].pop(playlist_id, None)
+        return redirect(f"/finish/{playlist_id}")
 
+@app.route("/finish/<playlist_id>")
+def finish(playlist_id):
+    id = request.cookies.get("id")
+    if id is None or check_cookie(id):
+        return redirect(url_for("index"))
+    return render_template("finish.html", info=sess[id]["info" + playlist_id])
 
 @app.route("/logout")
 def logout():
