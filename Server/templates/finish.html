@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>finish</title>
-</head>
-<body>
-<a href="/dashboard">return to dashboard</a>
-<a href="{{ info['external_urls']['spotify'] }}"> see it</a>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
+        <script src="{{ url_for('static', filename='dist/draggable.js') }}" defer></script>
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
+        <link rel="preload" href="../static/src/header.png" as="image">
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <title>Finish</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+            html {
+                font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            }
+        </style>
+    </head>
+
+    <body class="bg-cover bg-fixed h-screen text-white overflow-hidden" style="background-image : url('../static/src/header.png')">
+        <div class="pt-4 container mx-auto h-screen">
+            <div>
+                <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
+                    It's
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                    done!</span>
+                </h1>
+                <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pt-5 text-center md:text-left">
+                    You're playlist have been successfully created! You can go check it out by cliking on it.
+                </p>
+            </div>
+            <div class="flex justify-center items-center pt-20">
+                <div class="bg-gray-900 bg-opacity-75 hover:scale-105 duration-300 ease-in-out shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4 col-start-3">
+                    <a href="{{ info['external_urls']['spotify'] }}" target="_blank">
+                        <img src="{{ url_for('static', filename='src/unknow.png') }}" class="opacity-100 rounded-lg aspect-square" width="320" height="320">
+                        <p class="truncate text-sm md:text-base pt-4">
+                            Placeholder<br>
+                        </p>
+                        <p class="opacity-50">
+                            tracks : Placeholder
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="w-full rounded-lg px-8 pt-6 pb-8 mb-4">
+                <div class="flex items-center justify-center pt-4">
+                    <a
+                        class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                        href="/dashboard">
+                        <input type="button" value="Return to dashboard" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

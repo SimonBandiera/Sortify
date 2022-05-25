@@ -4,6 +4,7 @@ module.exports = {
             "../templates/error.html",
             "../templates/sort.html",
             "../templates/test.html",
+            "../templates/finish.html",
             "../templates/create.html"],
   theme: {
     extend: {
