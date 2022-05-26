@@ -4,9 +4,9 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preload" href="static/src/header.png" as="image">
         <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
-        <link rel="preload" href="../static/src/header.png" as="image">
         <meta name="description" content="" />
         <meta name="keywords" content="" />
         <title>Dashboard</title>
@@ -41,7 +41,7 @@
                 Start by choosing the playlist you want to sort by clicking on it.
             </p>
         </div>
-    
+
         <!--main-->
         <div class="container mx-auto h-90">
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 place-items-center pt-4">
@@ -70,7 +70,7 @@
                 {% endif %}
             </div>
 
-            <div class="flex place-content-between w-full pb-2">
+            <div class="flex place-content-between w-full pb-10">
                 <div class="pt-4">
                     {% if previous %}
                         <a

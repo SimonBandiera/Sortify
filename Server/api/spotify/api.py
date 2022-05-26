@@ -143,4 +143,20 @@ def create_playlist(sess, songs, name):
     r = requests.post(f"https://api.spotify.com/v1/playlists/{info['id']}/tracks", headers=bearer, params=params)
     if r.status_code != 201:
         return {}
-    return info
+    if sess["expires_in"] <= time():
+        token = refresh_access_token(sess["refresh_token"])
+        if token == {}:
+            return {}
+        update_token(token, sess)
+    param = {"fields": "images,name,tracks(total),external_urls",
+                 "offset": 0}
+    bearer = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {sess["access_token"]}'
+    }
+    r = requests.get(f"https://api.spotify.com/v1/playlists/{info['id']}", headers=bearer, params=param)
+    if r.status_code != 200:
+        return {}
+    return r.json()

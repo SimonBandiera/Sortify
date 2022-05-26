@@ -1,17 +1,16 @@
-import asyncio
 import sys
+import time
 import urllib
-from flask import Flask, session, render_template, url_for, request, redirect, make_response, Markup
-from api.spotify.api import get_access_token, refresh_access_token, update_token, get_user_playlist, get_playlist_track, create_playlist
-from api.spotify.key import ClientSecret, ClientID
-from flask_socketio import SocketIO, emit, send
+from flask import Flask, render_template, url_for, request, redirect, make_response
+from api.spotify.api import get_access_token, update_token, get_user_playlist, get_playlist_track, create_playlist
+from api.spotify.key import ClientID
+from flask_socketio import SocketIO
 from api.lastfm_scraping.lastfm_scraping import get_tags_from_urls, search_track
 from threading import Thread
 import queue
-import pprint
 
 app = Flask(__name__)
-socketio = SocketIO(app, manage_session=False, async_mode='threading', cors_allowed_origins="*")
+socketio = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
 BASE_URL = "http://localhost:5000"
 global sess, actual
 sess = {}
@@ -61,6 +60,11 @@ def get_all_data(q, task):
     playlist_id = task[0]
     sess = task[1]
     tracks = get_playlist_track(playlist_id, sess)
+    if tracks == {}:
+        time.sleep(1)
+        with app.test_request_context('/sort/' + playlist_id):
+            socketio.emit("notfound", {'playlist_id': playlist_id, 'id': task[2]})
+        sys.exit(0)
     max = str(len(tracks))
     with app.test_request_context('/sort/' + playlist_id):
         socketio.emit("start", {'max': max, 'playlist_id': playlist_id, 'id': task[2]})
@@ -150,10 +154,6 @@ def dashboard():
     return render_template("dashboard.html", user_playlist=user_playlist, next=have_next, previous=have_previous,
                            no_playlist=len(user_playlist["items"]) == 0)
 
-
-# /dashboard?pos=next
-# /dashboard?pos=previous
-
 @app.route("/sort/<playlist_id>")
 def sort(playlist_id):
     id = request.cookies.get("id")
@@ -169,20 +169,23 @@ def sort(playlist_id):
 def create(playlist_id):
     if request.method == 'GET':
         id = request.cookies.get("id")
-        if id is None or check_cookie(id):
+        if id is None or check_cookie(id) or playlist_id not in sess[id]:
             return redirect(url_for("index"))
         if playlist_id not in sess[id]:
             return redirect(url_for("dashboard"))
         return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
     if request.method == 'POST':
         id = request.cookies.get("id")
-        if id is None or check_cookie(id):
+        if id is None or check_cookie(id) or playlist_id not in sess[id]:
             return redirect(url_for("index"))
         songs = set()
+        if not "name" in request.form:
+            return render_template("error.html", error="Request error")
         for key in request.form:
-            for song in sess[id][playlist_id][key]:
-                songs.add(song)
-        info = create_playlist(sess[id], songs, "test")
+            if key != "name":
+                for song in sess[id][playlist_id][request.form[key]]:
+                    songs.add(song)
+        info = create_playlist(sess[id], songs, request.form["name"])
         if info == {}:
             return render_template("error.html", error="Request error")
         sess[id]["info" + playlist_id] = info
@@ -193,7 +196,7 @@ def create(playlist_id):
 @app.route("/finish/<playlist_id>")
 def finish(playlist_id):
     id = request.cookies.get("id")
-    if id is None or check_cookie(id):
+    if id is None or check_cookie(id) or playlist_id not in sess[id]:
         return redirect(url_for("index"))
     return render_template("finish.html", info=sess[id]["info" + playlist_id])
 
@@ -205,6 +208,9 @@ def logout():
     sess[id] = {}
     return redirect("/")
 
+@app.errorhandler(404)
+def notfound(e):
+    return render_template("error.html", error="404 there is nothing there."), 404
 
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0", port="80", debug=True, ssl_context=('../cert.pem', '../key.pem'))
+    socketio.run(app)

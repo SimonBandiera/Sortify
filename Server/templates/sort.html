@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta id="playlist_id" data-playlist="{{ playlist_id }}">
+        <meta id="id" data-id="{{ id }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
@@ -21,38 +23,7 @@
         <script type="text/javascript"
                 src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-
-                var socket = io.connect('http://127.0.0.1:5000', {transports: ['websocket', 'polling', 'flashsocket']});
-                var actual = 0;
-                var max = 0;
-        
-                socket.on('connect', function () {
-                    socket.send('User has connected!');
-                });
-                socket.on('start', function (info) {
-                    if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
-                        max = Number(info['max']);
-                        console.log(((max * 300) / 1000))
-                    }
-                });
-                socket.on('finish', function (info) {
-                    if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
-                        window.location.replace("http://127.0.0.1:5000/create/{{playlist_id}}")
-                    }
-                });
-                socket.on('update', function (info) {
-                    if (info['playlist_id'] == '{{playlist_id}}' && info['id'] == '{{id}}') {
-                        actual = info['actual']
-                        var some = ((actual * 100) / max) | 0;
-                        var tamere = 'width: ';
-                        $("#pt").attr('style', tamere.concat('', some.toString(), '%'));
-                        $("#pt").text(''.concat('', some.toString(), '%'));
-                    }
-                });
-            });
-        </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/sort.js') }}"></script>
     </head>
 
     <body class="m-6 bg-cover bg-fixed" style="background-image : url('../static/src/header.png')">
