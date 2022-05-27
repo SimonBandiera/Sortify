@@ -157,7 +157,7 @@ def dashboard():
 @app.route("/sort/<playlist_id>")
 def sort(playlist_id):
     id = request.cookies.get("id")
-    if id is None or check_cookie(id):
+    if id is None or check_cookie(id) :
         return redirect(url_for("index"))
     if playlist_id in sess[id]:
         return redirect(f"/create/{playlist_id}")
@@ -171,8 +171,6 @@ def create(playlist_id):
         id = request.cookies.get("id")
         if id is None or check_cookie(id) or playlist_id not in sess[id]:
             return redirect(url_for("index"))
-        if playlist_id not in sess[id]:
-            return redirect(url_for("dashboard"))
         return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
     if request.method == 'POST':
         id = request.cookies.get("id")
@@ -198,7 +196,9 @@ def finish(playlist_id):
     id = request.cookies.get("id")
     if id is None or check_cookie(id) or "info" + playlist_id not in sess[id]:
         return redirect(url_for("index"))
-    return render_template("finish.html", info=sess[id]["info" + playlist_id])
+    info = sess[id]["info" + playlist_id]
+    sess[id].pop("info" + playlist_id, None)
+    return render_template("finish.html", info=info)
 
 @app.route("/logout")
 def logout():
