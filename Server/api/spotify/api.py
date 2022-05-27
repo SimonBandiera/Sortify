@@ -1,6 +1,7 @@
 from api.spotify.key import ClientSecret, ClientID, header_basic, basic
 import requests
 from time import time
+import pprint
 
 BASE_URL = "http://localhost:5000"
 
@@ -138,19 +139,25 @@ def create_playlist(sess, songs, name):
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {sess["access_token"]}'
     }
-    params = {
-        'uris': ",".join(songs)
-    }
-    r = requests.post(f"https://api.spotify.com/v1/playlists/{info['id']}/tracks", headers=bearer, params=params)
-    if r.status_code != 201:
-        return {}
+    act = 0
+    max = len(songs)
+    songs = list(songs)
+    while (act < max):
+        len(songs[act: min(max - 1, act + 50)])
+        params = {
+            'uris': ",".join(songs[act: min(max - 1, act + 50)])
+        }
+        r = requests.post(f"https://api.spotify.com/v1/playlists/{info['id']}/tracks", headers=bearer, params=params)
+        if r.status_code != 201:
+            return {}
+        act += 50
     if sess["expires_in"] <= time():
         token = refresh_access_token(sess["refresh_token"])
         if token == {}:
             return {}
         update_token(token, sess)
     param = {"fields": "images,name,tracks(total),external_urls",
-                 "offset": 0}
+             "offset": 0}
     bearer = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36',
         'Accept': 'application/json',

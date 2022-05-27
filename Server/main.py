@@ -8,6 +8,7 @@ from flask_socketio import SocketIO
 from api.lastfm_scraping.lastfm_scraping import get_tags_from_urls, search_track
 from threading import Thread
 import queue
+import uuid
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
@@ -18,12 +19,10 @@ actual = {}
 
 
 def create_id():
-    m = -1
-    for i in sess:
-        m = i
-    m = 1 + int(m)
-    sess[str(m)] = {}
-    return str(m)
+    string = str(uuid.uuid1())
+    while string in sess or string in [sess[key]["session"] for key in sess if "session" in sess[key]]:
+        string = str(uuid.uuid1())
+    return string
 
 
 def check_cookie(id):
@@ -110,8 +109,12 @@ def index():
         id = create_id()
         response = make_response(render_template("index.html", client_id=ClientID,
                                                  base_url=urllib.parse.quote(BASE_URL, safe='')))
+        sess[id] = {}
+        sess[id]["session"] = create_id()
         response.set_cookie("id", value=id)
+        response.set_cookie("session", value=sess[id]["session"])
         return response
+    sess[id]["session"] = create_id()
     if "access_token" in sess[id]:
         return redirect(BASE_URL + "/dashboard")
     return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
@@ -121,7 +124,7 @@ def index():
 def callback_spotify():
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
-        return redirect(BASE_URL + "/index")
+        return redirect(BASE_URL + "/")
     if "code" in request.args:
         token = get_access_token(request.args["code"])
         if token == {}:
@@ -138,7 +141,7 @@ def dashboard():
     temp = "https://api.spotify.com/v1/me/playlists"
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
-        return redirect(BASE_URL + "/index")
+        return redirect(BASE_URL + "/")
     if "access_token" not in sess[id]:
         return redirect(BASE_URL + "/")
     if 'pos' in request.args:
@@ -159,11 +162,11 @@ def dashboard():
 def sort(playlist_id):
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
-        return redirect(BASE_URL + "/index")
+        return redirect(BASE_URL + "/")
     if playlist_id in sess[id]:
         return redirect(BASE_URL + f"/create/{playlist_id}")
-    queuer.put([playlist_id, sess[id], id])
-    return render_template("sort.html", playlist_id=playlist_id, id=id)
+    queuer.put([playlist_id, sess[id], sess[id]["session"]])
+    return render_template("sort.html", playlist_id=playlist_id, id=sess[id]["session"])
 
 
 @app.route("/create/<playlist_id>", methods=['GET', 'POST'])
@@ -171,13 +174,13 @@ def create(playlist_id):
     if request.method == 'GET':
         id = request.cookies.get("id")
         if id is None or check_cookie(id) or playlist_id not in sess[id]:
-            return redirect(BASE_URL + "/index")
+            return redirect(BASE_URL + "/")
         return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id],
                                tracks=sess[id]['tracks'][playlist_id])
     if request.method == 'POST':
         id = request.cookies.get("id")
         if id is None or check_cookie(id) or playlist_id not in sess[id]:
-            return redirect(BASE_URL + "/index")
+            return redirect(BASE_URL + "/")
         songs = set()
         if not "name" in request.form:
             return render_template("error.html", error="Request error")
@@ -198,7 +201,7 @@ def create(playlist_id):
 def finish(playlist_id):
     id = request.cookies.get("id")
     if id is None or check_cookie(id) or "info" + playlist_id not in sess[id]:
-        return redirect(BASE_URL + "/index")
+        return redirect(BASE_URL + "/")
     info = sess[id]["info" + playlist_id]
     sess[id].pop("info" + playlist_id, None)
     return render_template("finish.html", info=info)
@@ -208,7 +211,7 @@ def finish(playlist_id):
 def logout():
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
-        return redirect(BASE_URL + "/index")
+        return redirect(BASE_URL + "/")
     sess[id] = {}
     return redirect(BASE_URL + "/")
 
