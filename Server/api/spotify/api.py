@@ -1,6 +1,5 @@
 from api.spotify.key import ClientSecret, ClientID, header_basic, basic
 import requests
-import pprint
 from time import time
 
 BASE_URL = "http://localhost:5000"
@@ -33,7 +32,9 @@ def refresh_access_token(refresh_token):
     r = requests.post('https://accounts.spotify.com/api/token', params=param, headers=header_basic)
     if r.status_code != 200:
         return {}
-    return r.json()
+    data = r.json()
+    data["refresh_token"] = refresh_token
+    return data
 
 
 def get_user_playlist(sess, url):
