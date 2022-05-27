@@ -5,7 +5,6 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
-        <script src="{{ url_for('static', filename='dist/draggable.js') }}" defer></script>
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
         <link rel="preload" href="../static/src/header.png" as="image">
         <meta name="description" content="" />
@@ -20,7 +19,7 @@
         </style>
     </head>
 
-    <body class="bg-cover bg-fixed h-screen text-white overflow-hidden" style="background-image : url('../static/src/header.png')">
+    <body class="bg-cover bg-fixed h-screen text-white" style="background-image : url('../static/src/header.png')">
         <div class="pt-4 container mx-auto h-screen">
             <div>
                 <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
@@ -32,7 +31,7 @@
                     You're playlist have been successfully created! You can go check it out by cliking on it.
                 </p>
             </div>
-            <div class="flex justify-center items-center pt-20">
+            <div class="flex justify-center items-center pt-10 md:pt-15">
                 <div class="bg-gray-900 bg-opacity-75 hover:scale-105 duration-300 ease-in-out shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4 col-start-3">
                     <a href="{{ info['external_urls']['spotify'] }}" target="_blank">
                         <img src="{{ info['images'][0]['url'] }}" class="opacity-100 rounded-lg aspect-square" width="320" height="320">
