@@ -7,7 +7,10 @@ def search_track(name, album):
         "q": f"{name} {album}"
     }
     url = "https://www.last.fm/fr/search/tracks"
-    r = requests.get(url, params=param, headers=header)
+    try:
+        r = requests.get(url, params=param, headers=header)
+    except:
+        return []
     if r.status_code != 200:
         return []
     soup = BeautifulSoup(r.text, "html.parser")
@@ -22,7 +25,10 @@ def search_track(name, album):
 
 def get_tags_from_url(url):
     header = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"}
-    r = requests.get(url, headers=header)
+    try:
+        r = requests.get(url, headers=header)
+    except:
+        return []
     if r.status_code != 200:
         return []
     soup = BeautifulSoup(r.text, "html.parser")
@@ -35,11 +41,14 @@ def get_tags_from_url(url):
     return tags[:len(tags) // 2]
 
 def get_tags_from_urls(all_urls):
-    for url in all_urls:
-        tags = get_tags_from_url(url)
-        if tags:
-            return tags
-    return []
+    try :
+        for url in all_urls:
+            tags = get_tags_from_url(url)
+            if tags:
+                return tags
+        return []
+    except:
+        return []
 
 
 
