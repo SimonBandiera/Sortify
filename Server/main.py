@@ -113,7 +113,7 @@ def index():
         response.set_cookie("id", value=id)
         return response
     if "access_token" in sess[id]:
-        return redirect(url_for("dashboard"))
+        return redirect(BASE_URL + "/dashboard")
     return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
 
 
@@ -121,13 +121,13 @@ def index():
 def callback_spotify():
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
-        return redirect(url_for("index"))
+        return redirect(BASE_URL + "/index")
     if "code" in request.args:
         token = get_access_token(request.args["code"])
         if token == {}:
             return render_template("error.html", error="Request error")
         update_token(token, sess[id])
-        return redirect(url_for("dashboard"))
+        return redirect(BASE_URL + "/dashboard")
     if not "error" in request.args:
         return render_template("error.html", error="Sorry this page is not available")
     return render_template("error.html", error=request.args["error"])
@@ -138,9 +138,9 @@ def dashboard():
     temp = "https://api.spotify.com/v1/me/playlists"
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
-        return redirect(url_for("index"))
+        return redirect(BASE_URL + "/index")
     if "access_token" not in sess[id]:
-        return redirect("/")
+        return redirect(BASE_URL + "/")
     if 'pos' in request.args:
         if request.args["pos"] == "next" and sess[id]["next_dashboard"] is not None:
             temp = sess[id]["next_dashboard"]
@@ -154,13 +154,14 @@ def dashboard():
     return render_template("dashboard.html", user_playlist=user_playlist, next=have_next, previous=have_previous,
                            no_playlist=len(user_playlist["items"]) == 0)
 
+
 @app.route("/sort/<playlist_id>")
 def sort(playlist_id):
     id = request.cookies.get("id")
-    if id is None or check_cookie(id) :
-        return redirect(url_for("index"))
+    if id is None or check_cookie(id):
+        return redirect(BASE_URL + "/index")
     if playlist_id in sess[id]:
-        return redirect(f"/create/{playlist_id}")
+        return redirect(BASE_URL + f"/create/{playlist_id}")
     queuer.put([playlist_id, sess[id], id])
     return render_template("sort.html", playlist_id=playlist_id, id=id)
 
@@ -170,12 +171,13 @@ def create(playlist_id):
     if request.method == 'GET':
         id = request.cookies.get("id")
         if id is None or check_cookie(id) or playlist_id not in sess[id]:
-            return redirect(url_for("index"))
-        return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id], tracks=sess[id]['tracks'][playlist_id])
+            return redirect(BASE_URL + "/index")
+        return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id],
+                               tracks=sess[id]['tracks'][playlist_id])
     if request.method == 'POST':
         id = request.cookies.get("id")
         if id is None or check_cookie(id) or playlist_id not in sess[id]:
-            return redirect(url_for("index"))
+            return redirect(BASE_URL + "/index")
         songs = set()
         if not "name" in request.form:
             return render_template("error.html", error="Request error")
@@ -191,26 +193,30 @@ def create(playlist_id):
         sess[id].pop(playlist_id, None)
         return redirect(BASE_URL + f"/finish/{playlist_id}")
 
+
 @app.route("/finish/<playlist_id>")
 def finish(playlist_id):
     id = request.cookies.get("id")
     if id is None or check_cookie(id) or "info" + playlist_id not in sess[id]:
-        return redirect(url_for("index"))
+        return redirect(BASE_URL + "/index")
     info = sess[id]["info" + playlist_id]
     sess[id].pop("info" + playlist_id, None)
     return render_template("finish.html", info=info)
+
 
 @app.route("/logout")
 def logout():
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
-        return redirect(url_for("index"))
+        return redirect(BASE_URL + "/index")
     sess[id] = {}
-    return redirect("/")
+    return redirect(BASE_URL + "/")
+
 
 @app.errorhandler(404)
 def notfound(e):
     return render_template("error.html", error="404 there is nothing there."), 404
+
 
 if __name__ == '__main__':
     socketio.run(app)
