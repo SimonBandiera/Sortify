@@ -191,12 +191,12 @@ def create(playlist_id):
         sess[id]["info" + playlist_id] = info
         sess[id]["tracks"].pop(playlist_id, None)
         sess[id].pop(playlist_id, None)
-        return redirect(f"/finish/{playlist_id}")
+        return redirect(BASE_URL + f"/finish/{playlist_id}")
 
 @app.route("/finish/<playlist_id>")
 def finish(playlist_id):
     id = request.cookies.get("id")
-    if id is None or check_cookie(id) or playlist_id not in sess[id]:
+    if id is None or check_cookie(id) or "info" + playlist_id not in sess[id]:
         return redirect(url_for("index"))
     return render_template("finish.html", info=sess[id]["info" + playlist_id])
 
