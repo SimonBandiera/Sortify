@@ -10,8 +10,8 @@
     <script src="{{ url_for('static', filename='js/create.js') }}" defer></script>
     <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
     <link rel="preload" href="../static/src/header.png" as="image">
-    <meta name="description" content=""/>
-    <meta name="keywords" content=""/>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
     <title>Create</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
@@ -23,48 +23,50 @@
 </head>
 
 <body class="bg-cover bg-fixed h-screen text-white overflow-hidden"
-      style="background-image : url('../static/src/header.png')">
-
-<div class="pt-4 container mx-auto">
-    <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
+    style="background-image : url('../static/src/header.png')">
+    <div class="h-full container mx-auto">
+        <div class="pt-4 container mx-auto">
+            <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                Last</span> step
-    </h1>
-    <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pt-5 text-center md:text-left">
-        Choose the genres that you want to add to your new playlist by clicking on them.
-    </p>
-</div>
-
-<div class="h-full grid grid-row grid-rows-3 grid-flow-col gap-4 container m-auto pt-8 pb-60 md:pb-80">
-    <div class="bg-gray-800 bg-opacity-75 rounded-lg h-full w-full overflow-auto scrollbar justify-self-start row-span-2"
-         style="direction:rtl;">
-        <div class="m-10 grid grid-cols-1 lg:grid-cols-4 gap-y-2 gap-x-6" style="direction:ltr;">
-            {% for key in info %}
-            <label class="border-2 border-white border-opacity-20 pt-3 rounded-xl h-12 truncate text-justify hover:scale-105 duration-300 ease-in-out"
-                   onclick="myFunction('{{ key }}')" id="{{key}}">
-                <span class="mx-4">{{key}}</span>
-            </label>
-            {% endfor %}
+                    Last</span> step
+            </h1>
+            <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pt-5 text-center md:text-left">
+                Choose the genres that you want to add to your new playlist by clicking on them.
+            </p>
         </div>
-    </div>
 
-    <div class="rounded-lg h-full w-full grid grid-col grid-cols-2 gap-4">
-        <div class="flex h-full justify-center items-center bg-gray-800 bg-opacity-75 rounded-lg">
-            <input type="text" id="idd" oninput="display_button()" maxlength="100" placeholder="Playlist name :"
-                   class="text-white text-sm font-bold sm:text-lg md:text-1xl lg:text-3xl text-center"
-                   style="background: transparent; border: none; background-color: transparent; resize: none; outline: none;">
-        </div>
-        <div class="flex h-full justify-center items-center bg-gray-800 bg-opacity-75 rounded-lg">
-            <div>
-                <form id="main_form"></form>
-                <a id="submit_button"
-                   class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out opacity-0">
-                    <button id="submit_button_inner" onclick="myfunction2()">Create your playlist</button>
-                </a>
+        <div class="h-full grid grid-row grid-rows-3 grid-flow-col gap-4 container m-auto pt-8 pb-60 md:pb-80">
+            <div class="bg-gray-800 bg-opacity-75 rounded-lg h-full w-full overflow-auto scrollbar justify-self-start row-span-2"
+                style="direction:rtl;">
+                <div class="m-10 grid grid-cols-1 lg:grid-cols-4 gap-y-2 gap-x-6" style="direction:ltr;">
+                    {% for key in info %}
+                    <label
+                        class="border-2 border-white border-opacity-20 pt-3 rounded-xl h-12 truncate text-justify hover:scale-105 duration-300 ease-in-out"
+                        onclick="myFunction('{{ key }}')" id="{{key}}">
+                        <span class="mx-4">{{key}}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="rounded-lg h-full w-full grid grid-col grid-cols-2 gap-4">
+                <div class="flex h-full justify-center items-center bg-gray-800 bg-opacity-75 rounded-lg">
+                    <input type="text" id="idd" oninput="display_button()" maxlength="100" placeholder="Playlist name :"
+                        class="text-white text-sm font-bold sm:text-lg md:text-1xl lg:text-3xl text-center"
+                        style="background: transparent; border: none; background-color: transparent; resize: none; outline: none;">
+                </div>
+                <div class="flex h-full justify-center items-center bg-gray-800 bg-opacity-75 rounded-lg">
+                    <div>
+                        <form id="main_form"></form>
+                        <a id="submit_button"
+                            class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out opacity-0">
+                            <button id="submit_button_inner" onclick="myfunction2()">Create your playlist</button>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 </body>
+
 </html>
