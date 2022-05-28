@@ -123,6 +123,7 @@ def index():
 @app.route("/spotify/callback", methods=['POST', 'GET'])
 def callback_spotify():
     id = request.cookies.get("id")
+    print(id)
     if id is None or check_cookie(id):
         return redirect(BASE_URL + "/")
     if "code" in request.args:
