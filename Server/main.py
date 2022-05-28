@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import urllib
@@ -8,20 +9,23 @@ from flask_socketio import SocketIO
 from api.lastfm_scraping.lastfm_scraping import get_tags_from_urls, search_track
 from threading import Thread
 import queue
-import uuid
+import secrets
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
-BASE_URL = "http://localhost:5000"
+if "FLASK_ENV" in os.environ and os.environ["FLASK_ENV"] == "development":
+    BASE_URL = "http://localhost:5000"
+else:
+    BASE_URL = "https://www.sortify.fr"
 global sess, actual
 sess = {}
 actual = {}
 
 
 def create_id():
-    string = str(uuid.uuid1())
+    string = str(secrets.token_hex(32))
     while string in sess or string in [sess[key]["session"] for key in sess if "session" in sess[key]]:
-        string = str(uuid.uuid1())
+        string = str(secrets.token_hex(32))
     return string
 
 
@@ -106,15 +110,14 @@ worker.start()
 def index():
     id = request.cookies.get("id")
     if id is None or check_cookie(id):
-        id = create_id()
+        new_id = create_id()
+        sess[new_id] = {}
+        sess[new_id]["session"] = create_id()
         response = make_response(render_template("index.html", client_id=ClientID,
                                                  base_url=urllib.parse.quote(BASE_URL, safe='')))
-        sess[id] = {}
-        sess[id]["session"] = create_id()
-        response.set_cookie("id", value=id)
-        response.set_cookie("session", value=sess[id]["session"])
+        response.set_cookie("id", value=new_id)
+        response.set_cookie("session", value=sess[new_id]["session"])
         return response
-    sess[id]["session"] = create_id()
     if "access_token" in sess[id]:
         return redirect(BASE_URL + "/dashboard")
     return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
@@ -123,7 +126,6 @@ def index():
 @app.route("/spotify/callback", methods=['POST', 'GET'])
 def callback_spotify():
     id = request.cookies.get("id")
-    print(id)
     if id is None or check_cookie(id):
         return redirect(BASE_URL + "/")
     if "code" in request.args:

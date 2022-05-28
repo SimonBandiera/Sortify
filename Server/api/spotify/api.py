@@ -1,9 +1,11 @@
 from api.spotify.key import ClientSecret, ClientID, header_basic, basic
 import requests
 from time import time
-import pprint
-
-BASE_URL = "http://localhost:5000"
+import os
+if "FLASK_ENV" in os.environ and os.environ["FLASK_ENV"] == "development":
+    BASE_URL = "http://localhost:5000"
+else:
+    BASE_URL = "https://www.sortify.fr"
 
 
 def update_token(token, sess):
@@ -71,8 +73,8 @@ def get_playlist_track(playlist_id, sess):
         'Content-Type': 'application/json',
         'Authorization': f'Bearer {sess["access_token"]}'
     }
-    max = 1
-    while param["offset"] < max:
+    maximum = 1
+    while param["offset"] < maximum:
         if sess["expires_in"] <= time():
             token = refresh_access_token(sess["refresh_token"])
             if token == {}:
@@ -81,7 +83,7 @@ def get_playlist_track(playlist_id, sess):
         r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", params=param, headers=bearer)
         if r.status_code != 200:
             return {}
-        max = r.json()["total"]
+        maximum = r.json()["total"]
         param["offset"] += 100
         tracks += r.json()["items"]
 
@@ -140,11 +142,11 @@ def create_playlist(sess, songs, name):
         'Authorization': f'Bearer {sess["access_token"]}'
     }
     act = 0
-    max = len(songs)
+    maximum = len(songs)
     songs = list(songs)
-    while (act < max):
+    while act < maximum:
         params = {
-            'uris': ",".join(songs[act: min(max, act + 50)])
+            'uris': ",".join(songs[act: min(maximum, act + 50)])
         }
         r = requests.post(f"https://api.spotify.com/v1/playlists/{info['id']}/tracks", headers=bearer, params=params)
         if r.status_code != 201:

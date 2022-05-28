@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    var socket = io.connect('http://127.0.0.1:5000', {transports: ['websocket', 'polling', 'flashsocket']});
+    var socket = io.connect('', {transports: ['websocket', 'polling', 'flashsocket']});
     var actual = 0;
     var max = 0;
     var playlist_id = $('#playlist_id').data("playlist");
