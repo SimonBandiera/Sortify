@@ -43,6 +43,7 @@ function myfunction2() {
     form.method = "POST";
     for (let i = 0; genres[i]; i++) {
         var element = document.createElement("input");
+        element.className = "hidden";
         element.value = genres[i].toString();
         element.name = i.toString();
         form.appendChild(element);
