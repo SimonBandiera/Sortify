@@ -143,9 +143,8 @@ def create_playlist(sess, songs, name):
     max = len(songs)
     songs = list(songs)
     while (act < max):
-        len(songs[act: min(max - 1, act + 50)])
         params = {
-            'uris': ",".join(songs[act: min(max - 1, act + 50)])
+            'uris': ",".join(songs[act: min(max, act + 50)])
         }
         r = requests.post(f"https://api.spotify.com/v1/playlists/{info['id']}/tracks", headers=bearer, params=params)
         if r.status_code != 201:
