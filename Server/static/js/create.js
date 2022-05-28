@@ -41,7 +41,6 @@ function myfunction2() {
     let form = document.getElementById("main_form");
     form.value = genres;
     form.method = "POST";
-    form.setAttribute("type", "hidden");
     for (let i = 0; genres[i]; i++) {
         var element = document.createElement("input");
         element.value = genres[i].toString();
