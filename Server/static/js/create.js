@@ -41,6 +41,7 @@ function myfunction2() {
     let form = document.getElementById("main_form");
     form.value = genres;
     form.method = "POST";
+    form.className = "hidden";
     for (let i = 0; genres[i]; i++) {
         var element = document.createElement("input");
         element.className = "hidden";
@@ -49,6 +50,7 @@ function myfunction2() {
         form.appendChild(element);
     }
     element = document.createElement("input");
+    element.className = "hidden";
     element.value = document.getElementById("idd").value;
     element.name = "name";
     form.appendChild(element);
