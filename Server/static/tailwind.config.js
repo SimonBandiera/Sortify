@@ -4,7 +4,8 @@ module.exports = {
             "../templates/error.html",
             "../templates/sort.html",
             "../templates/finish.html",
-            "../templates/create.html"],
+            "../templates/create.html",
+            "js/create.js"],
   theme: {
     extend: {
         transitionProperty: {
