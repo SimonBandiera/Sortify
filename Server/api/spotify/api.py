@@ -107,6 +107,7 @@ def create_playlist(sess, songs, name):
         'Authorization': f'Bearer {sess["access_token"]}'
     }
     r = requests.get("https://api.spotify.com/v1/me", headers=bearer)
+   
     if r.status_code != 200:
         return {}
     user_id = r.json()["id"]
@@ -127,6 +128,7 @@ def create_playlist(sess, songs, name):
         'Authorization': f'Bearer {sess["access_token"]}'
     }
     r = requests.post(f"https://api.spotify.com/v1/users/{user_id}/playlists", headers=bearer, json=datas)
+   
     if r.status_code != 201:
         return {}
     info = r.json()
@@ -149,6 +151,7 @@ def create_playlist(sess, songs, name):
             'uris': ",".join(songs[act: min(maximum, act + 50)])
         }
         r = requests.post(f"https://api.spotify.com/v1/playlists/{info['id']}/tracks", headers=bearer, params=params)
+       
         if r.status_code != 201:
             return {}
         act += 50
@@ -166,6 +169,7 @@ def create_playlist(sess, songs, name):
         'Authorization': f'Bearer {sess["access_token"]}'
     }
     r = requests.get(f"https://api.spotify.com/v1/playlists/{info['id']}", headers=bearer, params=param)
+   
     if r.status_code != 200:
         return {}
     return r.json()

@@ -50,7 +50,7 @@ function myfunction2() {
         form.appendChild(element);
     }
     element = document.createElement("input");
-    element.className = "hidden";
+    element.name = 'name';
     element.value = document.getElementById("idd").value;
     element.style.display = "none";
     form.appendChild(element);

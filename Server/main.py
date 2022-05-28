@@ -21,7 +21,6 @@ global sess, actual
 sess = {}
 actual = {}
 
-
 def create_id():
     string = str(secrets.token_hex(32))
     while string in sess or string in [sess[key]["session"] for key in sess if "session" in sess[key]]:
