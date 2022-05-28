@@ -41,10 +41,10 @@ function myfunction2() {
     let form = document.getElementById("main_form");
     form.value = genres;
     form.method = "POST";
-    form.className = "hidden";
+    form.style.display = "none";
     for (let i = 0; genres[i]; i++) {
         var element = document.createElement("input");
-        element.className = "hidden";
+        element.style.display = "none";
         element.value = genres[i].toString();
         element.name = i.toString();
         form.appendChild(element);
@@ -52,7 +52,7 @@ function myfunction2() {
     element = document.createElement("input");
     element.className = "hidden";
     element.value = document.getElementById("idd").value;
-    element.name = "name";
+    element.style.display = "none";
     form.appendChild(element);
     form.action = "/create/" + playlist_id;
     document.body.appendChild(form);
