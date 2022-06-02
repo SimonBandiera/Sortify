@@ -48,7 +48,7 @@ def index():
                                                  base_url=urllib.parse.quote(BASE_URL, safe='')))
         response.set_cookie("id", value=user.id)
         return response
-    if not have_access_token(user_id):
+    if have_access_token(user_id):
         return redirect(BASE_URL + "/dashboard")
     return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
 
