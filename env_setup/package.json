@@ -1,0 +1,16 @@
+{
+  "name": "static",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tailwindcss -i ../Server/static/css/style.css -o ../Server/static/dist/style.css",
+    "watch": "npx tailwindcss -i ../Server/static/css/style.css -o ../Server/static/dist/style.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.0.24"
+  },
+  "description": ""
+}

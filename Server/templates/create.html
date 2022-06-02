@@ -39,7 +39,7 @@
             <div class="bg-gray-800 bg-opacity-75 rounded-lg h-full w-full overflow-auto scrollbar justify-self-start row-span-2"
                 style="direction:rtl;">
                 <div class="m-10 grid grid-cols-1 lg:grid-cols-4 gap-y-2 gap-x-6" style="direction:ltr;">
-                    {% for key in info %}
+                    {% for key in info.sorted_tracks %}
                     <label
                         class="border-2 border-white border-opacity-20 pt-3 rounded-xl h-12 truncate text-justify hover:scale-105 duration-300 ease-in-out"
                         onclick="myFunction('{{ key }}')" id="{{key}}">

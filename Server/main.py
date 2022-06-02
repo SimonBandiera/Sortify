@@ -1,15 +1,18 @@
 import os
-import sys
-import time
 import urllib
-from flask import Flask, render_template, url_for, request, redirect, make_response
-from api.spotify.api import get_access_token, update_token, get_user_playlist, get_playlist_track, create_playlist
-from api.spotify.key import ClientID
-from flask_socketio import SocketIO
-from api.lastfm_scraping.lastfm_scraping import get_tags_from_urls, search_track
+from queue import Queue
 from threading import Thread
-import queue
-import secrets
+
+from flask import Flask, render_template, request, redirect, make_response
+from flask_socketio import SocketIO
+
+from api.spotify.api import get_access_token, get_user_playlist, create_playlist
+from api.spotify.key import ClientID
+
+global users_by_id, users_by_session, actual
+users_by_id = {}
+users_by_session = {}
+actual = {}
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
@@ -17,121 +20,49 @@ if "FLASK_ENV" in os.environ and os.environ["FLASK_ENV"] == "development":
     BASE_URL = "http://localhost:5000"
 else:
     BASE_URL = "https://www.sortify.fr"
-global sess, actual
-sess = {}
-actual = {}
 
-def create_id():
-    string = str(secrets.token_hex(32))
-    while string in sess or string in [sess[key]["session"] for key in sess if "session" in sess[key]]:
-        string = str(secrets.token_hex(32))
-    return string
+from search_tags_playlist_thread import thread_manager
+from user import User, get_user_by_id, get_user_by_session, user_update_token, have_access_token, id_valid, user_have_playlist
+from api.sqlite3.api import get_all
 
-
-def check_cookie(id):
-    if id not in sess:
-        return 1
-    return 0
-
-
-def thread_test2(q):
-    while True:
-        global actual
-        task = q.get()
-        if len(task) == 0:
-            q.task_done()
-            sys.exit(0)
-        info = task[3]
-        all_url = search_track(task[0], task[1])
-        tags = get_tags_from_urls(all_url)
-        for tag in tags:
-            if tag in info:
-                info[tag].add(task[2])
-            else:
-                info[tag] = set()
-                info[tag].add(task[2])
-        actual[task[5] + task[4]] += 1
-        with app.test_request_context('/sort/' + task[5]):
-            socketio.emit("start", {'max': task[6], 'playlist_id': task[5], 'id': task[4]})
-            socketio.emit("update", {'actual': actual[task[5] + task[4]], 'id': task[4], 'playlist_id': task[5]})
-        q.task_done()
-
-
-def get_all_data(q, task):
-    global actual
-    playlist_id = task[0]
-    sess = task[1]
-    tracks = get_playlist_track(playlist_id, sess)
-    if tracks == {}:
-        time.sleep(1)
-        with app.test_request_context('/sort/' + playlist_id):
-            socketio.emit("notfound", {'playlist_id': playlist_id, 'id': task[2]})
-        sys.exit(0)
-    max = str(len(tracks))
-    with app.test_request_context('/sort/' + playlist_id):
-        socketio.emit("start", {'max': max, 'playlist_id': playlist_id, 'id': task[2]})
-    info = {}
-    threads = []
-    actual[playlist_id + task[2]] = 0
-    queue_test = queue.Queue()
-    for i in range(4):
-        threads.append(Thread(target=thread_test2, args=(queue_test,), daemon=True).start())
-    for track in tracks:
-        queue_test.put((track["track"]["name"], track["track"]["artists"][0]["name"],
-                        track["track"]["uri"], info, task[2], playlist_id, max))
-    for i in range(4):
-        queue_test.put([])
-    queue_test.join()
-    with app.test_request_context('/sort/' + playlist_id):
-        socketio.emit("finish", {"playlist_id": playlist_id, "id": task[2]})
-    sess[playlist_id] = info
-    sess['tracks'] = {}
-    sess['tracks'][playlist_id] = tracks
-    actual[playlist_id + task[2]] = -1
-    sys.exit(0)
-
-
-def thread_test(q):
-    global actual
-    while True:
-        task = q.get()
-        if (task[0] + task[2] in actual and actual[task[0] + task[2]] == -1) or task[0] + task[2] not in actual:
-            Thread(target=get_all_data, args=(q, task), daemon=True).start()
-        q.task_done()
-
-
-queuer = queue.Queue()
-worker = Thread(target=thread_test, args=(queuer,), daemon=True)
+thread_management_queue = Queue()
+worker = Thread(target=thread_manager, args=(thread_management_queue,), daemon=True)
 worker.start()
+
+
+@socketio.on('wait_for_sort')
+def sort_starting(data):
+    if "id" not in data or "playlist_id" not in data or not data["playlist_id"] in get_user_by_session(data["id"]).playlists:
+        return
+    user = get_user_by_session(data["id"])
+    user.playlists[data["playlist_id"]].start_websocket = True
+    return
 
 
 @app.route('/')
 def index():
-    id = request.cookies.get("id")
-    if id is None or check_cookie(id):
-        new_id = create_id()
-        sess[new_id] = {}
-        sess[new_id]["session"] = create_id()
+    user_id = request.cookies.get("id")
+    if not id_valid(user_id):
+        user = User()
         response = make_response(render_template("index.html", client_id=ClientID,
                                                  base_url=urllib.parse.quote(BASE_URL, safe='')))
-        response.set_cookie("id", value=new_id)
-        response.set_cookie("session", value=sess[new_id]["session"])
+        response.set_cookie("id", value=user.id)
         return response
-    if "access_token" in sess[id]:
+    if not have_access_token(user_id):
         return redirect(BASE_URL + "/dashboard")
     return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
 
 
 @app.route("/spotify/callback", methods=['POST', 'GET'])
 def callback_spotify():
-    id = request.cookies.get("id")
-    if id is None or check_cookie(id):
+    user_id = request.cookies.get("id")
+    if not id_valid(user_id):
         return redirect(BASE_URL + "/")
     if "code" in request.args:
         token = get_access_token(request.args["code"])
         if token == {}:
             return render_template("error.html", error="Request error")
-        update_token(token, sess[id])
+        user_update_token(user_id, token)
         return redirect(BASE_URL + "/dashboard")
     if not "error" in request.args:
         return render_template("error.html", error="Sorry this page is not available")
@@ -140,88 +71,103 @@ def callback_spotify():
 
 @app.route("/dashboard")
 def dashboard():
-    temp = "https://api.spotify.com/v1/me/playlists"
-    id = request.cookies.get("id")
-    if id is None or check_cookie(id):
+    user_id = request.cookies.get("id")
+    if not id_valid(user_id) or not have_access_token(user_id):
         return redirect(BASE_URL + "/")
-    if "access_token" not in sess[id]:
-        return redirect(BASE_URL + "/")
-    if 'pos' in request.args:
-        if request.args["pos"] == "next" and sess[id]["next_dashboard"] is not None:
-            temp = sess[id]["next_dashboard"]
-        elif request.args["pos"] == "previous" and sess[id]["previous_dashboard"] is not None:
-            temp = sess[id]["previous_dashboard"]
-    user_playlist = get_user_playlist(sess[id], temp)
+    user = get_user_by_id(user_id)
+    user.user_dashboard_gestion(request.args)
+    user_playlist = get_user_playlist(user)
     if user_playlist == {}:
         return render_template("error.html", error="Request error")
-    have_next = sess[id]["next_dashboard"] is not None
-    have_previous = sess[id]["previous_dashboard"]
+    have_next = user.dashboard_next is not None
+    have_previous = user.dashboard_prev is not None
     return render_template("dashboard.html", user_playlist=user_playlist, next=have_next, previous=have_previous,
-                           no_playlist=len(user_playlist["items"]) == 0)
+                           no_playlist=len(user_playlist["items"]) == 0, code=user.update_code)
 
 
 @app.route("/sort/<playlist_id>")
 def sort(playlist_id):
-    id = request.cookies.get("id")
-    if id is None or check_cookie(id):
+    user_id = request.cookies.get("id")
+    if not id_valid(user_id):
         return redirect(BASE_URL + "/")
-    if playlist_id in sess[id]:
-        return redirect(BASE_URL + f"/create/{playlist_id}")
-    queuer.put([playlist_id, sess[id], sess[id]["session"]])
-    return render_template("sort.html", playlist_id=playlist_id, id=sess[id]["session"])
+    user = get_user_by_id(user_id)
+    if user_have_playlist(user_id, playlist_id) and user.playlists[playlist_id].sorted:
+        return redirect(f"{BASE_URL}/create/{playlist_id}")
+    user.add_playlist(playlist_id)
+    thread_management_queue.put([playlist_id, user])
+    return render_template("sort.html", playlist_id=playlist_id, id=user.session)
 
 
 @app.route("/create/<playlist_id>", methods=['GET', 'POST'])
 def create(playlist_id):
     if request.method == 'GET':
-        id = request.cookies.get("id")
-        if id is None or check_cookie(id) or playlist_id not in sess[id]:
+        user_id = request.cookies.get("id")
+        if not id_valid(user_id) or not user_have_playlist(user_id, playlist_id):
             return redirect(BASE_URL + "/")
-        return render_template("create.html", playlist_id=playlist_id, info=sess[id][playlist_id],
-                               tracks=sess[id]['tracks'][playlist_id])
+        user = get_user_by_id(user_id)
+        return render_template("create.html", playlist_id=playlist_id, info=user.playlists[playlist_id])
     if request.method == 'POST':
-        id = request.cookies.get("id")
-        if id is None or check_cookie(id) or playlist_id not in sess[id]:
+        user_id = request.cookies.get("id")
+        if not id_valid(user_id) or not user_have_playlist(user_id, playlist_id):
             return redirect(BASE_URL + "/")
+        user = get_user_by_id(user_id)
         songs = set()
         if not "name" in request.form:
             return render_template("error.html", error="Request error")
         for key in request.form:
             if key != "name":
-                for song in sess[id][playlist_id][request.form[key]]:
+                for song in user.playlists[playlist_id].sorted_tracks[request.form[key]]:
                     songs.add(song)
-        info = create_playlist(sess[id], songs, request.form["name"])
-        if info == {}:
+        user.playlists[playlist_id].info = create_playlist(user, songs, request.form["name"])
+        if user.playlists[playlist_id].info == {}:
             return render_template("error.html", error="Request error")
-        sess[id]["info" + playlist_id] = info
-        sess[id]["tracks"].pop(playlist_id, None)
-        sess[id].pop(playlist_id, None)
-        return redirect(BASE_URL + f"/finish/{playlist_id}")
+        return redirect(f"{BASE_URL}/finish/{playlist_id}")
 
 
 @app.route("/finish/<playlist_id>")
 def finish(playlist_id):
-    id = request.cookies.get("id")
-    if id is None or check_cookie(id) or "info" + playlist_id not in sess[id]:
+    user_id = request.cookies.get("id")
+    if not id_valid(user_id) or not user_have_playlist(user_id, playlist_id) or \
+            get_user_by_id(user_id).playlists[playlist_id].info == {}:
         return redirect(BASE_URL + "/")
-    info = sess[id]["info" + playlist_id]
-    sess[id].pop("info" + playlist_id, None)
+    user = get_user_by_id(user_id)
+    info = user.playlists[playlist_id].info
+    user.playlists.pop(playlist_id, None)
     return render_template("finish.html", info=info)
 
 
 @app.route("/logout")
 def logout():
-    id = request.cookies.get("id")
-    if id is None or check_cookie(id):
+    user_id = request.cookies.get("id")
+    if not id_valid(user_id):
         return redirect(BASE_URL + "/")
-    sess[id] = {}
+    user = get_user_by_id(user_id)
+    users_by_session.pop(user.session, None)
+    users_by_id.pop(user.id, None)
     return redirect(BASE_URL + "/")
-
 
 @app.errorhandler(404)
 def notfound(e):
     return render_template("error.html", error="404 there is nothing there."), 404
 
+
+def convert_bytes(num):
+    """
+    this function will convert bytes to MB.... GB... etc
+    """
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1024.0:
+            return "%3.1f %s" % (num, x)
+        num /= 1024.0
+
+
+@app.route("/admin/<admin_id>")
+def admin(admin_id):
+    if admin_id == "dc32ff7c9c3c5e0a99cf50c77833b276656768cf52e91f44de92645296e00beb":
+        size = convert_bytes(os.path.getsize("Server/db/tags_database.db"))
+        nbr_pre_parse = len(get_all())
+        return render_template("admin.html", len_pre_parse=nbr_pre_parse, size=size)
+    return 404
 
 if __name__ == '__main__':
     socketio.run(app)
