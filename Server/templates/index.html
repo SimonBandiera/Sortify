@@ -8,15 +8,13 @@
     <meta name="author" content="Hugo GALAN, Simon BANDIERA">
     <meta name="robots" content="all">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="og:type" content="website" />
-    <meta name="og:url" content="https://www.sortify.fr/"/>
-    <meta name="og:title" content="Sortify"/>
-    <meta name="og:description" content="Sortify serves you to sort by gender your playlist"/>
-    <meta name="og:image" content="{{ url_for('static', filename='src/icon.png') }}"/>
+    <meta property="og:title" name="twitter:title" itemprop="name" content="Sortify">
+    <meta property="og:description" name="twitter:description" itemprop="description" content="Sortify serves you to sort by gender your playlist"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.sortify.fr/"/>
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="{{ url_for('static', filename='src/icon.png') }}"/>
     <meta name="twitter:card" content="summary"/>
-    <meta name="twitter:title" content="Sortify">
-    <meta name="twitter:description" content="Sortify serves you to sort by gender your playlist"/>
-    <meta name="twitter:image" content="{{ url_for('static', filename='src/icon.png') }}"/>
+    <meta name="twitter:domain" content="sortify.fr">
     <meta name="url" content="https://www.sortify.fr/">
     <meta name="theme-color" content="#5d5a78">
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
