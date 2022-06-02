@@ -164,7 +164,7 @@ def convert_bytes(num):
 @app.route("/admin/<admin_id>")
 def admin(admin_id):
     if admin_id == "dc32ff7c9c3c5e0a99cf50c77833b276656768cf52e91f44de92645296e00beb":
-        size = convert_bytes(os.path.getsize("Server/db/tags_database.db"))
+        size = convert_bytes(os.path.getsize("db/tags_database.db"))
         nbr_pre_parse = len(get_all())
         return render_template("admin.html", len_pre_parse=nbr_pre_parse, size=size)
     return 404
