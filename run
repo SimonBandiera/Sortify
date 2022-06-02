@@ -1,4 +1,4 @@
 #!/bin/sh
 
 . .env/bin/activate
-export FLASK_APP=Server/main && export FLASK_ENV=development && flask run --host=localhost
+cd Server || export FLASK_APP=Server/main && export FLASK_ENV=development && flask run --host=localhost
