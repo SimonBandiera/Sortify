@@ -13,7 +13,7 @@ else:
 
 def check_refresh(user):
     if user.expires_in <= time():
-        token = refresh_access_token(user.refresh_token)
+        token = refresh_access_token(user)
         if token == {}:
             return 1
         user.user_update_token(token)
@@ -47,11 +47,8 @@ def refresh_access_token(user):
 def get_user_playlist(user):
     user.next_dashboard = None
     user.prev_dashboard = None
-    if user.expires_in <= time():
-        token = refresh_access_token(user)
-        if token == {}:
-            return {}
-        user.user_update_token(token)
+    if check_refresh(user):
+        return {}
     bearer = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36',
         'Accept': 'application/json',
@@ -79,11 +76,8 @@ def get_playlist_track(playlist_id, user):
     }
     maximum = 1
     while param["offset"] < maximum:
-        if user.expires_in <= time():
-            token = refresh_access_token(user.refresh_token)
-            if token == {}:
-                return {}
-            user.user_update_token(token)
+        if check_refresh(user):
+            return {}
         r = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", params=param, headers=bearer)
         if r.status_code != 200:
             return {}
@@ -110,7 +104,10 @@ def create_playlist(user, songs, name):
     r = requests.get("https://api.spotify.com/v1/me", headers=bearer)
     if r.status_code != 200:
         return {}
-    user_id = r.json()["id"]
+    data = r.json()
+    if "id" not in data:
+        return {}
+    user_id = data["id"]
     datas = {
         "name": name,
         "description": "Playlist automatically create by Sortify (sortify.fr)",
@@ -125,7 +122,6 @@ def create_playlist(user, songs, name):
         'Authorization': f'Bearer {user.access_token}'
     }
     r = requests.post(f"https://api.spotify.com/v1/users/{user_id}/playlists", headers=bearer, json=datas)
-
     if r.status_code != 201:
         return {}
     info = r.json()
@@ -147,7 +143,6 @@ def create_playlist(user, songs, name):
         if check_refresh(user):
             return {}
         r = requests.post(f"https://api.spotify.com/v1/playlists/{info['id']}/tracks", headers=bearer, params=params)
-       
         if r.status_code != 201:
             return {}
         act += 50
@@ -163,7 +158,6 @@ def create_playlist(user, songs, name):
         'Authorization': f'Bearer {user.access_token}'
     }
     r = requests.get(f"https://api.spotify.com/v1/playlists/{info['id']}", headers=bearer, params=param)
-   
     if r.status_code != 200:
         return {}
     return r.json()
