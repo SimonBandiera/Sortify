@@ -24,6 +24,7 @@ simple-websocket==0.5.2
 six==1.16.0
 soupsieve==2.3.2.post1
 urllib3==1.26.9
+uvicorn==0.21.1
 Werkzeug==2.1.2
 wsproto==1.1.0
 zipp==3.8.0
