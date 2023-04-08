@@ -1,11 +1,13 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 import urllib
 from queue import Queue
 from threading import Thread
 
 from flask import Flask, render_template, request, redirect, make_response
 from flask_socketio import SocketIO
-
 from api.spotify.api import get_access_token, get_user_playlist, create_playlist
 from api.spotify.key import ClientID
 

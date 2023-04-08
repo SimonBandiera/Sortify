@@ -1,5 +1,6 @@
 .idea
 .env
+.venv
 .vscode
 Server/db/tags_database.db
 __pycache__

@@ -1,8 +1,8 @@
 #!/bin/sh
 
 echo "Creating the python virtualenv..."
-python3 -m venv ../.env
-. ../.env/bin/activate
+python3 -m venv ../.venv
+. ../.venv/bin/activate
 echo "Installing required package for python..."
 pip install -r requirement.txt --quiet
 echo "Creating Database..."
