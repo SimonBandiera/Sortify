@@ -1,4 +1,4 @@
 #!/bin/sh
 
 . .venv/bin/activate
-cd Server && export FLASK_APP=main && export FLASK_ENV=development && flask run --host=localhost
+cd Server && export FLASK_APP=main && export FLASK_ENV=development && gunicorn --worker-class gevent --bind=localhost:5000 -m 007 main:app

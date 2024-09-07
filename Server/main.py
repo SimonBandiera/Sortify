@@ -18,10 +18,8 @@ actual = {}
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
-if "FLASK_ENV" in os.environ and os.environ["FLASK_ENV"] == "development":
-    BASE_URL = "http://localhost:5000"
-else:
-    BASE_URL = "https://www.sortify.fr"
+
+BASE_URL=os.environ.get('BASE_URL')
 
 from search_tags_playlist_thread import thread_manager
 from user import User, get_user_by_id, get_user_by_session, user_update_token, have_access_token, id_valid, user_have_playlist
@@ -58,12 +56,17 @@ def index():
 @app.route("/spotify/callback", methods=['POST', 'GET'])
 def callback_spotify():
     user_id = request.cookies.get("id")
-    if not id_valid(user_id):
-        return redirect(BASE_URL + "/")
+    need_new_user = not id_valid(user_id)
     if "code" in request.args:
         token = get_access_token(request.args["code"])
         if token == {}:
             return render_template("error.html", error="Request error")
+        response = make_response(redirect(BASE_URL + "/dashboard"))
+        if need_new_user:
+            user = User()
+            response.set_cookie("id", value=user.id)
+            user_id = user_id
+
         user_update_token(user_id, token)
         return redirect(BASE_URL + "/dashboard")
     if not "error" in request.args:

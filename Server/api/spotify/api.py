@@ -1,14 +1,12 @@
+import os
 import pprint
 
 from api.spotify.key import ClientSecret, ClientID, header_basic, basic
 import requests
 from time import time
-import os
 
-if "FLASK_ENV" in os.environ and os.environ["FLASK_ENV"] == "development":
-    BASE_URL = "http://localhost:5000"
-else:
-    BASE_URL = "https://www.sortify.fr"
+
+BASE_URL = os.environ.get("BASE_URL")
 
 
 def check_refresh(user):
