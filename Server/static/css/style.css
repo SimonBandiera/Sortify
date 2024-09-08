@@ -24,3 +24,13 @@
     background: #6e6d6d;
   }
 }
+
+@layer components {
+  .gradiant {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500
+  }
+
+  .gradiant-bg {
+    @apply bg-gradient-to-r from-green-400 via-pink-500 to-purple-500
+  }
+}

@@ -1,5 +1,5 @@
 .idea
-.env
+Server/.env
 .venv
 .vscode
 Server/db/tags_database.db
