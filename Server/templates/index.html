@@ -7,15 +7,11 @@
 
         html {
             font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
         }
     </style>
 </head>
-
-<script>
-    function goToWork() {
-        document.getElementById('how').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-</script>
 
 <body>
     <div id="home" class="image-bg flex flex-col h-[100dvh] w-screen p-[7.23vw] -mb-1">
@@ -35,9 +31,9 @@
             </button>
         </div>
         <div class=" h-1/3 flex justify-end items-end">
-            <button class="up-down-motion" onclick="goToWork()">
+            <a class="up-down-motion" href="#how">
                 <img class=" w-[7vw] h-[7vw]" src="{{ url_for('static', filename='src/arrowDown.svg') }}" alt="arrow down">
-            </button>
+            </a>
         </div>
     </div>
     <div id="how" class="flex justify-center items-center h-[100dvh] bg-deep-black px-[4vw] py-[8vw] -mb-1">
@@ -108,7 +104,7 @@
 
 <style>
     .image-bg {
-        background : url('static/src/header.png') no-repeat center center;
+        background: url('../static/src/header.png') no-repeat center center;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -119,6 +115,7 @@
         margin-bottom: 0;
         animation: test 1.5s ease-in-out infinite;
     }
+
     @keyframes test {
         50% {
             margin-bottom: 5%;

@@ -7,108 +7,110 @@
 
         html {
             font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
         }
     </style>
 </head>
 
 <script>
     function goToWork() {
-        document.getElementById('how').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('how').scrollIntoView({behavior: 'smooth', block: 'center'});
     }
 </script>
 
 <body>
-    <div id="home" class="image-bg flex flex-col h-[100dvh] w-screen p-[7.23vw] -mb-1">
-        <div class="h-1/3 py-40">
-            <img class="w-[8vw] h-[8vw]" src="../static/src/icon.png">
-        </div>
-        <div class="flex flex-col gap-20 h-1/3 font-medium">
-            <h1 class="text-[9.37vw] text-white">
-                <span class="gradiant">Sort </span>
-                your playlists faster than a heart<span class="gradiant">beat</span>
-            </h1>
-            <button class="flex gap-10 bg-white text-black rounded-3xl text-[4.68vw] w-fit px-6 py-6 justify-center items-center">
+<div id="home" class="image-bg flex flex-col h-[100dvh] w-screen p-[7.23vw] -mb-1">
+    <div class="h-1/3 py-40">
+        <img class="w-[8vw] h-[8vw]" src="../static/src/icon.png">
+    </div>
+    <div class="flex flex-col gap-20 h-1/3 font-medium">
+        <h1 class="text-[9.37vw] text-white">
+            <span class="gradiant">Sort </span>
+            your playlists faster than a heart<span class="gradiant">beat</span>
+        </h1>
+        <button class="flex gap-10 bg-white text-black rounded-3xl text-[4.68vw] w-fit px-6 py-6 justify-center items-center">
                 <span>
                     Get started with Sortify
                 </span>
-                <img class="w-[7vw] h-[7vw]" src="../static/src/arrowLeft.svg" alt="arrow left">
-            </button>
+            <img class="w-[7vw] h-[7vw]" src="../static/src/arrowLeft.svg" alt="arrow left">
+        </button>
+    </div>
+    <div class=" h-1/3 flex justify-end items-end">
+        <a class="up-down-motion" href="#how">
+            <img class=" w-[7vw] h-[7vw]" src="../static/src/arrowDown.svg" alt="arrow down">
+        </a>
+    </div>
+</div>
+<div id="how" class="flex justify-center items-center h-[100dvh] bg-deep-black px-[4vw] py-[8vw] -mb-1">
+    <div class="flex flex-col text-white font-medium text-[6.25vw] gap-10">
+        <h2 class="px-6 mb-20">
+            How does it <span class="gradiant">work</span> ?
+        </h2>
+        <div class="gradiant-bg rounded-3xl w-full p-1 text-[3.75vw]">
+            <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10">
+                <div class="flex gap-7 w-full">
+                    <span>1.</span>
+                    <span>We take all the songs in your playlist.</span>
+                </div>
+                <div class="flex gap-7 w-full">
+                    <span>2.</span>
+                    <span>Analyse them to get the genres.</span>
+                </div>
+                <div class="flex gap-7 w-full">
+                    <span>3.</span>
+                    <span>You select the one you want, and we create your brand-new playlist.</span>
+                </div>
+            </div>
         </div>
-        <div class=" h-1/3 flex justify-end items-end">
-            <button class="up-down-motion" onclick="goToWork()">
-                <img class=" w-[7vw] h-[7vw]" src="../static/src/arrowDown.svg" alt="arrow down">
-            </button>
+        <div class="flex flex-col gap-10 bg-black rounded-[20px] px-10 py-32 text-[3.75vw]">
+            <span class="text-[21.8vw] leading-none">+15k</span>
+            <span>songs already analysed.</span>
+        </div>
+        <div class="flex gap-10 text-[4.68vw]">
+            <div class="w-1/2 gradiant-bg rounded-3xl p-1">
+                <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10 justify-center items-center">
+                    <span>Totally free</span>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col gap-10 bg-black rounded-[20px] px-10 justify-center items-center">
+                <span>Open source</span>
+            </div>
         </div>
     </div>
-    <div id="how" class="flex justify-center items-center h-[100dvh] bg-deep-black px-[4vw] py-[8vw] -mb-1">
-        <div class="flex flex-col text-white font-medium text-[6.25vw] gap-10">
-            <h2 class="px-6 mb-20">
-                How does it <span class="gradiant">work</span> ?
-            </h2>
-            <div class="gradiant-bg rounded-3xl w-full p-1 text-[3.75vw]">
-                <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10">
-                    <div class="flex gap-7 w-full">
-                        <span>1.</span>
-                        <span>We take all the songs in your playlist.</span>
-                    </div>
-                    <div class="flex gap-7 w-full">
-                        <span>2.</span>
-                        <span>Analyse them to get the genres.</span>
-                    </div>
-                    <div class="flex gap-7 w-full">
-                        <span>3.</span>
-                        <span>You select the one you want, and we create your brand-new playlist.</span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-col gap-10 bg-black rounded-[20px] px-10 py-32 text-[3.75vw]">
-                <span class="text-[21.8vw] leading-none">+15k</span>
-                <span>songs already analysed.</span>
-            </div>
-            <div class="flex gap-10 text-[4.68vw]">
-                <div class="w-1/2 gradiant-bg rounded-3xl p-1">
-                    <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10 justify-center items-center">
-                        <span>Totally free</span>
-                    </div>
-                </div>
-                <div class="w-1/2 flex flex-col gap-10 bg-black rounded-[20px] px-10 justify-center items-center">
-                    <span>Open source</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="start" class="relative flex flex-col items-center h-[100dvh] bg-deep-black border-b px-[4vw] py-[8vw]">
-        <div class="flex flex-col text-white font-medium text-[6.25vw] gap-10">
-            <h2 class="px-6 mb-20 mt-20">
-                Get started with <span class="gradiant">Sortify</span>
-            </h2>
-            <div class="flex flex-col gap-40 bg-black rounded-[20px] px-10 py-32 text-[3.75vw]">
-                <div class="flex flex-col gap-10">
+</div>
+<div id="start" class="relative flex flex-col items-center h-[100dvh] bg-deep-black border-b px-[4vw] py-[8vw]">
+    <div class="flex flex-col text-white font-medium text-[6.25vw] gap-10">
+        <h2 class="px-6 mb-20 mt-20">
+            Get started with <span class="gradiant">Sortify</span>
+        </h2>
+        <div class="flex flex-col gap-40 bg-black rounded-[20px] px-10 py-32 text-[3.75vw]">
+            <div class="flex flex-col gap-10">
                     <span class="text-[4.68vw]">
                         Connect with your Spotify account to select the playlist you want to sort.
                     </span>
-                    <span class="text-[3.75vw] opacity-60 w-3/5">You are one step away from decluttering all your Spotify playlist.</span>
-                </div>
-                <div>
-                    <button class="w-full gradiant-bg rounded-3xl p-1">
-                        <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10 justify-center items-center">
-                            <span class="text-[4.75vw] gradiant font-semibold">Connect to Spotify</span>
-                        </div>
-                    </button>
-                </div>
+                <span class="text-[3.75vw] opacity-60 w-3/5">You are one step away from decluttering all your Spotify playlist.</span>
             </div>
-            <h3 class="absolute bottom-20 left-1/2 -translate-x-1/2 text-center text-[3.75vw] min-w-full">
-                Made with &#10084; , by
-                <span class="underline gradiant">Hugo</span> and
-                <span class="underline gradiant">Simon</span>
-            </h3>
+            <div>
+                <button class="w-full gradiant-bg rounded-3xl p-1">
+                    <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10 justify-center items-center">
+                        <span class="text-[4.75vw] gradiant font-semibold">Connect to Spotify</span>
+                    </div>
+                </button>
+            </div>
         </div>
+        <h3 class="absolute bottom-20 left-1/2 -translate-x-1/2 text-center text-[3.75vw] min-w-full">
+            Made with &#10084; , by
+            <span class="underline gradiant">Hugo</span> and
+            <span class="underline gradiant">Simon</span>
+        </h3>
     </div>
+</div>
 </body>
 
 <style>
     .image-bg {
-        background : url('../static/src/header.png') no-repeat center center;
+        background: url('../static/src/header.png') no-repeat center center;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -119,6 +121,7 @@
         margin-bottom: 0;
         animation: test 1.5s ease-in-out infinite;
     }
+
     @keyframes test {
         50% {
             margin-bottom: 5%;
