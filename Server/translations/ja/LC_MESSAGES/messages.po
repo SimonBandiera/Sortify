@@ -1,0 +1,169 @@
+# PROJECTの日本語翻訳
+# Copyright (C) 2024 ORGANIZATION
+# このファイルはPROJECTプロジェクトと同じライセンスで配布されています。
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"PO-Revision-Date: 2024-09-09 01:33+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ja\n"
+"Language-Team: ja <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: templates/create.html:14
+msgid "Create"
+msgstr "作成する"
+
+#: templates/create.html:29
+msgid "Last Step"
+msgstr "最後のステップ"
+
+#: templates/create.html:32
+msgid ""
+"Choose the genres that you want to add to your new playlist by clicking "
+"on them."
+msgstr "新しいプレイリストに追加したいジャンルをクリックして選択してください。"
+
+#: templates/create.html:52
+msgid "Playlist name"
+msgstr "プレイリストの名前"
+
+#: templates/create.html:61
+msgid "Create your playlist"
+msgstr "プレイリストを作成する"
+
+#: templates/dashboard.html:13 templates/dashboard.html:28
+msgid "Dashboard"
+msgstr "ダッシュボード"
+
+#: templates/dashboard.html:36
+msgid "Logout"
+msgstr "ログアウト"
+
+#: templates/dashboard.html:42
+msgid "Start by choosing the playlist you want to sort by clicking on it."
+msgstr "クリックしてソートしたいプレイリストを選択して始めましょう。"
+
+#: templates/dashboard.html:50
+msgid "You have no playlist"
+msgstr "プレイリストがありません"
+
+#: templates/dashboard.html:80
+msgid "Previous"
+msgstr "前へ"
+
+#: templates/dashboard.html:89
+msgid "Next"
+msgstr "次へ"
+
+#: templates/error.html:6
+msgid "ERROR"
+msgstr "エラー"
+
+#: templates/error.html:9
+msgid "Error"
+msgstr "エラー"
+
+#: templates/finish.html:13
+msgid "Finish"
+msgstr "仕上げる"
+
+#: templates/finish.html:27
+msgid "It's done!"
+msgstr "完了しました！"
+
+#: templates/finish.html:30
+msgid ""
+"You're playlist have been successfully created! You can go check it out "
+"by cliking on it."
+msgstr "プレイリストが正常に作成されました！クリックして確認できます。"
+
+#: templates/finish.html:41
+msgid "tracks"
+msgstr "トラック"
+
+#: templates/finish.html:51
+msgid "Return to dashboard"
+msgstr "ダッシュボードに戻る"
+
+#: templates/index.html:23
+msgid "Sort your playlists faster than a heartbeat"
+msgstr "心臓の鼓動よりも早くプレイリストをソートする"
+
+#: templates/index.html:27 templates/index.html:78
+msgid "Get started with Sortify"
+msgstr "Sortifyを始める"
+
+#: templates/index.html:29
+msgid "Arrow left"
+msgstr "左矢印"
+
+#: templates/index.html:34
+msgid "Arrow down"
+msgstr "下矢印"
+
+#: templates/index.html:41
+msgid "How does it work ?"
+msgstr "どのように動作しますか？"
+
+#: templates/index.html:47
+msgid "We take all the songs in your playlist."
+msgstr "プレイリスト内のすべての曲を取得します。"
+
+#: templates/index.html:51
+msgid "Analyse them to get the genres."
+msgstr "ジャンルを取得するために分析します。"
+
+#: templates/index.html:55
+msgid "You select the one you want, and we create your brand-new playlist."
+msgstr "選択したジャンルに基づいて、新しいプレイリストを作成します。"
+
+#: templates/index.html:61
+msgid "songs already analysed."
+msgstr "既に分析された曲。"
+
+#: templates/index.html:66
+msgid "Totally free"
+msgstr "完全無料"
+
+#: templates/index.html:70
+msgid "Open source"
+msgstr "オープンソース"
+
+#: templates/index.html:83
+msgid "Connect with your Spotify account to select the playlist you want to sort."
+msgstr "ソートしたいプレイリストを選択するためにSpotifyアカウントに接続してください。"
+
+#: templates/index.html:85
+msgid "You are one step away from decluttering all your Spotify playlist."
+msgstr "Spotifyのプレイリストを整理するために1ステップだけです。"
+
+#: templates/index.html:90
+msgid "Connect to Spotify"
+msgstr "Spotifyに接続する"
+
+#: templates/index.html:96
+#, python-format
+msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
+msgstr "&#10084; で作成されました、%(hugo)sと%(simon)sによる"
+
+#: templates/sort.html:13 templates/sort.html:32
+msgid "Loading..."
+msgstr "読み込み中..."
+
+#: templates/sort.html:35
+msgid "Fetching the genres of your music, please wait."
+msgstr "音楽のジャンルを取得中です。しばらくお待ちください。"
+
+#: templates/sort.html:38
+msgid "Note that this can take up to 500 milliseconds per song to handle."
+msgstr "注意: 1曲あたり500ミリ秒かかる場合があります。"
+

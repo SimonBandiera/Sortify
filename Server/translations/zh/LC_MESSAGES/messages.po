@@ -1,0 +1,169 @@
+# PROJECT 的中文翻译
+# Copyright (C) 2024 ORGANIZATION
+# 本文件根据相同许可证分发，与 PROJECT 项目相同。
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"PO-Revision-Date: 2024-09-09 01:36+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: templates/create.html:14
+msgid "Create"
+msgstr "创造"
+
+#: templates/create.html:29
+msgid "Last Step"
+msgstr "最后一步"
+
+#: templates/create.html:32
+msgid ""
+"Choose the genres that you want to add to your new playlist by clicking "
+"on them."
+msgstr "通过点击选择您想要添加到新播放列表中的流派。"
+
+#: templates/create.html:52
+msgid "Playlist name"
+msgstr "播放列表名称"
+
+#: templates/create.html:61
+msgid "Create your playlist"
+msgstr "创建您的播放列表"
+
+#: templates/dashboard.html:13 templates/dashboard.html:28
+msgid "Dashboard"
+msgstr "仪表板"
+
+#: templates/dashboard.html:36
+msgid "Logout"
+msgstr "登出"
+
+#: templates/dashboard.html:42
+msgid "Start by choosing the playlist you want to sort by clicking on it."
+msgstr "首先，通过点击选择您想要排序的播放列表。"
+
+#: templates/dashboard.html:50
+msgid "You have no playlist"
+msgstr "您没有播放列表"
+
+#: templates/dashboard.html:80
+msgid "Previous"
+msgstr "上一步"
+
+#: templates/dashboard.html:89
+msgid "Next"
+msgstr "下一步"
+
+#: templates/error.html:6
+msgid "ERROR"
+msgstr "错误"
+
+#: templates/error.html:9
+msgid "Error"
+msgstr "错误"
+
+#: templates/finish.html:13
+msgid "Finish"
+msgstr "结束"
+
+#: templates/finish.html:27
+msgid "It's done!"
+msgstr "完成了！"
+
+#: templates/finish.html:30
+msgid ""
+"You're playlist have been successfully created! You can go check it out "
+"by cliking on it."
+msgstr "您的播放列表已成功创建！您可以点击查看。"
+
+#: templates/finish.html:41
+msgid "tracks"
+msgstr "曲目"
+
+#: templates/finish.html:51
+msgid "Return to dashboard"
+msgstr "返回仪表板"
+
+#: templates/index.html:23
+msgid "Sort your playlists faster than a heartbeat"
+msgstr "比心跳更快地整理您的播放列表"
+
+#: templates/index.html:27 templates/index.html:78
+msgid "Get started with Sortify"
+msgstr "开始使用 Sortify"
+
+#: templates/index.html:29
+msgid "Arrow left"
+msgstr "左箭头"
+
+#: templates/index.html:34
+msgid "Arrow down"
+msgstr "下箭头"
+
+#: templates/index.html:41
+msgid "How does it work ?"
+msgstr "它是如何工作的？"
+
+#: templates/index.html:47
+msgid "We take all the songs in your playlist."
+msgstr "我们会获取您播放列表中的所有歌曲。"
+
+#: templates/index.html:51
+msgid "Analyse them to get the genres."
+msgstr "分析它们以获取流派。"
+
+#: templates/index.html:55
+msgid "You select the one you want, and we create your brand-new playlist."
+msgstr "您选择您想要的，我们会为您创建全新的播放列表。"
+
+#: templates/index.html:61
+msgid "songs already analysed."
+msgstr "已分析的歌曲。"
+
+#: templates/index.html:66
+msgid "Totally free"
+msgstr "完全免费"
+
+#: templates/index.html:70
+msgid "Open source"
+msgstr "开源"
+
+#: templates/index.html:83
+msgid "Connect with your Spotify account to select the playlist you want to sort."
+msgstr "连接您的 Spotify 账户以选择您想要排序的播放列表。"
+
+#: templates/index.html:85
+msgid "You are one step away from decluttering all your Spotify playlist."
+msgstr "您离整理所有 Spotify 播放列表只差一步之遥。"
+
+#: templates/index.html:90
+msgid "Connect to Spotify"
+msgstr "连接到 Spotify"
+
+#: templates/index.html:96
+#, python-format
+msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
+msgstr "由 %(hugo)s 和 %(simon)s 制作，带有 &#10084;"
+
+#: templates/sort.html:13 templates/sort.html:32
+msgid "Loading..."
+msgstr "加载中..."
+
+#: templates/sort.html:35
+msgid "Fetching the genres of your music, please wait."
+msgstr "正在获取您音乐的流派，请稍候。"
+
+#: templates/sort.html:38
+msgid "Note that this can take up to 500 milliseconds per song to handle."
+msgstr "请注意，每首歌曲处理可能需要长达 500 毫秒。"
+

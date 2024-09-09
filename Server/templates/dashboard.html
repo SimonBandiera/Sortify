@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ locale() }}">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +10,7 @@
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
         <meta name="description" content="" />
         <meta name="keywords" content="" />
-        <title>Dashboard</title>
+        <title>{{ _('Dashboard') }}</title>
         <style>
             @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
@@ -25,7 +25,7 @@
             <div class="flex justify-between">
                 <div class="w-full flex items-center justify-left">
                     <a class="flex items-center text-white opacity-75 no-underline hover:no-underline font-bold pl-1 md:pl-0 text-5xl md:text-8xl">
-                        Dash<span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">board</span>
+                        {{ format_gradient(_('Dashboard'), [0, ["half"]]) }}
                     </a>
                 </div>
                 <div class="rounded-lg px-8 pt-14 mb-4">
@@ -33,13 +33,13 @@
                         <a
                             class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
                             href="/logout">
-                            <input type="button" value="Logout" />
+                            <input type="button" value="{{ _('Logout') }}" />
                         </a>
                     </div>
                 </div>
             </div>
             <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pl-1">
-                Start by choosing the playlist you want to sort by clicking on it.
+                {{ _('Start by choosing the playlist you want to sort by clicking on it.') }}
             </p>
         </div>
 
@@ -47,7 +47,7 @@
         <div class="container mx-auto h-90">
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 place-items-center pt-4">
                 {% if no_playlist %}
-                    <span>You have no playlist</span>
+                    <span>{{ _('You have no playlist') }}</span>
                 {% else %}
                     {% for item in user_playlist['items'] %}
                         {% if item['tracks']['total'] != 0 %}
@@ -77,7 +77,7 @@
                         <a
                             class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
                             href="/dashboard?pos=prev&c={{ (code + 1) % 2}}">
-                            <input type="button" value="Previous"/>
+                            <input type="button" value="{{ _('Previous') }}"/>
                         </a>
                     {% endif %}
                 </div>
@@ -86,7 +86,7 @@
                         <a
                             class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
                             href="/dashboard?pos=next&c={{ (code + 1) % 2}}">
-                            <input type="button" value="Next"/>
+                            <input type="button" value="{{ _('Next') }}"/>
                         </a>
                     {% endif %}
                 </div>

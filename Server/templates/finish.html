@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ locale() }}">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +10,7 @@
         <link rel="preload" href="../static/src/header.png" as="image">
         <meta name="description" content="" />
         <meta name="keywords" content="" />
-        <title>Finish</title>
+        <title>{{ _('Finish') }}</title>
         <style>
             @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
@@ -24,12 +24,10 @@
         <div class="pt-4 container mx-auto h-90">
             <div>
                 <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
-                    It's
-                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                    done!</span>
+                      {{ format_gradient(_('It\'s done!'), [-1]) }}
                 </h1>
                 <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pt-5 text-center md:text-left">
-                    You're playlist have been successfully created! You can go check it out by cliking on it.
+                    {{ _('You\'re playlist have been successfully created! You can go check it out by cliking on it.') }}
                 </p>
             </div>
             <div class="flex justify-center items-center pt-10 md:pt-15">
@@ -40,7 +38,7 @@
                             {{ info["name"] }}<br>
                         </p>
                         <p class="opacity-50">
-                            tracks : {{ info["tracks"]["total"] }}
+                            {{ _('tracks') }} : {{ info["tracks"]["total"] }}
                         </p>
                     </a>
                 </div>
@@ -50,7 +48,7 @@
                     <a
                         class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-3 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
                         href="/dashboard">
-                        <input type="button" value="Return to dashboard" />
+                        <input type="button" value="{{ _('Return to dashboard') }}" />
                     </a>
                 </div>
             </div>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ locale() }}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +11,7 @@
     <link rel="preload" href="../static/src/header.png" as="image">
     <meta name="description" content="" />
     <meta name="keywords" content="" />
-    <title>Create</title>
+    <title>{{ _('Create') }}</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
@@ -27,11 +26,10 @@
     <div class="h-screen container mx-auto relative w-full">
         <div class="pt-4 container mx-auto">
             <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
-                <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                    Last</span> step
+                  {{ format_gradient(_('Last Step'), [0]) }}
             </h1>
             <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pt-5 text-center md:text-left">
-                Choose the genres that you want to add to your new playlist by clicking on them.
+                {{ _('Choose the genres that you want to add to your new playlist by clicking on them.') }}
             </p>
         </div>
 
@@ -51,7 +49,7 @@
 
             <div class="rounded-lg h-full w-full grid grid-col grid-cols-2 gap-4">
                 <div class="flex h-full justify-center items-center bg-gray-800 bg-opacity-75 rounded-lg">
-                    <input type="text" id="idd" oninput="display_button()" maxlength="100" placeholder="Playlist name :"
+                    <input type="text" id="idd" oninput="display_button()" maxlength="100" placeholder="{{ _('Playlist name') }} :"
                         class="text-white text-sm font-bold sm:text-lg md:text-1xl lg:text-3xl text-center"
                         style="background: transparent; border: none; background-color: transparent; resize: none; outline: none;">
                 </div>
@@ -60,7 +58,7 @@
                         <form id="main_form" style="background: transparent; border: none; background-color: transparent; resize: none; outline: none;"></form>
                         <a id="submit_button"
                             class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out opacity-0">
-                            <button id="submit_button_inner" onclick="myfunction2()">Create your playlist</button>
+                            <button id="submit_button_inner" onclick="myfunction2()">{{ _('Create your playlist') }}</button>
                         </a>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ locale() }}">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,9 +10,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-        <title>Loading...</title>
+        <title>{{ _('Loading...') }}</title>
         <style>
             @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
@@ -31,14 +29,13 @@
         <div class="container mx-auto relative " style="height: 85vh;">
             <div class="pt-4">
                 <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-left">
-                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                    Load</span>ing...
+                      {{ format_gradient(_('Loading...'), [0, [0, 'half']]) }}
                 </h1>
                 <p class="text-white text-sm sm:text-lg md:text-1xl lg:text-2xl pt-5">
-                    Fetching the genres of your music, please wait.
+                    {{ _('Fetching the genres of your music, please wait.') }}
                 </p>
                 <p class="text-white text-sm md:text-md lg:text-lg text-opacity-30">
-                    Note that this can take up to 500 milliseconds per song to handle.
+                    {{ _('Note that this can take up to 500 milliseconds per song to handle.') }}
                 </p>
             </div>
 

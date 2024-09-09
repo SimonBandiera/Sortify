@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ locale() }}">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
     <style>
@@ -20,55 +20,54 @@
         </div>
         <div class="flex flex-col gap-20 h-1/3 font-medium">
             <h1 class="text-[9.37vw] text-white">
-                <span class="gradiant">Sort </span>
-                your playlists faster than a heart<span class="gradiant">beat</span>
+                {{ format_gradient(_('Sort your playlists faster than a heartbeat'), [0], [-1,["half"]]) }}
             </h1>
             <button class="flex gap-10 bg-white text-black rounded-3xl text-[4.68vw] w-fit px-6 py-6 justify-center items-center">
                 <span>
-                    Get started with Sortify
+                    {{ _('Get started with Sortify') }}
                 </span>
-                <img class="w-[7vw] h-[7vw]" src="{{ url_for('static', filename='src/arrowLeft.svg') }}" alt="arrow left">
+                <img class="w-[7vw] h-[7vw]" src="{{ url_for('static', filename='src/arrowLeft.svg') }}" alt="{{ _('Arrow left') }}">
             </button>
         </div>
         <div class=" h-1/3 flex justify-end items-end">
             <a class="up-down-motion" href="#how">
-                <img class=" w-[7vw] h-[7vw]" src="{{ url_for('static', filename='src/arrowDown.svg') }}" alt="arrow down">
+                <img class=" w-[7vw] h-[7vw]" src="{{ url_for('static', filename='src/arrowDown.svg') }}" alt={{ _('Arrow down') }}">
             </a>
         </div>
     </div>
     <div id="how" class="flex justify-center items-center h-[100dvh] bg-deep-black px-[4vw] py-[8vw] -mb-1">
         <div class="flex flex-col text-white font-medium text-[6.25vw] gap-10">
             <h2 class="px-6 mb-20">
-                How does it <span class="gradiant">work</span> ?
+                {{ format_gradient(_('How does it work ?'), [-2]) }}
             </h2>
             <div class="gradiant-bg rounded-3xl w-full p-1 text-[3.75vw]">
                 <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10">
                     <div class="flex gap-7 w-full">
                         <span>1.</span>
-                        <span>We take all the songs in your playlist.</span>
+                        <span>{{ _('We take all the songs in your playlist.') }}</span>
                     </div>
                     <div class="flex gap-7 w-full">
                         <span>2.</span>
-                        <span>Analyse them to get the genres.</span>
+                        <span>{{ _('Analyse them to get the genres.') }}</span>
                     </div>
                     <div class="flex gap-7 w-full">
                         <span>3.</span>
-                        <span>You select the one you want, and we create your brand-new playlist.</span>
+                        <span>{{ _('You select the one you want, and we create your brand-new playlist.') }}</span>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col gap-10 bg-black rounded-[20px] px-10 py-32 text-[3.75vw]">
                 <span class="text-[21.8vw] leading-none">+15k</span>
-                <span>songs already analysed.</span>
+                <span>{{ _('songs already analysed.') }}</span>
             </div>
             <div class="flex gap-10 text-[4.68vw]">
                 <div class="w-1/2 gradiant-bg rounded-3xl p-1">
                     <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10 justify-center items-center">
-                        <span>Totally free</span>
+                        <span>{{ _('Totally free') }}</span>
                     </div>
                 </div>
                 <div class="w-1/2 flex flex-col gap-10 bg-black rounded-[20px] px-10 justify-center items-center">
-                    <span>Open source</span>
+                    <span>{{ _('Open source') }}</span>
                 </div>
             </div>
         </div>
@@ -76,27 +75,25 @@
     <div id="start" class="relative flex flex-col items-center h-[100dvh] bg-deep-black border-b px-[4vw] py-[8vw]">
         <div class="flex flex-col text-white font-medium text-[6.25vw] gap-10">
             <h2 class="px-6 mb-20 mt-20">
-                Get started with <span class="gradiant">Sortify</span>
+                {{ format_gradient(_('Get started with Sortify'), [-1]) }}
             </h2>
             <div class="flex flex-col gap-40 bg-black rounded-[20px] px-10 py-32 text-[3.75vw]">
                 <div class="flex flex-col gap-10">
                     <span class="text-[4.68vw]">
-                        Connect with your Spotify account to select the playlist you want to sort.
+                        {{ _('Connect with your Spotify account to select the playlist you want to sort.') }}
                     </span>
-                    <span class="text-[3.75vw] opacity-60 w-3/5">You are one step away from decluttering all your Spotify playlist.</span>
+                    <span class="text-[3.75vw] opacity-60 w-3/5">{{ _('You are one step away from decluttering all your Spotify playlist.') }}</span>
                 </div>
                 <div>
                     <button class="w-full gradiant-bg rounded-3xl p-1">
                         <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10 justify-center items-center">
-                            <span class="text-[4.75vw] gradiant font-semibold">Connect to Spotify</span>
+                            <span class="text-[4.75vw] gradiant font-semibold">{{ _('Connect to Spotify') }}</span>
                         </div>
                     </button>
                 </div>
             </div>
             <h3 class="absolute bottom-20 left-1/2 -translate-x-1/2 text-center text-[3.75vw] min-w-full">
-                Made with &#10084; , by
-                <span class="underline gradiant">Hugo</span> and
-                <span class="underline gradiant">Simon</span>
+                 {{ _('Made with &#10084; , by %(hugo)s and %(simon)s', hugo=Markup('<span class="underline gradiant">Hugo</span>'), simon=Markup('<span class="underline gradiant">Simon</span>')) }}
             </h3>
         </div>
     </div>

@@ -1,0 +1,168 @@
+# Translations template for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: templates/create.html:14
+msgid "Create"
+msgstr ""
+
+#: templates/create.html:29
+msgid "Last Step"
+msgstr ""
+
+#: templates/create.html:32
+msgid ""
+"Choose the genres that you want to add to your new playlist by clicking "
+"on them."
+msgstr ""
+
+#: templates/create.html:52
+msgid "Playlist name"
+msgstr ""
+
+#: templates/create.html:61
+msgid "Create your playlist"
+msgstr ""
+
+#: templates/dashboard.html:13 templates/dashboard.html:28
+msgid "Dashboard"
+msgstr ""
+
+#: templates/dashboard.html:36
+msgid "Logout"
+msgstr ""
+
+#: templates/dashboard.html:42
+msgid "Start by choosing the playlist you want to sort by clicking on it."
+msgstr ""
+
+#: templates/dashboard.html:50
+msgid "You have no playlist"
+msgstr ""
+
+#: templates/dashboard.html:80
+msgid "Previous"
+msgstr ""
+
+#: templates/dashboard.html:89
+msgid "Next"
+msgstr ""
+
+#: templates/error.html:6
+msgid "ERROR"
+msgstr ""
+
+#: templates/error.html:9
+msgid "Error"
+msgstr ""
+
+#: templates/finish.html:13
+msgid "Finish"
+msgstr ""
+
+#: templates/finish.html:27
+msgid "It's done!"
+msgstr ""
+
+#: templates/finish.html:30
+msgid ""
+"You're playlist have been successfully created! You can go check it out "
+"by cliking on it."
+msgstr ""
+
+#: templates/finish.html:41
+msgid "tracks"
+msgstr ""
+
+#: templates/finish.html:51
+msgid "Return to dashboard"
+msgstr ""
+
+#: templates/index.html:23
+msgid "Sort your playlists faster than a heartbeat"
+msgstr ""
+
+#: templates/index.html:27 templates/index.html:78
+msgid "Get started with Sortify"
+msgstr ""
+
+#: templates/index.html:29
+msgid "Arrow left"
+msgstr ""
+
+#: templates/index.html:34
+msgid "Arrow down"
+msgstr ""
+
+#: templates/index.html:41
+msgid "How does it work ?"
+msgstr ""
+
+#: templates/index.html:47
+msgid "We take all the songs in your playlist."
+msgstr ""
+
+#: templates/index.html:51
+msgid "Analyse them to get the genres."
+msgstr ""
+
+#: templates/index.html:55
+msgid "You select the one you want, and we create your brand-new playlist."
+msgstr ""
+
+#: templates/index.html:61
+msgid "songs already analysed."
+msgstr ""
+
+#: templates/index.html:66
+msgid "Totally free"
+msgstr ""
+
+#: templates/index.html:70
+msgid "Open source"
+msgstr ""
+
+#: templates/index.html:83
+msgid "Connect with your Spotify account to select the playlist you want to sort."
+msgstr ""
+
+#: templates/index.html:85
+msgid "You are one step away from decluttering all your Spotify playlist."
+msgstr ""
+
+#: templates/index.html:90
+msgid "Connect to Spotify"
+msgstr ""
+
+#: templates/index.html:96
+#, python-format
+msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
+msgstr ""
+
+#: templates/sort.html:13 templates/sort.html:32
+msgid "Loading..."
+msgstr ""
+
+#: templates/sort.html:35
+msgid "Fetching the genres of your music, please wait."
+msgstr ""
+
+#: templates/sort.html:38
+msgid "Note that this can take up to 500 milliseconds per song to handle."
+msgstr ""
+

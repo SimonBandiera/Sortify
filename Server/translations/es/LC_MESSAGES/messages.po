@@ -1,0 +1,181 @@
+# Traducciones en español para PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# Este archivo se distribuye bajo la misma licencia que el proyecto PROJECT.
+# PRIMER AUTOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"PO-Revision-Date: 2024-09-09 01:30+0200\n"
+"Last-Translator: NOMBRE COMPLETO <EMAIL@ADDRESS>\n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: templates/create.html:14
+msgid "Create"
+msgstr "Crear"
+
+#: templates/create.html:29
+msgid "Last Step"
+msgstr "Último Paso"
+
+#: templates/create.html:32
+msgid ""
+"Choose the genres that you want to add to your new playlist by clicking "
+"on them."
+msgstr ""
+"Elige los géneros que deseas agregar a tu nueva lista de reproducción "
+"haciendo clic en ellos."
+
+#: templates/create.html:52
+msgid "Playlist name"
+msgstr "Nombre de la lista de reproducción"
+
+#: templates/create.html:61
+msgid "Create your playlist"
+msgstr "Crea tu lista de reproducción"
+
+#: templates/dashboard.html:13 templates/dashboard.html:28
+msgid "Dashboard"
+msgstr "Panel de control"
+
+#: templates/dashboard.html:36
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#: templates/dashboard.html:42
+msgid "Start by choosing the playlist you want to sort by clicking on it."
+msgstr ""
+"Comience seleccionando la lista de reproducción que desea ordenar "
+"haciendo clic en ella."
+
+#: templates/dashboard.html:50
+msgid "You have no playlist"
+msgstr "No tienes ninguna lista de reproducción"
+
+#: templates/dashboard.html:80
+msgid "Previous"
+msgstr "Anterior"
+
+#: templates/dashboard.html:89
+msgid "Next"
+msgstr "Siguiente"
+
+#: templates/error.html:6
+msgid "ERROR"
+msgstr "ERROR"
+
+#: templates/error.html:9
+msgid "Error"
+msgstr "Error"
+
+#: templates/finish.html:13
+msgid "Finish"
+msgstr "Finalizar"
+
+#: templates/finish.html:27
+msgid "It's done!"
+msgstr "¡Está listo!"
+
+#: templates/finish.html:30
+msgid ""
+"You're playlist have been successfully created! You can go check it out "
+"by cliking on it."
+msgstr ""
+"¡Tu lista de reproducción ha sido creada exitosamente! Puedes ir a "
+"revisarla haciendo clic en ella."
+
+#: templates/finish.html:41
+msgid "tracks"
+msgstr "pistas"
+
+#: templates/finish.html:51
+msgid "Return to dashboard"
+msgstr "Volver al panel de control"
+
+#: templates/index.html:23
+msgid "Sort your playlists faster than a heartbeat"
+msgstr "Ordena tus listas de reproducción más rápido que un latido"
+
+#: templates/index.html:27 templates/index.html:78
+msgid "Get started with Sortify"
+msgstr "Comienza con Sortify"
+
+#: templates/index.html:29
+msgid "Arrow left"
+msgstr "Flecha izquierda"
+
+#: templates/index.html:34
+msgid "Arrow down"
+msgstr "Flecha hacia abajo"
+
+#: templates/index.html:41
+msgid "How does it work ?"
+msgstr "¿Cómo funciona?"
+
+#: templates/index.html:47
+msgid "We take all the songs in your playlist."
+msgstr "Tomamos todas las canciones de tu lista de reproducción."
+
+#: templates/index.html:51
+msgid "Analyse them to get the genres."
+msgstr "Las analizamos para obtener los géneros."
+
+#: templates/index.html:55
+msgid "You select the one you want, and we create your brand-new playlist."
+msgstr "Seleccionas la que quieres y creamos tu nueva lista de reproducción."
+
+#: templates/index.html:61
+msgid "songs already analysed."
+msgstr "canciones ya analizadas."
+
+#: templates/index.html:66
+msgid "Totally free"
+msgstr "Totalmente gratis"
+
+#: templates/index.html:70
+msgid "Open source"
+msgstr "Código abierto"
+
+#: templates/index.html:83
+msgid "Connect with your Spotify account to select the playlist you want to sort."
+msgstr ""
+"Conéctate con tu cuenta de Spotify para seleccionar la lista de "
+"reproducción que deseas ordenar."
+
+#: templates/index.html:85
+msgid "You are one step away from decluttering all your Spotify playlist."
+msgstr ""
+"Estás a un paso de deshacerte de todas tus listas de reproducción de "
+"Spotify."
+
+#: templates/index.html:90
+msgid "Connect to Spotify"
+msgstr "Conectar a Spotify"
+
+#: templates/index.html:96
+#, python-format
+msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
+msgstr "Hecho con &#10084; , por %(hugo)s y %(simon)s"
+
+#: templates/sort.html:13 templates/sort.html:32
+msgid "Loading..."
+msgstr "Cargando..."
+
+#: templates/sort.html:35
+msgid "Fetching the genres of your music, please wait."
+msgstr "Obteniendo los géneros de tu música, por favor espera."
+
+#: templates/sort.html:38
+msgid "Note that this can take up to 500 milliseconds per song to handle."
+msgstr ""
+"Ten en cuenta que esto puede tomar hasta 500 milisegundos por canción "
+"para procesar."
+

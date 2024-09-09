@@ -1,0 +1,181 @@
+# PROJECT için Türkçe çeviriler.
+# Telif Hakkı (C) 2024 ORGANIZATION
+# Bu dosya, PROJECT projesi ile aynı lisans altında dağıtılmaktadır.
+# İLK YAZAR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"PO-Revision-Date: 2024-09-09 01:35+0200\n"
+"Last-Translator: TAM ADI <EMAIL@ADDRESS>\n"
+"Language: tr\n"
+"Language-Team: tr <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: templates/create.html:14
+msgid "Create"
+msgstr "Yaratmak"
+
+#: templates/create.html:29
+msgid "Last Step"
+msgstr "Son Adım"
+
+#: templates/create.html:32
+msgid ""
+"Choose the genres that you want to add to your new playlist by clicking "
+"on them."
+msgstr ""
+"Yeni çalma listene eklemek istediğiniz türleri seçmek için üzerlerine "
+"tıklayın."
+
+#: templates/create.html:52
+msgid "Playlist name"
+msgstr "Çalma listesi adı"
+
+#: templates/create.html:61
+msgid "Create your playlist"
+msgstr "Çalma listeni oluştur"
+
+#: templates/dashboard.html:13 templates/dashboard.html:28
+msgid "Dashboard"
+msgstr "Gösterge Paneli"
+
+#: templates/dashboard.html:36
+msgid "Logout"
+msgstr "Çıkış Yap"
+
+#: templates/dashboard.html:42
+msgid "Start by choosing the playlist you want to sort by clicking on it."
+msgstr ""
+"Sıralamak istediğiniz çalma listesini seçmek için üzerine tıklayarak "
+"başlayın."
+
+#: templates/dashboard.html:50
+msgid "You have no playlist"
+msgstr "Çalma listesiniz yok"
+
+#: templates/dashboard.html:80
+msgid "Previous"
+msgstr "Önceki"
+
+#: templates/dashboard.html:89
+msgid "Next"
+msgstr "Sonraki"
+
+#: templates/error.html:6
+msgid "ERROR"
+msgstr "HATA"
+
+#: templates/error.html:9
+msgid "Error"
+msgstr "Hata"
+
+#: templates/finish.html:13
+msgid "Finish"
+msgstr "Sona ermek"
+
+#: templates/finish.html:27
+msgid "It's done!"
+msgstr "İşlem tamamlandı!"
+
+#: templates/finish.html:30
+msgid ""
+"You're playlist have been successfully created! You can go check it out "
+"by cliking on it."
+msgstr ""
+"Çalma listeniz başarıyla oluşturuldu! İncelemek için üzerine "
+"tıklayabilirsiniz."
+
+#: templates/finish.html:41
+msgid "tracks"
+msgstr "parçalar"
+
+#: templates/finish.html:51
+msgid "Return to dashboard"
+msgstr "Gösterge paneline geri dön"
+
+#: templates/index.html:23
+msgid "Sort your playlists faster than a heartbeat"
+msgstr "Çalma listelerinizi kalp atışından daha hızlı sıralayın"
+
+#: templates/index.html:27 templates/index.html:78
+msgid "Get started with Sortify"
+msgstr "Sortify ile başlayın"
+
+#: templates/index.html:29
+msgid "Arrow left"
+msgstr "Sol ok"
+
+#: templates/index.html:34
+msgid "Arrow down"
+msgstr "Aşağı ok"
+
+#: templates/index.html:41
+msgid "How does it work ?"
+msgstr "Nasıl çalışır?"
+
+#: templates/index.html:47
+msgid "We take all the songs in your playlist."
+msgstr "Çalma listenizdeki tüm şarkıları alırız."
+
+#: templates/index.html:51
+msgid "Analyse them to get the genres."
+msgstr "Türleri elde etmek için onları analiz ederiz."
+
+#: templates/index.html:55
+msgid "You select the one you want, and we create your brand-new playlist."
+msgstr "İstediğinizi seçin ve size yeni bir çalma listesi oluşturuyoruz."
+
+#: templates/index.html:61
+msgid "songs already analysed."
+msgstr "zaten analiz edilen şarkılar."
+
+#: templates/index.html:66
+msgid "Totally free"
+msgstr "Tamamen ücretsiz"
+
+#: templates/index.html:70
+msgid "Open source"
+msgstr "Açık kaynak"
+
+#: templates/index.html:83
+msgid "Connect with your Spotify account to select the playlist you want to sort."
+msgstr ""
+"Sıralamak istediğiniz çalma listesini seçmek için Spotify hesabınıza "
+"bağlanın."
+
+#: templates/index.html:85
+msgid "You are one step away from decluttering all your Spotify playlist."
+msgstr ""
+"Tüm Spotify çalma listelerinizi düzenlemek için bir adımınızda "
+"bulunuyorsunuz."
+
+#: templates/index.html:90
+msgid "Connect to Spotify"
+msgstr "Spotify'ye bağlan"
+
+#: templates/index.html:96
+#, python-format
+msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
+msgstr "&#10084; ile yapıldı, %(hugo)s ve %(simon)s tarafından"
+
+#: templates/sort.html:13 templates/sort.html:32
+msgid "Loading..."
+msgstr "Yükleniyor..."
+
+#: templates/sort.html:35
+msgid "Fetching the genres of your music, please wait."
+msgstr "Müzik türlerinizi getiriyoruz, lütfen bekleyin."
+
+#: templates/sort.html:38
+msgid "Note that this can take up to 500 milliseconds per song to handle."
+msgstr ""
+"Bu, her şarkı için işlenmesi için 500 milisaniye kadar sürebileceğini "
+"unutmayın."
+

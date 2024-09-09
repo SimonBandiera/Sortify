@@ -6,7 +6,9 @@ import urllib
 from queue import Queue
 from threading import Thread
 
-from flask import Flask, render_template, request, redirect, make_response
+from flask import Flask, render_template, request, redirect, g, make_response
+from flask_babel import Babel
+from markupsafe import Markup
 from flask_socketio import SocketIO
 from api.spotify.api import get_access_token, get_user_playlist, create_playlist
 from api.spotify.key import ClientID
@@ -16,7 +18,60 @@ users_by_id = {}
 users_by_session = {}
 actual = {}
 
+
+LNGS = os.listdir("./translations")
+print(LNGS)
+def get_locale():
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.locale
+    return request.accept_languages.best_match(LNGS)
+
+def get_timezone():
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.timezone
+
+def format_gradient(string, *args):
+    try:
+        if len(args) == 0:
+            return string
+        splitted = string.split()
+        length = len(splitted)
+        string_formated = ""
+        args_index = 0
+        current_args = args[args_index][0]
+        if current_args == "half":
+            current_args = (length + 1)// 2
+        for i in range(length):
+            if splitted[i] == splitted[current_args]:
+                if len(args[args_index]) == 1:
+                    string_formated += Markup(f'<span class="gradiant">{splitted[i]}</span>')
+                else:
+                    length_index = len(splitted[i])
+                    a1 =  (length_index + 1) // 2 if args[args_index][1][0] == "half" else args[args_index][1][0]
+                    if len(args[args_index][1]) == 1:
+                        a2 = length_index + 1
+                    else:
+                        a2 = (length_index + 1) // 2 if args[args_index][1][1] == "half" else args[args_index][1][1]
+                    string_formated += Markup(f'{splitted[i][:a1]}<span class="gradiant">{splitted[i][a1:a2]}</span>{splitted[i][a2:]}')
+                args_index += 1
+                if args_index == len(args):
+                    string_formated += " " + " ".join(splitted[i + 1:])
+                    return string_formated
+                current_args = args[args_index][0]
+                if current_args == "half":
+                    current_args = (length + 1) // 2
+            else:
+                string_formated += splitted[i]
+            if i < length - 1:
+                string_formated += ' '
+    except Exception as e:
+        return string
+    return string
 app = Flask(__name__)
+app.jinja_env.globals.update(format_gradient=format_gradient, Markup=Markup, locale=get_locale)
+babel = Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
 socketio = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
 
 BASE_URL=os.environ.get('BASE_URL')

@@ -1,0 +1,178 @@
+# Terjemahan Indonesian untuk PROJECT.
+# Hak Cipta (C) 2024 ORGANIZATION
+# File ini didistribusikan di bawah lisensi yang sama dengan proyek PROJECT.
+# PENERJEMAH PERTAMA <EMAIL@ADDRESS>, 2024.
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"PO-Revision-Date: 2024-09-09 01:36+0200\n"
+"Last-Translator: NAMA LENGKAP <EMAIL@ADDRESS>\n"
+"Language: id\n"
+"Language-Team: id <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: templates/create.html:14
+msgid "Create"
+msgstr "Membuat"
+
+#: templates/create.html:29
+msgid "Last Step"
+msgstr "Langkah Terakhir"
+
+#: templates/create.html:32
+msgid ""
+"Choose the genres that you want to add to your new playlist by clicking "
+"on them."
+msgstr ""
+"Pilih genre yang ingin Anda tambahkan ke playlist baru Anda dengan "
+"mengklik pada mereka."
+
+#: templates/create.html:52
+msgid "Playlist name"
+msgstr "Nama playlist"
+
+#: templates/create.html:61
+msgid "Create your playlist"
+msgstr "Buat playlist Anda"
+
+#: templates/dashboard.html:13 templates/dashboard.html:28
+msgid "Dashboard"
+msgstr "Dasbor"
+
+#: templates/dashboard.html:36
+msgid "Logout"
+msgstr "Keluar"
+
+#: templates/dashboard.html:42
+msgid "Start by choosing the playlist you want to sort by clicking on it."
+msgstr ""
+"Mulailah dengan memilih playlist yang ingin Anda urutkan dengan mengklik "
+"pada itu."
+
+#: templates/dashboard.html:50
+msgid "You have no playlist"
+msgstr "Anda tidak memiliki playlist"
+
+#: templates/dashboard.html:80
+msgid "Previous"
+msgstr "Sebelumnya"
+
+#: templates/dashboard.html:89
+msgid "Next"
+msgstr "Berikutnya"
+
+#: templates/error.html:6
+msgid "ERROR"
+msgstr "KESALAHAN"
+
+#: templates/error.html:9
+msgid "Error"
+msgstr "Kesalahan"
+
+#: templates/finish.html:13
+msgid "Finish"
+msgstr "Menyelesaikan"
+
+#: templates/finish.html:27
+msgid "It's done!"
+msgstr "Selesai!"
+
+#: templates/finish.html:30
+msgid ""
+"You're playlist have been successfully created! You can go check it out "
+"by cliking on it."
+msgstr ""
+"Playlist Anda telah berhasil dibuat! Anda dapat pergi untuk memeriksanya "
+"dengan mengklik pada itu."
+
+#: templates/finish.html:41
+msgid "tracks"
+msgstr "lagu"
+
+#: templates/finish.html:51
+msgid "Return to dashboard"
+msgstr "Kembali ke dasbor"
+
+#: templates/index.html:23
+msgid "Sort your playlists faster than a heartbeat"
+msgstr "Urutkan playlist Anda lebih cepat daripada detak jantung"
+
+#: templates/index.html:27 templates/index.html:78
+msgid "Get started with Sortify"
+msgstr "Mulai dengan Sortify"
+
+#: templates/index.html:29
+msgid "Arrow left"
+msgstr "Panah kiri"
+
+#: templates/index.html:34
+msgid "Arrow down"
+msgstr "Panah bawah"
+
+#: templates/index.html:41
+msgid "How does it work ?"
+msgstr "Bagaimana cara kerjanya?"
+
+#: templates/index.html:47
+msgid "We take all the songs in your playlist."
+msgstr "Kami mengambil semua lagu di playlist Anda."
+
+#: templates/index.html:51
+msgid "Analyse them to get the genres."
+msgstr "Kami analisis untuk mendapatkan genre-genre."
+
+#: templates/index.html:55
+msgid "You select the one you want, and we create your brand-new playlist."
+msgstr "Anda memilih yang Anda inginkan, dan kami akan membuat playlist baru Anda."
+
+#: templates/index.html:61
+msgid "songs already analysed."
+msgstr "lagu sudah dianalisis."
+
+#: templates/index.html:66
+msgid "Totally free"
+msgstr "Seluruhnya gratis"
+
+#: templates/index.html:70
+msgid "Open source"
+msgstr "Sumber terbuka"
+
+#: templates/index.html:83
+msgid "Connect with your Spotify account to select the playlist you want to sort."
+msgstr ""
+"Hubungkan dengan akun Spotify Anda untuk memilih playlist yang ingin Anda"
+" urutkan."
+
+#: templates/index.html:85
+msgid "You are one step away from decluttering all your Spotify playlist."
+msgstr "Anda hanya satu langkah dari menyusun ulang semua playlist Spotify Anda."
+
+#: templates/index.html:90
+msgid "Connect to Spotify"
+msgstr "Hubungkan ke Spotify"
+
+#: templates/index.html:96
+#, python-format
+msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
+msgstr "Dibuat dengan &#10084; , oleh %(hugo)s dan %(simon)s"
+
+#: templates/sort.html:13 templates/sort.html:32
+msgid "Loading..."
+msgstr "Memuat..."
+
+#: templates/sort.html:35
+msgid "Fetching the genres of your music, please wait."
+msgstr "Mengambil genre musik Anda, silakan tunggu."
+
+#: templates/sort.html:38
+msgid "Note that this can take up to 500 milliseconds per song to handle."
+msgstr ""
+"Perhatikan bahwa ini dapat memakan waktu hingga 500 milidetik per lagu "
+"untuk ditangani."
+
