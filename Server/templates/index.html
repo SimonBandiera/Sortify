@@ -13,35 +13,55 @@
     </style>
 </head>
 
+<script defer>
+    document.addEventListener("DOMContentLoaded", function(){
+        const observer = new IntersectionObserver(entries => {
+            // We will fill in the callback later...
+            entries.forEach(entry => {
+                // If the element is visible
+                if (entry.isIntersecting) {
+                    // Add the animation class
+                    console.log("here")
+                    entry.target.classList.add('count-animation');
+                }
+            });
+        });
+
+        // Tell the observer which elements to track
+        observer.observe(document.querySelector('.tracking'));
+    });
+</script>
+
 <body>
-    <div id="home" class="image-bg flex flex-col h-[100dvh] w-screen p-[7.23vw] -mb-1">
-        <div class="h-1/3 py-40">
-            <img class="w-[8vw] h-[8vw]" src="{{ url_for('static', filename='src/icon.png') }}">
-        </div>
-        <div class="flex flex-col gap-20 h-1/3 font-medium">
-            <h1 class="text-[9.37vw] text-white">
-                {{ format_gradient(_('Sort your playlists faster than a heartbeat'), [0], [-1,["half"]]) }}
-            </h1>
-            <button class="flex gap-10 bg-white text-black rounded-3xl text-[4.68vw] w-fit px-6 py-6 justify-center items-center">
-                <span>
-                    {{ _('Get started with Sortify') }}
-                </span>
-                <img class="w-[7vw] h-[7vw]" src="{{ url_for('static', filename='src/arrowLeft.svg') }}" alt="{{ _('Arrow left') }}">
-            </button>
-        </div>
-        <div class=" h-1/3 flex justify-end items-end">
-            <a class="up-down-motion" href="#how">
-                <img class=" w-[7vw] h-[7vw]" src="{{ url_for('static', filename='src/arrowDown.svg') }}" alt={{ _('Arrow down') }}">
-            </a>
-        </div>
+<div id="home" class="image-bg flex flex-col h-[100dvh] w-screen p-[7.23vw] -mb-1">
+    <div class="h-1/3 py-20 lg:py-0">
+        <img class="w-[8vw] md:w-[6vw] lg:w-[4vw] h-[8vw] md:h-[6vw] lg:h-[4vw]" src="../static/src/icon.png">
     </div>
-    <div id="how" class="flex justify-center items-center h-[100dvh] bg-deep-black px-[4vw] py-[8vw] -mb-1">
-        <div class="flex flex-col text-white font-medium text-[6.25vw] gap-10">
-            <h2 class="px-6 mb-20">
-                {{ format_gradient(_('How does it work ?'), [-2]) }}
-            </h2>
-            <div class="gradiant-bg rounded-3xl w-full p-1 text-[3.75vw]">
-                <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10">
+    <div class="flex flex-col gap-20 h-1/3 font-medium">
+        <h1 class="text-[9.37vw] md:text-[7vw] lg:text-[5.2vw] text-white">
+            {{ format_gradient(_('Sort your playlists faster than a heartbeat'), [0], [-1,["half"]]) }}
+        </h1>
+        <button class="z-10 hover:scale-[101%] transition ease-in-out flex gap-10 bg-white text-black rounded-3xl lg:rounded-xl text-[4.68vw] md:text-[3vw] lg:text-[1.7vw] w-fit p-6 lg:py-3 lg:px-6 md:py-4 justify-center items-center">
+            <span>
+                {{ _('Get started with Sortify') }}
+            </span>
+            <img class="w-[7vw] md:w-[5vw] lg:w-[3vw] h-[7vw] md:h-[5vw] lg:h-[3vw]" src="../static/src/arrowLeft.svg" alt="arrow left">
+        </button>
+    </div>
+    <div class=" h-1/3 flex justify-end items-end">
+        <a class="up-down-motion" href="#how">
+            <img class="w-[7vw] md:w-[5vw] lg:w-[3vw] h-[7vw] md:h-[5vw] lg:h-[3vw]" src="../static/src/arrowDown.svg" alt="arrow down">
+        </a>
+    </div>
+</div>
+<div id="how" class="flex justify-center items-center min-h-[100dvh] lg:h-[100vh] bg-deep-black px-[4vw] py-[8vw] -mb-1">
+    <div class="lg:px-6 md:px-4 flex flex-col text-white font-medium text-[6.25vw] md:text-[4.2vw] lg:text-[3.47vw] gap-10">
+        <h2 class="px-6 lg:px-0 mb-20">
+            {{ format_gradient(_('How does it work ?'), [-2]) }}
+        </h2>
+        <div class="flex flex-col lg:flex-row gap-10">
+            <div class="gradiant-bg rounded-3xl w-full p-[1px] text-[3.75vw] md:text-[2.7vw] lg:text-[2.4vw] lg:w-[55%]">
+                <div class="flex flex-col gap-10 bg-black rounded-[23px] p-10 h-full lg:justify-center lg:items-center">
                     <div class="flex gap-7 w-full">
                         <span>1.</span>
                         <span>{{ _('We take all the songs in your playlist.') }}</span>
@@ -56,47 +76,58 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col gap-10 bg-black rounded-[20px] px-10 py-32 text-[3.75vw]">
-                <span class="text-[21.8vw] leading-none">+15k</span>
+            <div class="flex flex-col justify-center gap-10 bg-black rounded-[20px] px-10 py-32 text-[3.75vw] md:text-[2.7vw] lg:text-[2.41vw] lg:w-[45%]">
+                <span class="flex text-[21.8vw] md:text-[10vw] lg:text-[7.41vw] leading-none">
+                    <span>
+                        +
+                    </span>
+                    <span class="tracking leading-none">
+                    </span>
+                    <span>
+                        k
+                    </span>
+                </span>
                 <span>{{ _('songs already analysed.') }}</span>
             </div>
-            <div class="flex gap-10 text-[4.68vw]">
-                <div class="w-1/2 gradiant-bg rounded-3xl p-1">
-                    <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10 justify-center items-center">
-                        <span>{{ _('Totally free') }}</span>
-                    </div>
-                </div>
-                <div class="w-1/2 flex flex-col gap-10 bg-black rounded-[20px] px-10 justify-center items-center">
-                    <span>{{ _('Open source') }}</span>
+        </div>
+        <div class="flex lg:flex-row-reverse gap-10 text-[4.68vw] md:text-[3vw] lg:text-[2.4vw]">
+            <div class="w-1/2 gradiant-bg rounded-3xl p-[1px]">
+                <div class="flex flex-col gap-10 bg-black rounded-[23px] p-10 justify-center items-center">
+                    <span class="text-center">{{ _('Totally free') }}</span>
                 </div>
             </div>
+            <a href="https://github.com/SimonBandiera/Sortify" class="hover:underline  w-1/2 underline md:no-underline flex gap-0 md:gap-4 bg-black rounded-[20px] px-10 justify-center items-center">
+                <span class="text-center">{{ _('Open source') }}</span>
+                <img class="hidden md:block w-[5vw] lg:w-[3vw] h-[5vw] lg:h-[3vw]" src="../static/src/redirect.svg">
+            </a>
         </div>
     </div>
-    <div id="start" class="relative flex flex-col items-center h-[100dvh] bg-deep-black border-b px-[4vw] py-[8vw]">
-        <div class="flex flex-col text-white font-medium text-[6.25vw] gap-10">
-            <h2 class="px-6 mb-20 mt-20">
-                {{ format_gradient(_('Get started with Sortify'), [-1]) }}
-            </h2>
-            <div class="flex flex-col gap-40 bg-black rounded-[20px] px-10 py-32 text-[3.75vw]">
-                <div class="flex flex-col gap-10">
-                    <span class="text-[4.68vw]">
-                        {{ _('Connect with your Spotify account to select the playlist you want to sort.') }}
+</div>
+<div id="start" class="relative flex flex-col justify-center items-center min-h-[100dvh] bg-deep-black border-b px-[4vw] py-[8vw] lg:py-[4vw]">
+    <div class="lg:px-6 flex flex-col text-white font-medium text-[6.25vw] md:text-[4.2vw] lg:text-[3.47vw] gap-10 lg:gap-10">
+        <h2 class="px-6 lg:px-0 mb-20 mt-20 md:mt-0 md:mb-12 lg:mt-0 lg:mb-10">
+            {{ format_gradient(_('Get started with Sortify'), [-1]) }}
+        </h2>
+        <div class="flex flex-col gap-40 md:gap-14 lg:gap-20 bg-black rounded-[20px] px-10 py-32 text-[3.75vw] md:text-[2.7vw] lg:text-[2.4vw]">
+            <div class="flex flex-col gap-10">
+                    <span class="text-[4.68vw] md:text-[3.4vw] lg:text-[2.89vw]">
+                            {{ _('Connect with your Spotify account to select the playlist you want to sort.') }}
                     </span>
-                    <span class="text-[3.75vw] opacity-60 w-3/5">{{ _('You are one step away from decluttering all your Spotify playlist.') }}</span>
-                </div>
-                <div>
-                    <button class="w-full gradiant-bg rounded-3xl p-1">
-                        <div class="flex flex-col gap-10 bg-black rounded-[20px] p-10 justify-center items-center">
-                            <span class="text-[4.75vw] gradiant font-semibold">{{ _('Connect to Spotify') }}</span>
-                        </div>
-                    </button>
-                </div>
+                <span class="text-[3.75vw] md:text-[2.4vw] lg:text-[1.7vw] opacity-60 w-3/5">{{ _('You are one step away from decluttering all your Spotify playlist.') }}</span>
             </div>
-            <h3 class="absolute bottom-20 left-1/2 -translate-x-1/2 text-center text-[3.75vw] min-w-full">
-                 {{ _('Made with &#10084; , by %(hugo)s and %(simon)s', hugo=Markup('<span class="underline gradiant">Hugo</span>'), simon=Markup('<span class="underline gradiant">Simon</span>')) }}
-            </h3>
+            <div class="flex w-full justify-center">
+                <button class="w-full gradiant-bg rounded-3xl p-[1px] md:w-2/3 lg:w-2/3 hover:scale-[101%] transition ease-in-out">
+                    <div class="flex flex-col gap-10 bg-black rounded-[23px] p-10 md:p-6 lg:p-4 justify-center items-center">
+                        <span class="text-[4.75vw] md:text-[3.2vw] lg:text-[2.3vw] gradiant font-semibold">{{ _('Connect to Spotify') }}</span>
+                    </div>
+                </button>
+            </div>
         </div>
+        <h3 class="text-center text-[3.75vw] md:text-[2vw] lg:text-[1.4vw] md:bottom-10 lg:bottom-10 min-w-full">
+            {{ _('Made with &#10084; , by %(hugo)s and %(simon)s', hugo=Markup('<a href="https://hgalan.dev" class="gradiant border-b lg:border-b-0 lg:hover:border-b border-white">Hugo</a>'), simon=Markup('<a href="https://sbandiera.dev" class="gradiant border-b lg:border-b-0 lg:hover:border-b border-white">Simon</a>')) }}
+        </h3>
     </div>
+</div>
 </body>
 
 <style>
@@ -115,10 +146,44 @@
 
     @keyframes test {
         50% {
-            margin-bottom: 5%;
+            margin-bottom: 1%;
         }
         100% {
             margin-bottom: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        @keyframes test {
+            50% {
+                margin-bottom: 5%;
+            }
+            100% {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    @property --num {
+        syntax: "<integer>";
+        initial-value: 0;
+        inherits: false;
+    }
+
+    .count-animation {
+        animation: counter 1.5s ease-in forwards;
+        counter-reset: num var(--num);
+    }
+    .count-animation::after {
+        content: counter(num);
+    }
+
+    @keyframes counter {
+        from {
+            --num: 0;
+        }
+        to {
+            --num: 15;
         }
     }
 </style>
