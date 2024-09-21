@@ -124,8 +124,8 @@ msgstr ""
 "Sortify, Spotify-Playlist-Sorter, Playlist-Organizer, Playlists nach Genre sortieren, Spotify-Playlists organisieren, Musik-Playlist-Management, Spotify-Tool, kostenloser Playlist-Sorter, Open-Source-Playlist-Tool, Spotify aufräumen, Playlist-Analyzer, Spotify-Genres, Musikkategorisierung, neue Playlists erstellen, Lieder schneller sortieren, Playlist-Sortier-App"
 
 #: templates/index.html:74
-msgid "Sort your playlists faster than a heartbeat"
-msgstr "Sortieren Sie Ihre Playlists schneller als ein Herzschlag"
+msgid "Sort your playlists faster %(break)s than a heartbeat"
+msgstr "Sortieren Sie Ihre Playlists %(break)s schneller als ein Herzschlag"
 
 #: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"

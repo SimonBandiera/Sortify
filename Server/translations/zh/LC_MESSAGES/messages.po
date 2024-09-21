@@ -119,8 +119,8 @@ msgstr ""
 
 
 #: templates/index.html:74
-msgid "Sort your playlists faster than a heartbeat"
-msgstr "比心跳更快地整理您的播放列表"
+msgid "Sort your playlists faster %(break)s than a heartbeat"
+msgstr "比心跳更快地整 %(break)s 理您的播放列表"
 
 #: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
