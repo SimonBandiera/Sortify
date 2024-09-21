@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"POT-Creation-Date: 2024-09-21 19:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,63 +93,75 @@ msgstr ""
 msgid "Return to dashboard"
 msgstr ""
 
-#: templates/index.html:23
+#: templates/index.html:16 templates/index.html:17 templates/index.html:26
+#: templates/index.html:33
+msgid "Sortify - Sort Your Playlists Faster than a Heartbeat"
+msgstr ""
+
+#: templates/index.html:19 templates/index.html:28 templates/index.html:35
+msgid ""
+"Sortify lets you quickly organize your Spotify playlists by analyzing and"
+" categorizing songs by genre. It’s totally free and open-source."
+msgstr ""
+
+#: templates/index.html:21
+msgid ""
+"Sortify, Spotify playlist sorter, playlist organizer, sort playlists by "
+"genre, organize Spotify playlists, music playlist management, Spotify "
+"tool, free playlist sorter, open-source playlist tool, Spotify declutter,"
+" playlist analyzer, Spotify genres, music categorization, create new "
+"playlists, sort songs faster, playlist sorting app"
+msgstr ""
+
+#: templates/index.html:74
 msgid "Sort your playlists faster than a heartbeat"
 msgstr ""
 
-#: templates/index.html:27 templates/index.html:78
+#: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
 msgstr ""
 
-#: templates/index.html:29
-msgid "Arrow left"
-msgstr ""
-
-#: templates/index.html:34
-msgid "Arrow down"
-msgstr ""
-
-#: templates/index.html:41
+#: templates/index.html:97
 msgid "How does it work ?"
 msgstr ""
 
-#: templates/index.html:47
+#: templates/index.html:104
 msgid "We take all the songs in your playlist."
 msgstr ""
 
-#: templates/index.html:51
+#: templates/index.html:108
 msgid "Analyse them to get the genres."
 msgstr ""
 
-#: templates/index.html:55
+#: templates/index.html:112
 msgid "You select the one you want, and we create your brand-new playlist."
 msgstr ""
 
-#: templates/index.html:61
+#: templates/index.html:128
 msgid "songs already analysed."
 msgstr ""
 
-#: templates/index.html:66
+#: templates/index.html:134
 msgid "Totally free"
 msgstr ""
 
-#: templates/index.html:70
+#: templates/index.html:139
 msgid "Open source"
 msgstr ""
 
-#: templates/index.html:83
+#: templates/index.html:156
 msgid "Connect with your Spotify account to select the playlist you want to sort."
 msgstr ""
 
-#: templates/index.html:85
+#: templates/index.html:159
 msgid "You are one step away from decluttering all your Spotify playlist."
 msgstr ""
 
-#: templates/index.html:90
+#: templates/index.html:166
 msgid "Connect to Spotify"
 msgstr ""
 
-#: templates/index.html:96
+#: templates/index.html:172
 #, python-format
 msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"POT-Creation-Date: 2024-09-21 19:24+0100\n"
 "PO-Revision-Date: 2024-09-09 01:37+0200\n"
 "Last-Translator: TÊN ĐẦY ĐỦ <EMAIL@ADDRESS>\n"
 "Language: vi\n"
@@ -100,69 +100,85 @@ msgstr "bài hát"
 msgid "Return to dashboard"
 msgstr "Quay lại bảng điều khiển"
 
-#: templates/index.html:23
+#: templates/index.html:16 templates/index.html:17 templates/index.html:26
+#: templates/index.html:33
+#, fuzzy
+msgid "Sortify - Sort Your Playlists Faster than a Heartbeat"
+msgstr "Sắp xếp danh sách phát của bạn nhanh hơn một nhịp tim"
+
+#: templates/index.html:19 templates/index.html:28 templates/index.html:35
+msgid ""
+"Sortify lets you quickly organize your Spotify playlists by analyzing and"
+" categorizing songs by genre. It’s totally free and open-source."
+msgstr ""
+"Sortify giúp bạn nhanh chóng tổ chức danh sách phát của Spotify bằng cách phân tích và phân loại bài hát theo thể loại. Nó hoàn toàn miễn phí và mã nguồn mở."
+
+#: templates/index.html:21
+msgid ""
+"Sortify, Spotify playlist sorter, playlist organizer, sort playlists by "
+"genre, organize Spotify playlists, music playlist management, Spotify "
+"tool, free playlist sorter, open-source playlist tool, Spotify declutter,"
+" playlist analyzer, Spotify genres, music categorization, create new "
+"playlists, sort songs faster, playlist sorting app"
+msgstr ""
+"Sortify, trình sắp xếp danh sách phát Spotify, trình tổ chức danh sách phát, sắp xếp danh sách phát theo thể loại, tổ chức danh sách phát Spotify, quản lý danh sách phát nhạc, công cụ Spotify, trình sắp xếp danh sách phát miễn phí, công cụ danh sách phát mã nguồn mở, dọn dẹp Spotify, trình phân tích danh sách phát, thể loại Spotify, phân loại âm nhạc, tạo danh sách phát mới, sắp xếp bài hát nhan
+
+
+#: templates/index.html:74
 msgid "Sort your playlists faster than a heartbeat"
 msgstr "Sắp xếp danh sách phát của bạn nhanh hơn một nhịp tim"
 
-#: templates/index.html:27 templates/index.html:78
+#: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
 msgstr "Bắt đầu với Sortify"
 
-#: templates/index.html:29
-msgid "Arrow left"
-msgstr "Mũi tên trái"
-
-#: templates/index.html:34
-msgid "Arrow down"
-msgstr "Mũi tên xuống"
-
-#: templates/index.html:41
+#: templates/index.html:97
 msgid "How does it work ?"
 msgstr "Nó hoạt động như thế nào?"
 
-#: templates/index.html:47
+#: templates/index.html:104
 msgid "We take all the songs in your playlist."
 msgstr "Chúng tôi lấy tất cả các bài hát trong danh sách phát của bạn."
 
-#: templates/index.html:51
+#: templates/index.html:108
 msgid "Analyse them to get the genres."
 msgstr "Phân tích chúng để có được các thể loại."
 
-#: templates/index.html:55
+#: templates/index.html:112
 msgid "You select the one you want, and we create your brand-new playlist."
 msgstr ""
 "Bạn chọn một thể loại mà bạn muốn, và chúng tôi sẽ tạo danh sách phát mới"
 " cho bạn."
 
-#: templates/index.html:61
+#: templates/index.html:128
 msgid "songs already analysed."
 msgstr "bài hát đã được phân tích."
 
-#: templates/index.html:66
+#: templates/index.html:134
 msgid "Totally free"
 msgstr "Tổng cộng miễn phí"
 
-#: templates/index.html:70
+#: templates/index.html:139
 msgid "Open source"
 msgstr "Mã nguồn mở"
 
-#: templates/index.html:83
+#: templates/index.html:156
 msgid "Connect with your Spotify account to select the playlist you want to sort."
 msgstr ""
 "Kết nối với tài khoản Spotify của bạn để chọn danh sách phát bạn muốn sắp"
 " xếp."
 
-#: templates/index.html:85
+#: templates/index.html:159
 msgid "You are one step away from decluttering all your Spotify playlist."
 msgstr ""
 "Bạn chỉ còn một bước nữa để làm sạch tất cả danh sách phát Spotify của "
 "bạn."
 
-#: templates/index.html:90
+#: templates/index.html:166
 msgid "Connect to Spotify"
 msgstr "Kết nối với Spotify"
 
-#: templates/index.html:96
+#: templates/index.html:172
 #, python-format
 msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
 msgstr "Được tạo bằng &#10084; , bởi %(hugo)s và %(simon)s"
@@ -178,4 +194,10 @@ msgstr "Đang lấy các thể loại của âm nhạc của bạn, vui lòng ch
 #: templates/sort.html:38
 msgid "Note that this can take up to 500 milliseconds per song to handle."
 msgstr "Lưu ý rằng việc xử lý mỗi bài hát có thể mất từ 500 mili giây trở lên."
+
+#~ msgid "Arrow left"
+#~ msgstr "Mũi tên trái"
+
+#~ msgid "Arrow down"
+#~ msgstr "Mũi tên xuống"
 

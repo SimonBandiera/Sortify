@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"POT-Creation-Date: 2024-09-21 19:24+0100\n"
 "PO-Revision-Date: 2024-09-09 01:32+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -100,69 +100,84 @@ msgstr "Titel"
 msgid "Return to dashboard"
 msgstr "Zurück zum Dashboard"
 
-#: templates/index.html:23
+#: templates/index.html:16 templates/index.html:17 templates/index.html:26
+#: templates/index.html:33
+#, fuzzy
+msgid "Sortify - Sort Your Playlists Faster than a Heartbeat"
+msgstr "Sortieren Sie Ihre Playlists schneller als ein Herzschlag"
+
+#: templates/index.html:19 templates/index.html:28 templates/index.html:35
+msgid ""
+"Sortify lets you quickly organize your Spotify playlists by analyzing and"
+" categorizing songs by genre. It’s totally free and open-source."
+msgstr ""
+"Sortify ermöglicht es Ihnen, Ihre Spotify-Playlists schnell zu organisieren, indem es Lieder nach Genre analysiert und kategorisiert. Es ist völlig kostenlos und Open-Source."
+
+#: templates/index.html:21
+msgid ""
+"Sortify, Spotify playlist sorter, playlist organizer, sort playlists by "
+"genre, organize Spotify playlists, music playlist management, Spotify "
+"tool, free playlist sorter, open-source playlist tool, Spotify declutter,"
+" playlist analyzer, Spotify genres, music categorization, create new "
+"playlists, sort songs faster, playlist sorting app"
+msgstr ""
+"Sortify, Spotify-Playlist-Sorter, Playlist-Organizer, Playlists nach Genre sortieren, Spotify-Playlists organisieren, Musik-Playlist-Management, Spotify-Tool, kostenloser Playlist-Sorter, Open-Source-Playlist-Tool, Spotify aufräumen, Playlist-Analyzer, Spotify-Genres, Musikkategorisierung, neue Playlists erstellen, Lieder schneller sortieren, Playlist-Sortier-App"
+
+#: templates/index.html:74
 msgid "Sort your playlists faster than a heartbeat"
 msgstr "Sortieren Sie Ihre Playlists schneller als ein Herzschlag"
 
-#: templates/index.html:27 templates/index.html:78
+#: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
 msgstr "Beginnen Sie mit Sortify"
 
-#: templates/index.html:29
-msgid "Arrow left"
-msgstr "Pfeil nach links"
-
-#: templates/index.html:34
-msgid "Arrow down"
-msgstr "Pfeil nach unten"
-
-#: templates/index.html:41
+#: templates/index.html:97
 msgid "How does it work ?"
 msgstr "Wie funktioniert es?"
 
-#: templates/index.html:47
+#: templates/index.html:104
 msgid "We take all the songs in your playlist."
 msgstr "Wir nehmen alle Lieder in Ihrer Playlist."
 
-#: templates/index.html:51
+#: templates/index.html:108
 msgid "Analyse them to get the genres."
 msgstr "Wir analysieren sie, um die Genres zu erhalten."
 
-#: templates/index.html:55
+#: templates/index.html:112
 msgid "You select the one you want, and we create your brand-new playlist."
 msgstr ""
 "Sie wählen die aus, die Sie möchten, und wir erstellen Ihre brandneue "
 "Playlist."
 
-#: templates/index.html:61
+#: templates/index.html:128
 msgid "songs already analysed."
 msgstr "lieder bereits analysiert."
 
-#: templates/index.html:66
+#: templates/index.html:134
 msgid "Totally free"
 msgstr "Völlig kostenlos"
 
-#: templates/index.html:70
+#: templates/index.html:139
 msgid "Open source"
 msgstr "Open Source"
 
-#: templates/index.html:83
+#: templates/index.html:156
 msgid "Connect with your Spotify account to select the playlist you want to sort."
 msgstr ""
 "Verbinden Sie sich mit Ihrem Spotify-Konto, um die Playlist auszuwählen, "
 "die Sie sortieren möchten."
 
-#: templates/index.html:85
+#: templates/index.html:159
 msgid "You are one step away from decluttering all your Spotify playlist."
 msgstr ""
 "Sie sind nur einen Schritt von der Aufbereitung aller Ihrer Spotify-"
 "Playlists entfernt."
 
-#: templates/index.html:90
+#: templates/index.html:166
 msgid "Connect to Spotify"
 msgstr "Mit Spotify verbinden"
 
-#: templates/index.html:96
+#: templates/index.html:172
 #, python-format
 msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
 msgstr "Gemacht mit &#10084; , von %(hugo)s und %(simon)s"
@@ -178,4 +193,10 @@ msgstr "Laden der Genres Ihrer Musik, bitte warten."
 #: templates/sort.html:38
 msgid "Note that this can take up to 500 milliseconds per song to handle."
 msgstr "Beachten Sie, dass dies pro Lied bis zu 500 Millisekunden dauern kann."
+
+#~ msgid "Arrow left"
+#~ msgstr "Pfeil nach links"
+
+#~ msgid "Arrow down"
+#~ msgstr "Pfeil nach unten"
 

@@ -1,4 +1,6 @@
 import os
+from http.client import HTTPException
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -6,7 +8,8 @@ import urllib
 from queue import Queue
 from threading import Thread
 
-from flask import Flask, render_template, request, redirect, g, make_response
+from flask import Flask, render_template, request, redirect, g, make_response, send_from_directory, abort
+import flask_babel
 from flask_babel import Babel
 from markupsafe import Markup
 from flask_socketio import SocketIO
@@ -20,7 +23,6 @@ actual = {}
 
 
 LNGS = os.listdir("./translations")
-print(LNGS)
 def get_locale():
     user = getattr(g, 'user', None)
     if user is not None:
@@ -92,21 +94,6 @@ def sort_starting(data):
     user = get_user_by_session(data["id"])
     user.playlists[data["playlist_id"]].start_websocket = True
     return
-
-
-@app.route('/')
-def index():
-    user_id = request.cookies.get("id")
-    if not id_valid(user_id):
-        user = User()
-        response = make_response(render_template("index.html", client_id=ClientID,
-                                                 base_url=urllib.parse.quote(BASE_URL, safe='')))
-        response.set_cookie("id", value=user.id)
-        return response
-    if have_access_token(user_id):
-        return redirect(BASE_URL + "/dashboard")
-    return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
-
 
 @app.route("/spotify/callback", methods=['POST', 'GET'])
 def callback_spotify():
@@ -206,28 +193,34 @@ def logout():
     users_by_id.pop(user.id, None)
     return redirect(BASE_URL + "/")
 
+@app.route('/robots.txt')
+@app.route('/sitemap.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
+@app.route('/')
+@app.route('/<lng>')
+def index(lng = None):
+    if lng is not None and lng not in LNGS:
+        abort(404)
+
+    user_id = request.cookies.get("id")
+    if not id_valid(user_id):
+        user = User()
+        response = make_response(render_template("index.html", client_id=ClientID,
+                                                 base_url=urllib.parse.quote(BASE_URL, safe='')))
+        response.set_cookie("id", value=user.id)
+        return response
+    if have_access_token(user_id):
+        return redirect(BASE_URL + "/dashboard")
+    if lng is None:
+        return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
+    with flask_babel.force_locale(lng):
+        return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
+
 @app.errorhandler(404)
 def notfound(e):
     return render_template("error.html", error="404 there is nothing there."), 404
 
-
-def convert_bytes(num):
-    """
-    this function will convert bytes to MB.... GB... etc
-    """
-    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
-        if num < 1024.0:
-            return "%3.1f %s" % (num, x)
-        num /= 1024.0
-
-
-@app.route("/admin/<admin_id>")
-def admin(admin_id):
-    if admin_id == "dc32ff7c9c3c5e0a99cf50c77833b276656768cf52e91f44de92645296e00beb":
-        size = convert_bytes(os.path.getsize("db/tags_database.db"))
-        nbr_pre_parse = len(get_all())
-        return render_template("admin.html", len_pre_parse=nbr_pre_parse, size=size)
-    return 404
 
 if __name__ == '__main__':
     socketio.run(app)

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"POT-Creation-Date: 2024-09-21 19:24+0100\n"
 "PO-Revision-Date: 2024-09-09 01:36+0200\n"
 "Last-Translator: NAMA LENGKAP <EMAIL@ADDRESS>\n"
 "Language: id\n"
@@ -99,65 +99,81 @@ msgstr "lagu"
 msgid "Return to dashboard"
 msgstr "Kembali ke dasbor"
 
-#: templates/index.html:23
+#: templates/index.html:16 templates/index.html:17 templates/index.html:26
+#: templates/index.html:33
+#, fuzzy
+msgid "Sortify - Sort Your Playlists Faster than a Heartbeat"
+msgstr "Urutkan playlist Anda lebih cepat daripada detak jantung"
+
+#: templates/index.html:19 templates/index.html:28 templates/index.html:35
+msgid ""
+"Sortify lets you quickly organize your Spotify playlists by analyzing and"
+" categorizing songs by genre. It’s totally free and open-source."
+msgstr ""
+"Sortify memungkinkan Anda untuk dengan cepat mengorganisir playlist Spotify Anda dengan menganalisis dan mengkategorikan lagu berdasarkan genre. Ini benar-benar gratis dan open-source."
+
+#: templates/index.html:21
+msgid ""
+"Sortify, Spotify playlist sorter, playlist organizer, sort playlists by "
+"genre, organize Spotify playlists, music playlist management, Spotify "
+"tool, free playlist sorter, open-source playlist tool, Spotify declutter,"
+" playlist analyzer, Spotify genres, music categorization, create new "
+"playlists, sort songs faster, playlist sorting app"
+msgstr ""
+"Sortify, pengurut playlist Spotify, pengorganisir playlist, urutkan playlist berdasarkan genre, organisasi playlist Spotify, manajemen playlist musik, alat Spotify, pengurut playlist gratis, alat playlist open-source, membersihkan Spotify, analisis playlist, genre Spotify, kategorisasi musik, buat playlist baru, urutkan lagu lebih cepat, aplikasi pengurutan playlist"
+
+
+#: templates/index.html:74
 msgid "Sort your playlists faster than a heartbeat"
 msgstr "Urutkan playlist Anda lebih cepat daripada detak jantung"
 
-#: templates/index.html:27 templates/index.html:78
+#: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
 msgstr "Mulai dengan Sortify"
 
-#: templates/index.html:29
-msgid "Arrow left"
-msgstr "Panah kiri"
-
-#: templates/index.html:34
-msgid "Arrow down"
-msgstr "Panah bawah"
-
-#: templates/index.html:41
+#: templates/index.html:97
 msgid "How does it work ?"
 msgstr "Bagaimana cara kerjanya?"
 
-#: templates/index.html:47
+#: templates/index.html:104
 msgid "We take all the songs in your playlist."
 msgstr "Kami mengambil semua lagu di playlist Anda."
 
-#: templates/index.html:51
+#: templates/index.html:108
 msgid "Analyse them to get the genres."
 msgstr "Kami analisis untuk mendapatkan genre-genre."
 
-#: templates/index.html:55
+#: templates/index.html:112
 msgid "You select the one you want, and we create your brand-new playlist."
 msgstr "Anda memilih yang Anda inginkan, dan kami akan membuat playlist baru Anda."
 
-#: templates/index.html:61
+#: templates/index.html:128
 msgid "songs already analysed."
 msgstr "lagu sudah dianalisis."
 
-#: templates/index.html:66
+#: templates/index.html:134
 msgid "Totally free"
 msgstr "Seluruhnya gratis"
 
-#: templates/index.html:70
+#: templates/index.html:139
 msgid "Open source"
 msgstr "Sumber terbuka"
 
-#: templates/index.html:83
+#: templates/index.html:156
 msgid "Connect with your Spotify account to select the playlist you want to sort."
 msgstr ""
 "Hubungkan dengan akun Spotify Anda untuk memilih playlist yang ingin Anda"
 " urutkan."
 
-#: templates/index.html:85
+#: templates/index.html:159
 msgid "You are one step away from decluttering all your Spotify playlist."
 msgstr "Anda hanya satu langkah dari menyusun ulang semua playlist Spotify Anda."
 
-#: templates/index.html:90
+#: templates/index.html:166
 msgid "Connect to Spotify"
 msgstr "Hubungkan ke Spotify"
 
-#: templates/index.html:96
+#: templates/index.html:172
 #, python-format
 msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
 msgstr "Dibuat dengan &#10084; , oleh %(hugo)s dan %(simon)s"
@@ -175,4 +191,10 @@ msgid "Note that this can take up to 500 milliseconds per song to handle."
 msgstr ""
 "Perhatikan bahwa ini dapat memakan waktu hingga 500 milidetik per lagu "
 "untuk ditangani."
+
+#~ msgid "Arrow left"
+#~ msgstr "Panah kiri"
+
+#~ msgid "Arrow down"
+#~ msgstr "Panah bawah"
 

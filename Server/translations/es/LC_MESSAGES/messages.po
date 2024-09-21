@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"POT-Creation-Date: 2024-09-21 19:24+0100\n"
 "PO-Revision-Date: 2024-09-09 01:30+0200\n"
 "Last-Translator: NOMBRE COMPLETO <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -100,67 +100,83 @@ msgstr "pistas"
 msgid "Return to dashboard"
 msgstr "Volver al panel de control"
 
-#: templates/index.html:23
+#: templates/index.html:16 templates/index.html:17 templates/index.html:26
+#: templates/index.html:33
+#, fuzzy
+msgid "Sortify - Sort Your Playlists Faster than a Heartbeat"
+msgstr "Ordena tus listas de reproducción más rápido que un latido"
+
+#: templates/index.html:19 templates/index.html:28 templates/index.html:35
+msgid ""
+"Sortify lets you quickly organize your Spotify playlists by analyzing and"
+" categorizing songs by genre. It’s totally free and open-source."
+msgstr ""
+"Sortify te permite organizar rápidamente tus listas de reproducción de Spotify analizando y categorizando canciones por género. Es totalmente gratuito y de código abierto."
+
+#: templates/index.html:21
+msgid ""
+"Sortify, Spotify playlist sorter, playlist organizer, sort playlists by "
+"genre, organize Spotify playlists, music playlist management, Spotify "
+"tool, free playlist sorter, open-source playlist tool, Spotify declutter,"
+" playlist analyzer, Spotify genres, music categorization, create new "
+"playlists, sort songs faster, playlist sorting app"
+msgstr ""
+"Sortify, ordenador de listas de reproducción de Spotify, organizador de listas de reproducción, ordenar listas de reproducción por género, organizar listas de reproducción de Spotify, gestión de listas de reproducción de música, herramienta de Spotify, ordenador de listas de reproducción gratuito, herramienta de listas de reproducción de código abierto, desordenar Spotify, analizador de listas de reproducción, géneros de Spotify, categorización de música, crear nuevas listas de reproducción, ordenar canciones más rápido, aplicación de ordenación de listas de reproducción"
+
+
+#: templates/index.html:74
 msgid "Sort your playlists faster than a heartbeat"
 msgstr "Ordena tus listas de reproducción más rápido que un latido"
 
-#: templates/index.html:27 templates/index.html:78
+#: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
 msgstr "Comienza con Sortify"
 
-#: templates/index.html:29
-msgid "Arrow left"
-msgstr "Flecha izquierda"
-
-#: templates/index.html:34
-msgid "Arrow down"
-msgstr "Flecha hacia abajo"
-
-#: templates/index.html:41
+#: templates/index.html:97
 msgid "How does it work ?"
 msgstr "¿Cómo funciona?"
 
-#: templates/index.html:47
+#: templates/index.html:104
 msgid "We take all the songs in your playlist."
 msgstr "Tomamos todas las canciones de tu lista de reproducción."
 
-#: templates/index.html:51
+#: templates/index.html:108
 msgid "Analyse them to get the genres."
 msgstr "Las analizamos para obtener los géneros."
 
-#: templates/index.html:55
+#: templates/index.html:112
 msgid "You select the one you want, and we create your brand-new playlist."
 msgstr "Seleccionas la que quieres y creamos tu nueva lista de reproducción."
 
-#: templates/index.html:61
+#: templates/index.html:128
 msgid "songs already analysed."
 msgstr "canciones ya analizadas."
 
-#: templates/index.html:66
+#: templates/index.html:134
 msgid "Totally free"
 msgstr "Totalmente gratis"
 
-#: templates/index.html:70
+#: templates/index.html:139
 msgid "Open source"
 msgstr "Código abierto"
 
-#: templates/index.html:83
+#: templates/index.html:156
 msgid "Connect with your Spotify account to select the playlist you want to sort."
 msgstr ""
 "Conéctate con tu cuenta de Spotify para seleccionar la lista de "
 "reproducción que deseas ordenar."
 
-#: templates/index.html:85
+#: templates/index.html:159
 msgid "You are one step away from decluttering all your Spotify playlist."
 msgstr ""
 "Estás a un paso de deshacerte de todas tus listas de reproducción de "
 "Spotify."
 
-#: templates/index.html:90
+#: templates/index.html:166
 msgid "Connect to Spotify"
 msgstr "Conectar a Spotify"
 
-#: templates/index.html:96
+#: templates/index.html:172
 #, python-format
 msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
 msgstr "Hecho con &#10084; , por %(hugo)s y %(simon)s"
@@ -178,4 +194,10 @@ msgid "Note that this can take up to 500 milliseconds per song to handle."
 msgstr ""
 "Ten en cuenta que esto puede tomar hasta 500 milisegundos por canción "
 "para procesar."
+
+#~ msgid "Arrow left"
+#~ msgstr "Flecha izquierda"
+
+#~ msgid "Arrow down"
+#~ msgstr "Flecha hacia abajo"
 

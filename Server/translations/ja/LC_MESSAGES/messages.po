@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"POT-Creation-Date: 2024-09-21 19:24+0100\n"
 "PO-Revision-Date: 2024-09-09 01:33+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ja\n"
@@ -94,63 +94,79 @@ msgstr "トラック"
 msgid "Return to dashboard"
 msgstr "ダッシュボードに戻る"
 
-#: templates/index.html:23
+#: templates/index.html:16 templates/index.html:17 templates/index.html:26
+#: templates/index.html:33
+#, fuzzy
+msgid "Sortify - Sort Your Playlists Faster than a Heartbeat"
+msgstr "心臓の鼓動よりも早くプレイリストをソートする"
+
+#: templates/index.html:19 templates/index.html:28 templates/index.html:35
+msgid ""
+"Sortify lets you quickly organize your Spotify playlists by analyzing and"
+" categorizing songs by genre. It’s totally free and open-source."
+msgstr ""
+"Sortifyは、曲をジャンル別に分析し分類することで、Spotifyのプレイリストを迅速に整理することができます。完全に無料でオープンソースです。"
+
+#: templates/index.html:21
+msgid ""
+"Sortify, Spotify playlist sorter, playlist organizer, sort playlists by "
+"genre, organize Spotify playlists, music playlist management, Spotify "
+"tool, free playlist sorter, open-source playlist tool, Spotify declutter,"
+" playlist analyzer, Spotify genres, music categorization, create new "
+"playlists, sort songs faster, playlist sorting app"
+msgstr ""
+"Sortify、Spotifyプレイリストソーター、プレイリストオーガナイザー、ジャンル別にプレイリストをソート、Spotifyプレイリストを整理、音楽プレイリスト管理、Spotifyツール、無料プレイリストソーター、オープンソースプレイリストツール、Spotifyの整理、プレイリストアナライザー、Spotifyジャンル、音楽分類、新しいプレイリストを作成、曲をもっと速くソート、プレイリストソートアプリ"
+
+
+#: templates/index.html:74
 msgid "Sort your playlists faster than a heartbeat"
 msgstr "心臓の鼓動よりも早くプレイリストをソートする"
 
-#: templates/index.html:27 templates/index.html:78
+#: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
 msgstr "Sortifyを始める"
 
-#: templates/index.html:29
-msgid "Arrow left"
-msgstr "左矢印"
-
-#: templates/index.html:34
-msgid "Arrow down"
-msgstr "下矢印"
-
-#: templates/index.html:41
+#: templates/index.html:97
 msgid "How does it work ?"
 msgstr "どのように動作しますか？"
 
-#: templates/index.html:47
+#: templates/index.html:104
 msgid "We take all the songs in your playlist."
 msgstr "プレイリスト内のすべての曲を取得します。"
 
-#: templates/index.html:51
+#: templates/index.html:108
 msgid "Analyse them to get the genres."
 msgstr "ジャンルを取得するために分析します。"
 
-#: templates/index.html:55
+#: templates/index.html:112
 msgid "You select the one you want, and we create your brand-new playlist."
 msgstr "選択したジャンルに基づいて、新しいプレイリストを作成します。"
 
-#: templates/index.html:61
+#: templates/index.html:128
 msgid "songs already analysed."
 msgstr "既に分析された曲。"
 
-#: templates/index.html:66
+#: templates/index.html:134
 msgid "Totally free"
 msgstr "完全無料"
 
-#: templates/index.html:70
+#: templates/index.html:139
 msgid "Open source"
 msgstr "オープンソース"
 
-#: templates/index.html:83
+#: templates/index.html:156
 msgid "Connect with your Spotify account to select the playlist you want to sort."
 msgstr "ソートしたいプレイリストを選択するためにSpotifyアカウントに接続してください。"
 
-#: templates/index.html:85
+#: templates/index.html:159
 msgid "You are one step away from decluttering all your Spotify playlist."
 msgstr "Spotifyのプレイリストを整理するために1ステップだけです。"
 
-#: templates/index.html:90
+#: templates/index.html:166
 msgid "Connect to Spotify"
 msgstr "Spotifyに接続する"
 
-#: templates/index.html:96
+#: templates/index.html:172
 #, python-format
 msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
 msgstr "&#10084; で作成されました、%(hugo)sと%(simon)sによる"
@@ -166,4 +182,10 @@ msgstr "音楽のジャンルを取得中です。しばらくお待ちくださ
 #: templates/sort.html:38
 msgid "Note that this can take up to 500 milliseconds per song to handle."
 msgstr "注意: 1曲あたり500ミリ秒かかる場合があります。"
+
+#~ msgid "Arrow left"
+#~ msgstr "左矢印"
+
+#~ msgid "Arrow down"
+#~ msgstr "下矢印"
 

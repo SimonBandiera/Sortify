@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"POT-Creation-Date: 2024-09-21 19:24+0100\n"
 "PO-Revision-Date: 2024-09-09 01:35+0200\n"
 "Last-Translator: TAM ADI <EMAIL@ADDRESS>\n"
 "Language: tr\n"
@@ -100,67 +100,83 @@ msgstr "parçalar"
 msgid "Return to dashboard"
 msgstr "Gösterge paneline geri dön"
 
-#: templates/index.html:23
+#: templates/index.html:16 templates/index.html:17 templates/index.html:26
+#: templates/index.html:33
+#, fuzzy
+msgid "Sortify - Sort Your Playlists Faster than a Heartbeat"
+msgstr "Çalma listelerinizi kalp atışından daha hızlı sıralayın"
+
+#: templates/index.html:19 templates/index.html:28 templates/index.html:35
+msgid ""
+"Sortify lets you quickly organize your Spotify playlists by analyzing and"
+" categorizing songs by genre. It’s totally free and open-source."
+msgstr ""
+"Sortify, şarkıları türüne göre analiz ederek ve kategorize ederek Spotify çalma listelerinizi hızlı bir şekilde düzenlemenizi sağlar. Tamamen ücretsiz ve açık kaynaklıdır."
+
+#: templates/index.html:21
+msgid ""
+"Sortify, Spotify playlist sorter, playlist organizer, sort playlists by "
+"genre, organize Spotify playlists, music playlist management, Spotify "
+"tool, free playlist sorter, open-source playlist tool, Spotify declutter,"
+" playlist analyzer, Spotify genres, music categorization, create new "
+"playlists, sort songs faster, playlist sorting app"
+msgstr ""
+"Sortify, Spotify çalma listesi sıralayıcı, çalma listesi organizatörü, türüne göre çalma listelerini sırala, Spotify çalma listelerini düzenle, müzik çalma listesi yönetimi, Spotify araç, ücretsiz çalma listesi sıralayıcı, açık kaynak çalma listesi araç, Spotify düzenle, çalma listesi analizörü, Spotify türleri, müzik kategorizasyonu, yeni çalma listeleri oluştur, şarkıları daha hızlı sırala, çalma listesi sıralama uygulaması"
+
+
+#: templates/index.html:74
 msgid "Sort your playlists faster than a heartbeat"
 msgstr "Çalma listelerinizi kalp atışından daha hızlı sıralayın"
 
-#: templates/index.html:27 templates/index.html:78
+#: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
 msgstr "Sortify ile başlayın"
 
-#: templates/index.html:29
-msgid "Arrow left"
-msgstr "Sol ok"
-
-#: templates/index.html:34
-msgid "Arrow down"
-msgstr "Aşağı ok"
-
-#: templates/index.html:41
+#: templates/index.html:97
 msgid "How does it work ?"
 msgstr "Nasıl çalışır?"
 
-#: templates/index.html:47
+#: templates/index.html:104
 msgid "We take all the songs in your playlist."
 msgstr "Çalma listenizdeki tüm şarkıları alırız."
 
-#: templates/index.html:51
+#: templates/index.html:108
 msgid "Analyse them to get the genres."
 msgstr "Türleri elde etmek için onları analiz ederiz."
 
-#: templates/index.html:55
+#: templates/index.html:112
 msgid "You select the one you want, and we create your brand-new playlist."
 msgstr "İstediğinizi seçin ve size yeni bir çalma listesi oluşturuyoruz."
 
-#: templates/index.html:61
+#: templates/index.html:128
 msgid "songs already analysed."
 msgstr "zaten analiz edilen şarkılar."
 
-#: templates/index.html:66
+#: templates/index.html:134
 msgid "Totally free"
 msgstr "Tamamen ücretsiz"
 
-#: templates/index.html:70
+#: templates/index.html:139
 msgid "Open source"
 msgstr "Açık kaynak"
 
-#: templates/index.html:83
+#: templates/index.html:156
 msgid "Connect with your Spotify account to select the playlist you want to sort."
 msgstr ""
 "Sıralamak istediğiniz çalma listesini seçmek için Spotify hesabınıza "
 "bağlanın."
 
-#: templates/index.html:85
+#: templates/index.html:159
 msgid "You are one step away from decluttering all your Spotify playlist."
 msgstr ""
 "Tüm Spotify çalma listelerinizi düzenlemek için bir adımınızda "
 "bulunuyorsunuz."
 
-#: templates/index.html:90
+#: templates/index.html:166
 msgid "Connect to Spotify"
 msgstr "Spotify'ye bağlan"
 
-#: templates/index.html:96
+#: templates/index.html:172
 #, python-format
 msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
 msgstr "&#10084; ile yapıldı, %(hugo)s ve %(simon)s tarafından"
@@ -178,4 +194,10 @@ msgid "Note that this can take up to 500 milliseconds per song to handle."
 msgstr ""
 "Bu, her şarkı için işlenmesi için 500 milisaniye kadar sürebileceğini "
 "unutmayın."
+
+#~ msgid "Arrow left"
+#~ msgstr "Sol ok"
+
+#~ msgid "Arrow down"
+#~ msgstr "Aşağı ok"
 

@@ -7,8 +7,8 @@
     <meta id="playlist_id" data-playlist="{{ playlist_id }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/style.css') }}">
     <script src="{{ url_for('static', filename='js/create.js') }}" defer></script>
-    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon.png') }}">
-    <link rel="preload" href="../static/src/header.png" as="image">
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon_144.png') }}">
+    <link rel="preload" href="../static/src/header.webp" as="image">
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <title>{{ _('Create') }}</title>
@@ -22,7 +22,7 @@
 </head>
 
 <body class="m-6 bg-cover bg-fixed text-white md:overflow-hidden"
-    style="background-image : url('../static/src/header.png')">
+    style="background-image : url('../static/src/header.webp')">
     <div class="h-screen container mx-auto relative w-full">
         <div class="pt-4 container mx-auto">
             <h1 class="my-4 text-5xl md:text-8xl text-white opacity-75 font-bold leading-tight text-center md:text-left">

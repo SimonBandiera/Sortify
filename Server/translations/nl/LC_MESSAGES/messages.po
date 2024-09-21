@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-09 02:07+0200\n"
+"POT-Creation-Date: 2024-09-21 19:24+0100\n"
 "PO-Revision-Date: 2024-09-09 01:35+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: nl\n"
@@ -100,67 +100,83 @@ msgstr "nummers"
 msgid "Return to dashboard"
 msgstr "Terug naar dashboard"
 
-#: templates/index.html:23
+#: templates/index.html:16 templates/index.html:17 templates/index.html:26
+#: templates/index.html:33
+#, fuzzy
+msgid "Sortify - Sort Your Playlists Faster than a Heartbeat"
+msgstr "Sorteer uw afspeellijsten sneller dan een hartslag"
+
+#: templates/index.html:19 templates/index.html:28 templates/index.html:35
+msgid ""
+"Sortify lets you quickly organize your Spotify playlists by analyzing and"
+" categorizing songs by genre. It’s totally free and open-source."
+msgstr ""
+"Sortify laat je snel je Spotify-afspeellijsten organiseren door liedjes te analyseren en te categoriseren op genre. Het is volledig gratis en open-source."
+
+#: templates/index.html:21
+msgid ""
+"Sortify, Spotify playlist sorter, playlist organizer, sort playlists by "
+"genre, organize Spotify playlists, music playlist management, Spotify "
+"tool, free playlist sorter, open-source playlist tool, Spotify declutter,"
+" playlist analyzer, Spotify genres, music categorization, create new "
+"playlists, sort songs faster, playlist sorting app"
+msgstr ""
+"Sortify, Spotify-afspeellijstsorter, afspeellijstorganizer, afspeellijsten sorteren op genre, Spotify-afspeellijsten organiseren, muziekafspeellijstbeheer, Spotify-tool, gratis afspeellijstsorter, open-source afspeellijsttool, Spotify opruimen, afspeellijstanalyzer, Spotify-genres, muziekcategorisatie, nieuwe afspeellijsten maken, liedjes sneller sorteren, afspeellijstsorteringsapp"
+
+
+#: templates/index.html:74
 msgid "Sort your playlists faster than a heartbeat"
 msgstr "Sorteer uw afspeellijsten sneller dan een hartslag"
 
-#: templates/index.html:27 templates/index.html:78
+#: templates/index.html:79 templates/index.html:150
 msgid "Get started with Sortify"
 msgstr "Begin met Sortify"
 
-#: templates/index.html:29
-msgid "Arrow left"
-msgstr "Pijl links"
-
-#: templates/index.html:34
-msgid "Arrow down"
-msgstr "Pijl omlaag"
-
-#: templates/index.html:41
+#: templates/index.html:97
 msgid "How does it work ?"
 msgstr "Hoe werkt het?"
 
-#: templates/index.html:47
+#: templates/index.html:104
 msgid "We take all the songs in your playlist."
 msgstr "We nemen alle nummers in uw afspeellijst."
 
-#: templates/index.html:51
+#: templates/index.html:108
 msgid "Analyse them to get the genres."
 msgstr "Analyseren om de genres te krijgen."
 
-#: templates/index.html:55
+#: templates/index.html:112
 msgid "You select the one you want, and we create your brand-new playlist."
 msgstr "U selecteert de gewenste en wij maken uw nieuwe afspeellijst."
 
-#: templates/index.html:61
+#: templates/index.html:128
 msgid "songs already analysed."
 msgstr "nummers al geanalyseerd."
 
-#: templates/index.html:66
+#: templates/index.html:134
 msgid "Totally free"
 msgstr "Totaal gratis"
 
-#: templates/index.html:70
+#: templates/index.html:139
 msgid "Open source"
 msgstr "Open source"
 
-#: templates/index.html:83
+#: templates/index.html:156
 msgid "Connect with your Spotify account to select the playlist you want to sort."
 msgstr ""
 "Verbind met uw Spotify-account om de afspeellijst te selecteren die u "
 "wilt sorteren."
 
-#: templates/index.html:85
+#: templates/index.html:159
 msgid "You are one step away from decluttering all your Spotify playlist."
 msgstr ""
 "U bent één stap verwijderd van het opruimen van al uw Spotify-"
 "afspeellijsten."
 
-#: templates/index.html:90
+#: templates/index.html:166
 msgid "Connect to Spotify"
 msgstr "Verbind met Spotify"
 
-#: templates/index.html:96
+#: templates/index.html:172
 #, python-format
 msgid "Made with &#10084; , by %(hugo)s and %(simon)s"
 msgstr "Gemaakt met &#10084; , door %(hugo)s en %(simon)s"
@@ -176,4 +192,10 @@ msgstr "De genres van uw muziek ophalen, even geduld."
 #: templates/sort.html:38
 msgid "Note that this can take up to 500 milliseconds per song to handle."
 msgstr "Let op: dit kan per nummer tot 500 milliseconden duren om te verwerken."
+
+#~ msgid "Arrow left"
+#~ msgstr "Pijl links"
+
+#~ msgid "Arrow down"
+#~ msgstr "Pijl omlaag"
 
