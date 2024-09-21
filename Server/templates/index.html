@@ -2,6 +2,8 @@
 
 <html lang="{{ locale() }}">
 <head>
+  <link rel="canonical" href="https://sortify.com/{{ locale() }}">
+  <link rel="canonical" href="https://www.sortify.com/{{ locale() }}">
   <link rel="canonical" href="https://sortify.com/">
   <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='src/icon_144.png') }}">
 
@@ -49,12 +51,8 @@
 <script defer>
     document.addEventListener("DOMContentLoaded", function () {
         const observer = new IntersectionObserver(entries => {
-            // We will fill in the callback later...
             entries.forEach(entry => {
-                // If the element is visible
                 if (entry.isIntersecting) {
-                    // Add the animation class
-                    console.log("here")
                     entry.target.classList.add('count-animation');
                 }
             });

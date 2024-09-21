@@ -1,5 +1,4 @@
 import os
-from http.client import HTTPException
 
 from dotenv import load_dotenv
 
@@ -200,7 +199,7 @@ def static_from_root():
 @app.route('/')
 @app.route('/<lng>')
 def index(lng = None):
-    if lng is not None and lng not in LNGS:
+    if lng is not None and lng not in LNGS + ["en"]:
         abort(404)
 
     user_id = request.cookies.get("id")
