@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 
-Sitemap: https://www.sortify.fr/sitemap.xml
+Sitemap: https://www.sortify.fr/sitemap.txt
