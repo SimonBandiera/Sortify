@@ -132,6 +132,7 @@
         </div>
       </div>
       <a href="https://github.com/SimonBandiera/Sortify"
+         target="_blank"
          class="hover:underline  w-1/2 underline md:no-underline flex gap-0 md:gap-4 bg-black rounded-[20px] px-10 justify-center items-center">
         <span class="text-center">{{ _('Open source') }}</span>
         <img class="hidden md:block w-[5vw] lg:w-[3vw] h-[5vw] lg:h-[3vw]" src="{{ url_for('static', filename='src/redirect.svg') }}">
@@ -166,7 +167,7 @@
       </div>
     </div>
     <h3 class="text-center text-[3.75vw] md:text-[2vw] lg:text-[1.4vw] md:bottom-10 lg:bottom-10 min-w-full">
-      {{ _('Made with &#10084; , by %(hugo)s and %(simon)s', hugo=Markup('<a href="https://hgalan.dev" class="gradiant border-b lg:border-b-0 lg:hover:border-b border-white">Hugo</a>'), simon=Markup('<a href="https://sbandiera.dev" class="gradiant border-b lg:border-b-0 lg:hover:border-b border-white">Simon</a>')) }}
+      {{ _('Made with &#10084; , by %(hugo)s and %(simon)s', hugo=Markup('<a href="https://hgalan.dev" target="_blank" class="gradiant border-b lg:border-b-0 lg:hover:border-b border-white">Hugo</a>'), simon=Markup('<a href="https://sbandiera.dev" target="_blank" class="gradiant border-b lg:border-b-0 lg:hover:border-b border-white">Simon</a>')) }}
     </h3>
   </div>
 </div>
