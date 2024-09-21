@@ -79,7 +79,6 @@ BASE_URL=os.environ.get('BASE_URL')
 
 from search_tags_playlist_thread import thread_manager
 from user import User, get_user_by_id, get_user_by_session, user_update_token, have_access_token, id_valid, user_have_playlist
-from api.sqlite3.api import get_all
 
 thread_management_queue = Queue()
 worker = Thread(target=thread_manager, args=(thread_management_queue,), daemon=True)
@@ -105,11 +104,10 @@ def callback_spotify():
         response = make_response(redirect(BASE_URL + "/dashboard"))
         if need_new_user:
             user = User()
-            response.set_cookie("id", value=user.id)
-            user_id = user_id
-
+            user_id = user.id
+        response.set_cookie("id", value=user_id)
         user_update_token(user_id, token)
-        return redirect(BASE_URL + "/dashboard")
+        return response
     if not "error" in request.args:
         return render_template("error.html", error="Sorry this page is not available")
     return render_template("error.html", error=request.args["error"])
