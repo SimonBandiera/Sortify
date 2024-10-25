@@ -199,20 +199,22 @@ def static_from_root():
 def index(lng = None):
     if lng is not None and lng not in LNGS + ["en"]:
         abort(404)
-
     user_id = request.cookies.get("id")
-    if not id_valid(user_id):
-        user = User()
+    if lng is None:
         response = make_response(render_template("index.html", client_id=ClientID,
                                                  base_url=urllib.parse.quote(BASE_URL, safe='')))
+    else:
+        with flask_babel.force_locale(lng):
+            response = make_response(render_template("index.html", client_id=ClientID,
+                                                     base_url=urllib.parse.quote(BASE_URL, safe='')))
+    if not id_valid(user_id):
+        user = User()
         response.set_cookie("id", value=user.id)
-        return response
-    if have_access_token(user_id):
+    elif have_access_token(user_id):
         return redirect(BASE_URL + "/dashboard")
-    if lng is None:
-        return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
-    with flask_babel.force_locale(lng):
-        return render_template("index.html", client_id=ClientID, base_url=urllib.parse.quote(BASE_URL, safe=''))
+    return response
+
+
 
 @app.errorhandler(404)
 def notfound(e):
