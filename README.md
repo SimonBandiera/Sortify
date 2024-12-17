@@ -1,5 +1,7 @@
 # Sortify
 
+## Description
+
 Sortify is a simple tool to sort your Spotify playlists. It uses the Spotify API to fetch the tracks of a playlist and then sorts them by artist, album or track name.
 
 
