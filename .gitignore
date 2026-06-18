@@ -8,3 +8,8 @@ __pycache__
 *$py.class
 node_modules/
 .env
+.next/
+backend/.venv/
+backend/tags.db
+*.db
+design-reference

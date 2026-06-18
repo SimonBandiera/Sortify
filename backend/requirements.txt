@@ -1,0 +1,9 @@
+fastapi>=0.115,<1
+uvicorn[standard]>=0.32,<1
+httpx>=0.28,<1
+python-jose[cryptography]>=3.3,<4
+pydantic-settings>=2.7,<3
+beautifulsoup4>=4.12,<5
+sqlalchemy>=2.0,<3
+aiosqlite>=0.20,<1
+python-dotenv>=1.0,<2

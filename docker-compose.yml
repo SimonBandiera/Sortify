@@ -1,0 +1,28 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file: ./backend/.env
+    volumes:
+      - ./backend:/app
+      - backend-data:/app/data
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+        NEXT_PUBLIC_BACKEND_URL: http://127.0.0.1:8000
+        NEXT_PUBLIC_BASE_URL: http://127.0.0.1:3000
+        BACKEND_URL: http://backend:8000
+    ports:
+      - "3000:3000"
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+
+volumes:
+  backend-data:
