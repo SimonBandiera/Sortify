@@ -13,43 +13,35 @@ export default function Footer() {
             </div>
             <p>
               A small utility for people with too much music and not enough
-              patience. Built and maintained by two humans, in their spare time.
+              patience.
             </p>
-          </div>
-
-          <div>
-            <h5>Product</h5>
-            <ul>
-              <li><a href="#how">How it works</a></li>
-              <li><a href="#demo">Demo</a></li>
-              <li><a href="#genres">Genres</a></li>
-              <li><a href="#faq">Faq</a></li>
-            </ul>
           </div>
 
           <div>
             <h5>Source</h5>
             <ul>
-              <li><Link href="https://github.com/SimonBandiera/Sortify">Github</Link></li>
-              <li><a href="#">Changelog</a></li>
-              <li><a href="#">Self-host</a></li>
-              <li><a href="#">License · MIT</a></li>
+              <li><Link href="https://github.com/SimonBandiera/Sortify">Github ↗</Link></li>
+              <li><span>License · MIT</span></li>
             </ul>
           </div>
 
-          <div>
+          <div className="footer-authors">
             <h5>Crafted by</h5>
-            <ul>
-              <li><Link href="https://hgalan.dev">Hugo Galan ↗</Link></li>
-              <li><Link href="https://sbandiera.dev">Simon Bandiera ↗</Link></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Privacy</a></li>
-            </ul>
+            <div className="footer-author-cards">
+              <a href="https://hgalan.dev" className="footer-author">
+                <span className="footer-author-name">Hugo Galan</span>
+                <span className="footer-author-link">hgalan.dev ↗</span>
+              </a>
+              <a href="https://sbandiera.dev" className="footer-author">
+                <span className="footer-author-name">Simon Bandiera</span>
+                <span className="footer-author-link">sbandiera.dev ↗</span>
+              </a>
+            </div>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <span>© 2022–2026 sortify.fr · made in FR</span>
+          <span>© 2022–2026 sortify · made in FR</span>
           <span>not affiliated with Spotify AB.</span>
         </div>
       </div>

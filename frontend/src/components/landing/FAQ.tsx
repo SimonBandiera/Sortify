@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Reveal from '@/components/ui/Reveal';
 
 const FAQS = [
-  ['Is it really free?', 'Yes. Sortify is free and will stay free. It costs us about €4/month to run. No paywalls, no premium tier, no dark patterns. If you want to help, star the repo or send Hugo a postcard.'],
+  ['Is it really free?', 'Yes. Sortify is free and will stay free. It costs us about €4/month to run. No paywalls, no premium tier, no dark patterns.'],
   ['Does Sortify store my data?', 'No. We use Spotify oauth to read your playlists on-the-fly, compute the genres in memory, and write the new playlists back. Nothing is persisted server-side beyond session duration. Full source is on github if you want to verify.'],
-  ['How accurate are the genres?', "Good enough. We pull artist tags from Spotify + audio features + a small in-house deduplication table. Edge cases exist — a pop-punk track might land in \"rock\" or \"punk\" depending on the artist's primary tag. You can re-run at any time."],
+  ['How accurate are the genres?', "Good enough. We look up each track on Last.fm and use the community-voted genre tags to classify it. Results are cached so repeat runs are instant. Edge cases exist, a pop-punk track might land in \"rock\" or \"punk\" depending on how the community tagged it. You can re-run at any time."],
   ['Will it modify my original playlist?', "Never. Sortify only reads the source playlist and creates new ones. Your originals are untouched. You can delete the generated ones from Spotify anytime if you don't like them."],
-  ["Why is it only for Spotify?", "Because that's what Hugo and Simon use. If you'd like to see it on Apple Music, Deezer, or Tidal — open an issue or send a PR. The core sort logic is platform-agnostic."],
+  ["Why is it only for Spotify?", "Because that's what we use. If you'd like to see it on Apple Music, Deezer, or Tidal, open an issue or send a PR. The core sort logic is platform-agnostic."],
   ['Can I self-host it?', "Yes. The repo includes a docker-compose and a small python worker. You'll need to register your own Spotify developer app. Takes ~10 minutes if you've done oauth before."],
 ];
 

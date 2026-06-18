@@ -5,16 +5,16 @@ interface NavProps {
   variant?: 'landing' | 'dashboard' | 'step';
   stepLabel?: string;
   userName?: string;
+  spotifyAuthUrl?: string;
 }
 
-export default function Nav({ variant = 'landing', stepLabel, userName }: NavProps) {
+export default function Nav({ variant = 'landing', stepLabel, userName, spotifyAuthUrl }: NavProps) {
   return (
     <nav className="nav">
       <div className="nav-inner">
         <Link href="/" className="nav-brand">
           <SortifyMark />
           <span>sortify</span>
-          <span className="mute tiny" style={{ marginLeft: 6 }}>v2.4</span>
         </Link>
 
         {variant === 'landing' && (
@@ -26,10 +26,10 @@ export default function Nav({ variant = 'landing', stepLabel, userName }: NavPro
               <a href="#faq">Faq</a>
               <a href="#github">Github</a>
             </div>
-            <Link className="btn btn-solid" href="#connect">
+            <a className="btn btn-solid" href={spotifyAuthUrl || '#connect'}>
               <span>Connect Spotify</span>
               <span className="arrow">→</span>
-            </Link>
+            </a>
           </>
         )}
 

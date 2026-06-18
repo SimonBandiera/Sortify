@@ -2,27 +2,28 @@
 
 import Reveal from '@/components/ui/Reveal';
 import DitherCanvas from '@/components/dither/DitherCanvas';
+import type { CoverStyle } from '@/components/dither/dither';
 
-const GENRE_CELLS = [
-  ['Electronic', 412, 10],
-  ['Indie', 308, 25],
-  ['Hip-hop', 287, 40],
-  ['Rock', 265, 55],
-  ['R&B', 198, 70],
-  ['Synthwave', 176, 85],
-  ['Jazz', 154, 100],
-  ['Ambient', 142, 115],
-  ['Trip-hop', 121, 130],
-  ['Folk', 98, 145],
-  ['Classical', 87, 160],
-  ['House', 74, 175],
-  ['Metal', 62, 190],
-  ['Techno', 58, 205],
-  ['Lo-fi', 44, 220],
-  ['Soul', 31, 235],
-  ['Punk', 22, 250],
-  ['...38 more', null, 0],
-] as const;
+const GENRE_CELLS: [string, CoverStyle, number][] = [
+  ['Electronic',  'rings',   0.15],
+  ['Indie',       'wave',    0.4],
+  ['Hip-hop',     'radial',  0.7],
+  ['Rock',        'grid',    0.25],
+  ['R&B',         'sphere',  0.5],
+  ['Synthwave',   'linear',  0.1],
+  ['Jazz',        'wave',    0.85],
+  ['Ambient',     'radial',  0.3],
+  ['Trip-hop',    'rings',   0.65],
+  ['Folk',        'linear',  0.55],
+  ['Classical',   'sphere',  0.2],
+  ['House',       'grid',    0.75],
+  ['Metal',       'radial',  0.9],
+  ['Techno',      'rings',   0.45],
+  ['Lo-fi',       'wave',    0.6],
+  ['Soul',        'sphere',  0.35],
+  ['Punk',        'grid',    0.8],
+  ['+ anything on Last.fm', 'linear', 0.5],
+];
 
 export default function GenreGrid() {
   return (
@@ -31,27 +32,22 @@ export default function GenreGrid() {
         <Reveal>
           <div className="section-head">
             <div className="section-label">004 · Catalog</div>
-            <h2 className="section-title">42 buckets. Every edge case.</h2>
-            <div className="tiny mute">Sample · 18 of 42</div>
+            <h2 className="section-title">Every genre. No limits.</h2>
+            <div className="tiny mute">Powered by community tags</div>
           </div>
         </Reveal>
 
         <div className="genre-grid">
-          {GENRE_CELLS.map(([name, count, angle]) => (
+          {GENRE_CELLS.map(([name, style, seed]) => (
             <div key={name} className="genre-cell">
-              <div className="genre-name">{name}</div>
-              <div className="genre-mini">
+              <div className="genre-bg">
                 <DitherCanvas
-                  type="linear"
-                  angle={angle as number}
-                  scale={1}
-                  contrast={1}
+                  coverStyle={style}
+                  coverSeed={seed}
                   style={{ width: '100%', height: '100%', display: 'block' }}
                 />
               </div>
-              <div className="genre-count">
-                {count ? `${count.toLocaleString()} tracks` : '—'}
-              </div>
+              <div className="genre-name">{name}</div>
             </div>
           ))}
         </div>

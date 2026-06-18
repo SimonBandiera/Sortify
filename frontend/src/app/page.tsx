@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <>
-      <Nav variant="landing" />
+      <Nav variant="landing" spotifyAuthUrl={authUrl} />
       <Hero spotifyAuthUrl={authUrl} />
       <HowItWorks />
       <Demo />

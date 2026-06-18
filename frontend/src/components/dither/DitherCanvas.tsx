@@ -10,6 +10,7 @@ interface DitherCanvasProps {
   coverSeed?: number;
   animated?: boolean;
   animType?: 'soundwave' | 'orb' | 'halo' | 'doneCover';
+  timeOffset?: number;
   scale?: number;
   contrast?: number;
   seed?: number;
@@ -24,6 +25,7 @@ export default function DitherCanvas({
   coverSeed = 0,
   animated = false,
   animType,
+  timeOffset = 0,
   scale = 3,
   contrast = 0.95,
   seed = 0.4,
@@ -45,16 +47,18 @@ export default function DitherCanvas({
       return;
     }
 
+    const t = timeRef.current + timeOffset;
+
     if (animType === 'orb') {
-      paintOrb(canvas, timeRef.current);
+      paintOrb(canvas, t);
       return;
     }
     if (animType === 'halo') {
-      paintHalo(canvas, timeRef.current);
+      paintHalo(canvas, t);
       return;
     }
     if (animType === 'doneCover') {
-      paintDoneCover(canvas, timeRef.current);
+      paintDoneCover(canvas, t);
       return;
     }
 
@@ -64,9 +68,9 @@ export default function DitherCanvas({
       contrast,
       seed,
       angle,
-      time: timeRef.current,
+      time: t,
     });
-  }, [type, coverStyle, coverSeed, animType, scale, contrast, seed, angle]);
+  }, [type, coverStyle, coverSeed, animType, timeOffset, scale, contrast, seed, angle]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

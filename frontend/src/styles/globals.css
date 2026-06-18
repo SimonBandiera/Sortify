@@ -2,6 +2,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --bg: #0a0a0a;
   --bg-1: #111111;
@@ -155,7 +159,7 @@ button {
   border-color: var(--accent);
 }
 .btn-solid:hover {
-  background: transparent;
+  background: var(--bg);
   color: var(--accent);
   border-color: var(--accent);
 }
@@ -209,11 +213,11 @@ button {
 }
 .hero-grid {
   position: relative;
-  padding: 140px 0 80px 0;
+  padding: 120px 0 60px 0;
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 72px;
+  gap: 48px;
 }
 .hero-meta {
   display: flex;
@@ -237,7 +241,7 @@ button {
 .hero-head {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 56px;
+  gap: 36px;
 }
 .hero-head-top {
   display: grid;
@@ -248,7 +252,7 @@ button {
 h1.hero-title {
   font-family: var(--mono);
   font-weight: 500;
-  font-size: clamp(44px, 7.2vw, 104px);
+  font-size: clamp(36px, 5.2vw, 76px);
   line-height: 1.02;
   letter-spacing: -0.035em;
   margin: 0;
@@ -272,6 +276,7 @@ h1.hero-title .lo {
   align-items: center;
   border-top: 1px dashed var(--border);
   padding-top: 28px;
+  padding-bottom: 28px;
 }
 .hero-cta-note {
   font-size: 10px;
@@ -581,36 +586,31 @@ h1.hero-title .lo {
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: flex-end;
   aspect-ratio: 1;
-  transition: background .2s;
   cursor: default;
   position: relative;
   overflow: hidden;
 }
-.genre-cell:hover { background: var(--bg-1); }
 .genre-cell:nth-child(6n) { border-right: 0; }
 .genre-cell:nth-last-child(-n+6) { border-bottom: 0; }
+.genre-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  transition: opacity .4s ease;
+}
+.genre-cell:hover .genre-bg {
+  opacity: 0.7;
+}
+.genre-bg canvas { width: 100%; height: 100%; display: block; }
 .genre-name {
+  position: relative;
+  z-index: 1;
   font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
-.genre-count {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--fg-mute);
-  margin-top: auto;
-}
-.genre-mini {
-  position: absolute;
-  inset: auto 0 24px 0;
-  height: 32px;
-  opacity: 0.6;
-}
-.genre-mini canvas { width: 100%; height: 100%; display: block; }
 
 @media (max-width: 960px) {
   .genre-grid { grid-template-columns: repeat(3, 1fr); }
@@ -669,7 +669,7 @@ h1.hero-title .lo {
 }
 .faq.open .faq-a { max-height: 300px; }
 .faq-a-inner {
-  padding: 0 24px 24px 24px;
+  padding: 12px 24px 24px 24px;
   color: var(--fg-dim);
   font-size: 13px;
   line-height: 1.6;
@@ -719,6 +719,13 @@ h1.hero-title .lo {
   max-width: 52ch;
 }
 .os-cta-actions { position: relative; z-index: 1; }
+.os-cta-actions .btn:not(.btn-solid) {
+  background: var(--bg);
+}
+.os-cta-actions .btn:not(.btn-solid):hover {
+  background: var(--fg);
+  color: var(--bg);
+}
 
 @media (max-width: 720px) {
   .os-cta { grid-template-columns: 1fr; padding: 32px 24px; }
@@ -731,7 +738,7 @@ h1.hero-title .lo {
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1.5fr;
   gap: 40px;
   margin-bottom: 48px;
 }
@@ -761,6 +768,34 @@ h1.hero-title .lo {
   max-width: 320px;
 }
 .footer-brand p { color: var(--fg-dim); font-size: 12px; line-height: 1.6; margin: 0; }
+.footer-authors { grid-column: span 1; }
+.footer-author-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-author {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  transition: border-color .2s, background .2s;
+}
+.footer-author:hover {
+  border-color: var(--fg-mute);
+  background: var(--bg-1);
+}
+.footer-author-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.footer-author-link {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg-mute);
+}
 .footer-bottom {
   display: flex;
   justify-content: space-between;
