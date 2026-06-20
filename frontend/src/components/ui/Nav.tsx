@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import SortifyMark from './SortifyMark';
 
 interface NavProps {
   variant?: 'landing' | 'dashboard' | 'step';
@@ -12,9 +11,8 @@ export default function Nav({ variant = 'landing', stepLabel, userName, spotifyA
   return (
     <nav className="nav">
       <div className="nav-inner">
-        <Link href="/" className="nav-brand">
-          <SortifyMark />
-          <span>sortify</span>
+        <Link href={variant === 'landing' ? '/' : '/dashboard'} className="nav-brand">
+          sortify
         </Link>
 
         {variant === 'landing' && (

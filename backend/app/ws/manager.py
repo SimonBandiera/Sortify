@@ -1,30 +1,35 @@
 import asyncio
 from collections import defaultdict
 
-from fastapi import WebSocket
+_EMPTY: dict = {"current": 0, "total": 0, "track": "", "genre": "", "done": False, "error": None}
 
 
-class ConnectionManager:
+class SSEManager:
     def __init__(self):
-        self._connections: dict[str, list[WebSocket]] = defaultdict(list)
+        self._queues: dict[str, list[asyncio.Queue]] = defaultdict(list)
+        self._status: dict[str, dict] = {}
 
-    async def connect(self, playlist_id: str, ws: WebSocket):
-        await ws.accept()
-        self._connections[playlist_id].append(ws)
+    def get_status(self, playlist_id: str) -> dict | None:
+        return self._status.get(playlist_id)
 
-    def disconnect(self, playlist_id: str, ws: WebSocket):
-        self._connections[playlist_id] = [
-            c for c in self._connections[playlist_id] if c is not ws
-        ]
-        if not self._connections[playlist_id]:
-            del self._connections[playlist_id]
+    def clear_status(self, playlist_id: str) -> None:
+        self._status.pop(playlist_id, None)
 
     async def send(self, playlist_id: str, data: dict):
-        for ws in self._connections.get(playlist_id, []):
-            try:
-                await ws.send_json(data)
-            except Exception:
-                pass
+        s = self._status.setdefault(playlist_id, dict(_EMPTY))
+        t = data.get("type")
+        if t == "start":
+            s["total"] = data.get("total", 0)
+        elif t == "progress":
+            for k in ("current", "total", "track", "genre"):
+                if k in data:
+                    s[k] = data[k]
+        elif t == "finish":
+            s["done"] = True
+        elif t == "error":
+            s["error"] = data.get("message", "unknown")
+        for q in list(self._queues.get(playlist_id, [])):
+            await q.put(data)
 
     async def broadcast_progress(self, playlist_id: str, current: int, total: int, track: str, genre: str):
         await self.send(playlist_id, {
@@ -36,4 +41,4 @@ class ConnectionManager:
         })
 
 
-ws_manager = ConnectionManager()
+ws_manager = SSEManager()

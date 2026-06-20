@@ -106,5 +106,5 @@ export default function DitherCanvas({
     return () => observer.disconnect();
   }, [animated, draw]);
 
-  return <canvas ref={canvasRef} className={className} style={style} />;
+  return <canvas ref={canvasRef} className={className} style={style} suppressHydrationWarning />;
 }

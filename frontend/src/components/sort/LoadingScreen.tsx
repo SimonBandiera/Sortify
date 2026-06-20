@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import SortifyMark from '@/components/ui/SortifyMark';
 import DitherCanvas from '@/components/dither/DitherCanvas';
+import PixelProgressBar from './PixelProgressBar';
 
 const PHASES = ['Fetching tracks', 'Analysing', 'Deduplicating genres', 'Sorting buckets', 'Finalising'];
 
@@ -26,7 +26,7 @@ interface LoadingScreenProps {
   playlistName?: string;
 }
 
-export default function LoadingScreen({ playlistId, playlistName = 'Playlist' }: LoadingScreenProps) {
+export default function LoadingScreen({ playlistId, playlistName: propName }: LoadingScreenProps) {
   const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [total, setTotal] = useState(0);
@@ -35,7 +35,10 @@ export default function LoadingScreen({ playlistId, playlistName = 'Playlist' }:
   const [trackGenre, setTrackGenre] = useState('');
   const [elapsed, setElapsed] = useState(0);
   const startTime = useRef(Date.now());
-  const wsRef = useRef<WebSocket | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const smoothedEta = useRef(0);
+
+  const playlistName = propName ?? (() => { try { return sessionStorage.getItem('sortify_sort_name') ?? 'Playlist'; } catch { return 'Playlist'; } })();
 
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
 
@@ -47,81 +50,64 @@ export default function LoadingScreen({ playlistId, playlistName = 'Playlist' }:
     return () => clearInterval(iv);
   }, []);
 
-  // WebSocket connection — connect directly to the backend since Next.js rewrites can't proxy WebSocket upgrades
-  const connectWs = useCallback(() => {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-    const wsUrl = backendUrl.replace(/^http/, 'ws') + `/ws/sort/${playlistId}`;
-    const ws = new WebSocket(wsUrl);
-    wsRef.current = ws;
+  useEffect(() => {
+    let active = true;
 
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'start') {
-        setTotal(data.total);
-      } else if (data.type === 'progress') {
-        setCurrent(data.current);
-        if (data.track) {
-          const parts = data.track.split(' — ');
-          if (parts.length === 2) {
-            setTrackArtist(parts[0]);
-            setTrackName(parts[1]);
-          } else {
-            setTrackName(data.track);
+    async function poll() {
+      while (active) {
+        try {
+          const res = await fetch(`/api/sort/${playlistId}/status`);
+          if (!res.ok) {
+            setError('Could not connect to the sorting service.');
+            return;
           }
+          const data = await res.json();
+          if (data.total > 0) setTotal(data.total);
+          if (data.current >= 0) setCurrent(data.current);
+          if (data.track) {
+            const parts = (data.track as string).split(' — ');
+            if (parts.length === 2) { setTrackArtist(parts[0]); setTrackName(parts[1]); }
+            else setTrackName(data.track);
+          }
+          if (data.genre) setTrackGenre(data.genre);
+          if (data.done) { router.push(`/create/${playlistId}`); return; }
+          if (data.error) { router.push('/dashboard'); return; }
+        } catch {
+          setError('Could not connect to the sorting service.');
+          return;
         }
-        if (data.genre) setTrackGenre(data.genre);
-      } else if (data.type === 'finish') {
-        router.push(`/create/${playlistId}`);
-      } else if (data.type === 'error') {
-        router.push('/dashboard');
+        await new Promise<void>(r => setTimeout(r, 800));
       }
-    };
+    }
 
-    ws.onerror = () => {
-      // Fall back to demo mode on connection failure
-    };
-
-    return ws;
+    poll();
+    return () => { active = false; };
   }, [playlistId, router]);
 
-  useEffect(() => {
-    const ws = connectWs();
-    return () => {
-      if (ws.readyState === WebSocket.OPEN) ws.close();
-    };
-  }, [connectWs]);
+  const rawEta = total > 0 && current > 0 ? Math.max(0, (elapsed / current) * total - elapsed) : 0;
+  if (current > 0) {
+    smoothedEta.current = smoothedEta.current === 0
+      ? rawEta
+      : 0.1 * rawEta + 0.9 * smoothedEta.current;
+  }
+  const eta = smoothedEta.current;
 
-  // Demo simulation when no real WS connection
-  useEffect(() => {
-    if (total > 0) return; // real data coming in
-    const DEMO_TRACKS = [
-      ['Strobe', 'deadmau5', 'electronic'],
-      ['Midnight City', 'M83', 'synthwave'],
-      ['Teardrop', 'Massive Attack', 'trip-hop'],
-      ['Paranoid Android', 'Radiohead', 'rock'],
-      ['Redbone', 'Childish Gambino', 'r&b'],
-      ['Time', 'Hans Zimmer', 'ambient'],
-      ['Flashing Lights', 'Kanye West', 'hip-hop'],
-      ['Fade Into You', 'Mazzy Star', 'indie'],
-    ];
-    const TOTAL = 101;
-    setTotal(TOTAL);
-    let i = 0;
-    const tick = () => {
-      if (i >= TOTAL) return;
-      i++;
-      setCurrent(i);
-      const t = DEMO_TRACKS[i % DEMO_TRACKS.length];
-      setTrackName(t[0]);
-      setTrackArtist(t[1]);
-      setTrackGenre(t[2]);
-      setTimeout(tick, 120 + Math.random() * 300);
-    };
-    const timeout = setTimeout(tick, 400);
-    return () => clearTimeout(timeout);
-  }, [total]);
-
-  const eta = total > 0 && current > 0 ? Math.max(0, (elapsed / current) * total - elapsed) : 0;
+  if (error) {
+    return (
+      <div className="loader">
+        <span className="l-corner tl" />
+        <span className="l-corner tr" />
+        <span className="l-corner bl" />
+        <span className="l-corner br" />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 16, color: 'var(--fg-mute)', fontSize: 13 }}>
+          <span>{error}</span>
+          <button className="btn" style={{ padding: '8px 16px', fontSize: 11 }} onClick={() => router.push('/dashboard')}>
+            <span>Back to dashboard</span><span className="arrow">←</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="loader">
@@ -136,8 +122,7 @@ export default function LoadingScreen({ playlistId, playlistName = 'Playlist' }:
           <b>sortify::analyse</b>
         </div>
         <div className="l-brand">
-          <SortifyMark size={18} />
-          <span>sortify</span>
+          sortify
         </div>
         <div className="col right">
           <span>source</span>
@@ -181,14 +166,9 @@ export default function LoadingScreen({ playlistId, playlistName = 'Playlist' }:
         <div className="col l-progress">
           <div className="l-progress-label">
             <span>progress</span>
-            <span className="pct">{pct}%</span>
+            <span className="pct-small">{pct}%</span>
           </div>
-          <div className="l-progress-track">
-            <div className="bar" style={{ width: `${pct}%` }} />
-            <div className="ticks">
-              {Array.from({ length: 20 }).map((_, i) => <i key={i} />)}
-            </div>
-          </div>
+          <PixelProgressBar pct={pct} />
         </div>
         <div className="col right">
           <span>eta</span>

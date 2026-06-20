@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import SortifyMark from './SortifyMark';
 
 export default function Footer() {
   return (
@@ -8,8 +7,7 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="nav-brand">
-              <SortifyMark />
-              <span>sortify</span>
+              sortify
             </div>
             <p>
               A small utility for people with too much music and not enough

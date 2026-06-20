@@ -1,50 +1,32 @@
+import logging
+
 import httpx
-from bs4 import BeautifulSoup
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"
-}
+from app.config import settings
+
+logger = logging.getLogger(__name__)
+
+LASTFM_API = "https://ws.audioscrobbler.com/2.0/"
 
 
-async def search_track_urls(name: str, artist: str) -> list[str]:
-    url = "https://www.last.fm/fr/search/tracks"
-    params = {"q": f"{name} {artist}"}
+async def _lastfm_request(client: httpx.AsyncClient, params: dict) -> list[str]:
     try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            r = await client.get(url, params=params, headers=HEADERS)
+        r = await client.get(LASTFM_API, params={**params, "api_key": settings.lastfm_api_key, "format": "json"})
     except httpx.HTTPError:
         return []
     if r.status_code != 200:
         return []
-
-    soup = BeautifulSoup(r.text, "html.parser")
-    cells = soup.find_all("td", {"class": "chartlist-name"})
-    if not cells:
+    data = r.json()
+    tag_list = data.get("toptags", {}).get("tag", [])
+    if not tag_list:
         return []
-    return [f"https://www.last.fm{cell.find('a')['href']}" for cell in cells if cell.find("a")]
-
-
-async def get_tags_from_url(url: str) -> list[str]:
-    try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            r = await client.get(url, headers=HEADERS)
-    except httpx.HTTPError:
-        return []
-    if r.status_code != 200:
-        return []
-
-    soup = BeautifulSoup(r.text, "html.parser")
-    tag_items = soup.find_all("li", {"class": "tag"})
-    if not tag_items:
-        return []
-    tags = [t.find("a").get_text() for t in tag_items if t.find("a")]
-    return tags[: len(tags) // 2] if tags else []
+    return [t["name"] for t in tag_list[:4] if t.get("name") and int(t.get("count", 0)) > 0]
 
 
 async def scrape_tags(name: str, artist: str) -> list[str]:
-    urls = await search_track_urls(name, artist)
-    for url in urls:
-        tags = await get_tags_from_url(url)
+    async with httpx.AsyncClient(timeout=10) as client:
+        tags = await _lastfm_request(client, {"method": "track.getTopTags", "artist": artist, "track": name})
         if tags:
             return tags
-    return []
+        tags = await _lastfm_request(client, {"method": "artist.getTopTags", "artist": artist})
+        return tags

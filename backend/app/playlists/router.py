@@ -1,39 +1,40 @@
-from fastapi import APIRouter, Request, Response
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 
-from app.auth.session import get_session, set_session_cookie
+from app.auth.session import require_session
 from app.playlists.spotify_client import (
     create_playlist,
     get_current_user,
+    get_playlist_by_id,
     get_user_playlists,
 )
 from app.sorting.state import sort_results
 
+Session = Annotated[dict, Depends(require_session)]
+
 router = APIRouter(prefix="/api/playlists", tags=["playlists"])
 
 
-def _require_session(request: Request) -> dict | None:
-    return get_session(request)
-
-
 @router.get("")
-async def list_playlists(request: Request):
-    session = _require_session(request)
-    if not session:
-        return JSONResponse({"error": "unauthorized"}, status_code=401)
-
+async def list_playlists(session: Session):
     data = await get_user_playlists(session)
     if data is None:
         return JSONResponse({"error": "spotify_error"}, status_code=502)
     return data
 
 
-@router.get("/{playlist_id}/genres")
-async def get_sort_result(playlist_id: str, request: Request):
-    session = _require_session(request)
-    if not session:
-        return JSONResponse({"error": "unauthorized"}, status_code=401)
+@router.get("/lookup/{playlist_id}")
+async def lookup_playlist(playlist_id: str, session: Session):
+    data = await get_playlist_by_id(playlist_id, session)
+    if data is None:
+        return JSONResponse({"error": "not_found"}, status_code=404)
+    return data
 
+
+@router.get("/{playlist_id}/genres")
+async def get_sort_result(playlist_id: str, session: Session):
     result = sort_results.get(playlist_id)
     if not result:
         return JSONResponse({"error": "not_found"}, status_code=404)
@@ -48,11 +49,7 @@ async def get_sort_result(playlist_id: str, request: Request):
 
 
 @router.post("/{playlist_id}/create")
-async def create_sorted_playlist(playlist_id: str, request: Request):
-    session = _require_session(request)
-    if not session:
-        return JSONResponse({"error": "unauthorized"}, status_code=401)
-
+async def create_sorted_playlist(playlist_id: str, request: Request, session: Session):
     body = await request.json()
     name = body.get("name", "Sortify Playlist")
     selected_genres: list[str] = body.get("genres", [])
@@ -79,4 +76,5 @@ async def create_sorted_playlist(playlist_id: str, request: Request):
 
     sort_results.pop(playlist_id, None)
 
+    playlist["owner_name"] = user.get("display_name") or user.get("id")
     return playlist

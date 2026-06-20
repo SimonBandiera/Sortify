@@ -11,22 +11,6 @@ interface Genre {
   count: number;
 }
 
-const DEMO_GENRES: Genre[] = [
-  { name: 'soul', count: 24 }, { name: 'rap', count: 38 }, { name: 'hip-hop', count: 41 },
-  { name: 'french hip-hop', count: 18 }, { name: 'guitar', count: 14 }, { name: 'singer-songwriter', count: 22 },
-  { name: 'post-rock', count: 9 }, { name: 'dream pop', count: 11 }, { name: 'sophisti-pop', count: 6 },
-  { name: 'bedroom pop', count: 15 }, { name: 'drum and bass', count: 12 }, { name: 'deep', count: 8 },
-  { name: 'hip hop', count: 28 }, { name: 'french rap', count: 21 }, { name: 'house', count: 33 },
-  { name: 'dance', count: 29 }, { name: 'electronic', count: 47 }, { name: 'industrial', count: 10 },
-  { name: 'experimental', count: 7 }, { name: 'pop', count: 52 }, { name: 'rock', count: 44 },
-  { name: 'rnb', count: 19 }, { name: 'synthpop', count: 16 }, { name: 'lo-fi', count: 13 },
-  { name: 'indie', count: 34 }, { name: 'folk', count: 17 }, { name: 'indie pop', count: 25 },
-  { name: 'french', count: 31 }, { name: 'punk', count: 10 }, { name: 'alternative', count: 22 },
-  { name: 'techno', count: 19 }, { name: 'ambient', count: 12 }, { name: 'jazz', count: 15 },
-  { name: 'trip-hop', count: 9 }, { name: 'synthwave', count: 18 }, { name: 'metal', count: 11 },
-  { name: 'classical', count: 7 },
-];
-
 const SUGGESTIONS = ['For the car', 'Late night', 'Sunday morning', 'Deep focus', 'Workout', 'Nostalgia'];
 
 type Filter = 'all' | 'popular' | 'selected';
@@ -37,14 +21,17 @@ interface GenrePickerClientProps {
 
 export default function GenrePickerClient({ playlistId }: GenrePickerClientProps) {
   const router = useRouter();
-  const [genres, setGenres] = useState<Genre[]>(DEMO_GENRES);
+  const [genres, setGenres] = useState<Genre[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
   const [playlistName, setPlaylistName] = useState('');
   const [userTouchedName, setUserTouchedName] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const sourceName = (() => { try { return sessionStorage.getItem('sortify_sort_name') ?? 'source playlist'; } catch { return 'source playlist'; } })();
 
   useEffect(() => {
+    setLoading(true);
     fetch(`/api/playlists/${playlistId}/genres`)
       .then((r) => r.ok ? r.json() : null)
       .then((data) => {
@@ -57,7 +44,8 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
           setGenres(mapped);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [playlistId]);
 
   const filtered = useMemo(() => {
@@ -94,17 +82,23 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
   const handleCreate = useCallback(async () => {
     if (selectedArr.length === 0 || !playlistName.trim()) return;
     try {
+      const t0 = Date.now();
       const res = await fetch(`/api/playlists/${playlistId}/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: playlistName, genres: selectedArr }),
       });
       if (res.ok) {
+        const durationMs = Date.now() - t0;
+        const data = await res.json();
+        const spotifyUrl = data?.external_urls?.spotify;
+        if (spotifyUrl) {
+          try { sessionStorage.setItem('sortify_done', JSON.stringify({ spotifyUrl, name: playlistName, genres: selectedArr, tracks: totalTracks, tracksAdded: data?.tracks?.total ?? totalTracks, durationMs, ownerName: data?.owner_name })); } catch {}
+        }
         router.push(`/finish/${playlistId}`);
       }
     } catch {
-      // Demo fallback
-      router.push(`/finish/${playlistId}`);
+      // stay on page — user can retry
     }
   }, [playlistId, playlistName, selectedArr, router]);
 
@@ -129,7 +123,7 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
             </div>
             <div className="pg-source">
               <span>sorting from</span>
-              <b>Your Top Songs 2025</b>
+              <b>{sourceName}</b>
               <span style={{ color: 'var(--fg-dim)' }}>{genres.length} genres</span>
             </div>
           </div>
@@ -162,6 +156,15 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
           </div>
         </div>
 
+        {loading ? (
+          <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--fg-mute)', fontSize: 13 }}>
+            Loading genres…
+          </div>
+        ) : genres.length === 0 ? (
+          <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--fg-mute)', fontSize: 13 }}>
+            No genres found. Try sorting the playlist again.
+          </div>
+        ) : (
         <div className="g-grid">
           {filtered.map(({ name, count }) => (
             <div
@@ -177,6 +180,7 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
             </div>
           ))}
         </div>
+        )}
 
         <div className="pg-bottom">
           <div className="pane">

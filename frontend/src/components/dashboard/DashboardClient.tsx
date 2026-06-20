@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import DitherCanvas from '@/components/dither/DitherCanvas';
 import Reveal from '@/components/ui/Reveal';
+import Nav from '@/components/ui/Nav';
 import type { CoverStyle } from '@/components/dither/dither';
 
 interface Playlist {
@@ -32,16 +33,26 @@ interface SpotifyPlaylistRaw {
   tracks: { total: number };
   images: Array<{ url: string }>;
   owner?: { id?: string; display_name?: string };
+  description?: string;
 }
 
-function getTag(playlist: SpotifyPlaylistRaw): string {
-  const owner = playlist.owner?.display_name || '';
-  if (owner === 'Spotify') return 'Spotify';
-  if (owner.includes('+') || owner.includes('Blend')) return 'Blend';
+function getTag(playlist: SpotifyPlaylistRaw, userId: string | null): string {
+  const ownerId = playlist.owner?.id || '';
+  const ownerName = playlist.owner?.display_name || '';
+  const name = playlist.name || '';
+  const desc = playlist.description || '';
+
+  if (ownerId === 'spotify' || ownerName === 'Spotify') {
+    if (name.includes('+') || desc.toLowerCase().includes('blend')) return 'Blend';
+    return 'Spotify';
+  }
+
+  if (userId && ownerId !== userId && ownerId !== '__self__') return 'Followed';
+
   return 'Owned';
 }
 
-const FILTERS = ['all', 'owned', 'spotify', 'blend'] as const;
+const FILTERS = ['all', 'owned', 'followed', 'spotify', 'blend'] as const;
 type Filter = (typeof FILTERS)[number];
 
 export default function DashboardClient() {
@@ -51,6 +62,27 @@ export default function DashboardClient() {
   const [query, setQuery] = useState('');
   const [syncLabel, setSyncLabel] = useState('just now');
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState('user');
+  const [lookupUrl, setLookupUrl] = useState('');
+  const [lookupError, setLookupError] = useState('');
+  const [lookupLoading, setLookupLoading] = useState(false);
+
+  const mapPlaylists = useCallback((items: SpotifyPlaylistRaw[], userId: string | null): Playlist[] => {
+    return items.map((p, i) => {
+      const cover = playlistToCover(i);
+      const tag = getTag(p, userId);
+      return {
+        id: p.id,
+        name: p.name,
+        tracks: p.tracks?.total || 0,
+        tag,
+        coverStyle: cover.style,
+        coverSeed: cover.seed,
+        owned: tag === 'Owned',
+        imageUrl: p.images?.[0]?.url,
+      };
+    });
+  }, []);
 
   const fetchPlaylists = useCallback(async () => {
     setLoading(true);
@@ -62,33 +94,38 @@ export default function DashboardClient() {
       }
       const data = await res.json();
       const items = data.items || [];
-      const mapped: Playlist[] = items.map((p: SpotifyPlaylistRaw, i: number) => {
-        const cover = playlistToCover(i);
-        return {
-          id: p.id,
-          name: p.name,
-          tracks: p.tracks?.total || 0,
-          tag: getTag(p),
-          coverStyle: cover.style,
-          coverSeed: cover.seed,
-          owned: getTag(p) === 'Owned',
-          imageUrl: p.images?.[0]?.url,
-        };
-      });
+      const userId: string | null = data.user_id || null;
+      const mapped = mapPlaylists(items, userId);
       setPlaylists(mapped);
+      try { sessionStorage.setItem('sortify_playlists', JSON.stringify({ items, userId })); } catch {}
     } catch {
       // stay on page with empty state
     } finally {
       setLoading(false);
     }
-  }, [router]);
+  }, [router, mapPlaylists]);
 
   useEffect(() => {
+    try {
+      const cached = sessionStorage.getItem('sortify_playlists');
+      if (cached) {
+        const { items, userId } = JSON.parse(cached);
+        setPlaylists(mapPlaylists(items, userId));
+        setLoading(false);
+      }
+    } catch {}
     fetchPlaylists();
-  }, [fetchPlaylists]);
+    fetch('/api/me')
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (data?.display_name) setUserName(data.display_name);
+      })
+      .catch(() => {});
+  }, [fetchPlaylists, mapPlaylists]);
 
   const filtered = playlists.filter((p) => {
     if (filter === 'owned' && !p.owned) return false;
+    if (filter === 'followed' && p.tag !== 'Followed') return false;
     if (filter === 'spotify' && p.tag !== 'Spotify') return false;
     if (filter === 'blend' && p.tag !== 'Blend') return false;
     if (query && !p.name.toLowerCase().includes(query.toLowerCase())) return false;
@@ -102,6 +139,61 @@ export default function DashboardClient() {
     fetchPlaylists().then(() => setSyncLabel('just now'));
   };
 
+  const navigateToSort = (id: string, name: string) => {
+    try { sessionStorage.setItem('sortify_sort_name', name); } catch {}
+    router.push(`/sort/${id}`);
+  };
+
+  const handleLookup = useCallback(async () => {
+    const input = lookupUrl.trim();
+    if (!input) return;
+    setLookupError('');
+    setLookupLoading(true);
+
+    const match = input.match(/playlist[/:]([a-zA-Z0-9]{22})/);
+    const playlistId = match ? match[1] : input;
+
+    if (!/^[a-zA-Z0-9]{22}$/.test(playlistId)) {
+      setLookupError('Invalid Spotify playlist URL or ID.');
+      setLookupLoading(false);
+      return;
+    }
+
+    const existing = playlists.find((p) => p.id === playlistId);
+    if (existing) {
+      navigateToSort(existing.id, existing.name);
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/playlists/lookup/${playlistId}`);
+      if (!res.ok) {
+        setLookupError(res.status === 404 ? 'Playlist not found — check the link and try again.' : 'Something went wrong.');
+        setLookupLoading(false);
+        return;
+      }
+      const p: SpotifyPlaylistRaw = await res.json();
+      const cover = playlistToCover(playlists.length);
+      const tag = getTag(p, null);
+      setPlaylists((prev) => [...prev, {
+        id: p.id,
+        name: p.name,
+        tracks: p.tracks?.total || 0,
+        tag,
+        coverStyle: cover.style,
+        coverSeed: cover.seed,
+        owned: tag === 'Owned',
+        imageUrl: p.images?.[0]?.url,
+      }]);
+      setLookupUrl('');
+      navigateToSort(playlistId, p.name);
+    } catch {
+      setLookupError('Could not reach the server.');
+    } finally {
+      setLookupLoading(false);
+    }
+  }, [lookupUrl, playlists, router]);
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
@@ -113,18 +205,13 @@ export default function DashboardClient() {
     return () => document.removeEventListener('keydown', handler);
   }, []);
 
-  // Demo data fallback
-  const displayPlaylists = playlists.length > 0 ? filtered : DEMO_PLAYLISTS.filter((p) => {
-    if (filter === 'owned' && !p.owned) return false;
-    if (filter === 'spotify' && p.tag !== 'Spotify') return false;
-    if (filter === 'blend' && p.tag !== 'Blend') return false;
-    if (query && !p.name.toLowerCase().includes(query.toLowerCase())) return false;
-    return true;
-  });
-  const displayTotal = playlists.length > 0 ? playlists.length : DEMO_PLAYLISTS.length;
-  const displayTotalTracks = playlists.length > 0 ? totalTracks : DEMO_PLAYLISTS.reduce((a, b) => a + b.tracks, 0);
+  const displayPlaylists = filtered;
+  const displayTotal = playlists.length;
+  const displayTotalTracks = totalTracks;
 
   return (
+    <>
+    <Nav variant="dashboard" userName={userName} />
     <main className="page">
       <Reveal>
         <div className="dash-head">
@@ -179,13 +266,20 @@ export default function DashboardClient() {
         <div style={{ padding: '80px 0', textAlign: 'center', color: 'var(--fg-mute)', fontSize: 13 }}>
           Loading playlists…
         </div>
+      ) : !loading && displayPlaylists.length === 0 ? (
+        <div style={{ padding: '80px 0', textAlign: 'center', color: 'var(--fg-mute)', fontSize: 13, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+          <span>{playlists.length === 0 ? 'No playlists found.' : 'No playlists match your filters.'}</span>
+          <button className="btn" style={{ padding: '8px 16px', fontSize: 11 }} onClick={playlists.length === 0 ? handleRefresh : () => { setFilter('all'); setQuery(''); }}>
+            <span>{playlists.length === 0 ? 'Refresh' : 'Clear filters'}</span><span className="arrow">{playlists.length === 0 ? '↻' : '×'}</span>
+          </button>
+        </div>
       ) : (
         <div className="pl-grid">
           {displayPlaylists.map((p, i) => (
             <div
               key={p.id || i}
               className="pl"
-              onClick={() => router.push(`/sort/${p.id}`)}
+              onClick={() => navigateToSort(p.id, p.name)}
             >
               <div className="pl-cover">
                 {p.imageUrl ? (
@@ -212,42 +306,52 @@ export default function DashboardClient() {
               </div>
               <div className="pl-info">
                 <span className="tracks">tracks · <b>{p.tracks.toLocaleString()}</b></span>
-                <span className="pl-owner">{p.owned ? 'you' : p.tag.toLowerCase()}</span>
+                <span className="pl-owner">{p.tag === 'Owned' ? 'you' : p.tag.toLowerCase()}</span>
               </div>
             </div>
           ))}
         </div>
       )}
 
+      <div className="dash-missing">
+        <div className="dash-missing-text">
+          <span className="dash-missing-title">A playlist missing?</span>
+          <span className="dash-missing-sub">
+            Spotify restricts API access to Blends, Daylist, Wrapped and other playlists they own. To sort one of those, copy its tracks into a new playlist first. You can also paste any user-created playlist link below.
+          </span>
+        </div>
+        <div className="dash-missing-input">
+          <div className="search" style={{ flex: 1, minWidth: 0 }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <path d="M1 6 H11 M8 3 L11 6 L8 9" />
+            </svg>
+            <input
+              type="text"
+              placeholder="https://open.spotify.com/playlist/..."
+              value={lookupUrl}
+              onChange={(e) => { setLookupUrl(e.target.value); setLookupError(''); }}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleLookup(); }}
+            />
+          </div>
+          <button
+            className="btn"
+            style={{ padding: '6px 14px', fontSize: 10, whiteSpace: 'nowrap' }}
+            onClick={handleLookup}
+            disabled={lookupLoading || !lookupUrl.trim()}
+          >
+            <span>{lookupLoading ? 'Looking up…' : 'Sort this playlist'}</span>
+            <span className="arrow">→</span>
+          </button>
+        </div>
+        {lookupError && (
+          <span className="dash-missing-error">{lookupError}</span>
+        )}
+      </div>
+
       <div className="dash-foot">
         <span>showing <b style={{ color: 'var(--fg)' }}>{displayPlaylists.length}</b> / {displayTotal} · total tracks <b style={{ color: 'var(--fg)' }}>{displayTotalTracks.toLocaleString()}</b></span>
-        <span>sortify · v2.4 · build 04.18.26</span>
       </div>
     </main>
+    </>
   );
 }
-
-const DEMO_PLAYLISTS: Playlist[] = [
-  { id: '1', name: 'daylist', tracks: 50, tag: 'Spotify', coverStyle: 'radial', coverSeed: 0.1, owned: false },
-  { id: '2', name: 'Your Top Songs 2025', tracks: 101, tag: 'Spotify', coverStyle: 'linear', coverSeed: 0.9, owned: false },
-  { id: '3', name: 'Best Saxophone Jazz', tracks: 82, tag: 'Owned', coverStyle: 'sphere', coverSeed: 0.3, owned: true },
-  { id: '4', name: 'Bagnole', tracks: 10, tag: 'Owned', coverStyle: 'wave', coverSeed: 0.5, owned: true },
-  { id: '5', name: 'YoungSnoww + pooyiggrf', tracks: 50, tag: 'Blend', coverStyle: 'rings', coverSeed: 0.2, owned: false },
-  { id: '6', name: 'On Repeat', tracks: 30, tag: 'Spotify', coverStyle: 'rings', coverSeed: 0.7, owned: false },
-  { id: '7', name: 'Ça bz', tracks: 12, tag: 'Owned', coverStyle: 'grid', coverSeed: 0.4, owned: true },
-  { id: '8', name: 'Chill code', tracks: 58, tag: 'Owned', coverStyle: 'linear', coverSeed: 0.15, owned: true },
-  { id: '9', name: 'Les amoureux', tracks: 41, tag: 'Owned', coverStyle: 'radial', coverSeed: 0.8, owned: true },
-  { id: '10', name: 'Les amoureuqq', tracks: 50, tag: 'Blend', coverStyle: 'sphere', coverSeed: 0.6, owned: false },
-  { id: '11', name: '2024', tracks: 89, tag: 'Owned', coverStyle: 'grid', coverSeed: 0.22, owned: true },
-  { id: '12', name: 'Trucs bizarre', tracks: 24, tag: 'Owned', coverStyle: 'wave', coverSeed: 0.44, owned: true },
-  { id: '13', name: 'Your Top Songs 2023', tracks: 101, tag: 'Spotify', coverStyle: 'linear', coverSeed: 0.55, owned: false },
-  { id: '14', name: 'go intro y', tracks: 33, tag: 'Owned', coverStyle: 'radial', coverSeed: 0.66, owned: true },
-  { id: '15', name: 'WITCH', tracks: 18, tag: 'Owned', coverStyle: 'rings', coverSeed: 0.77, owned: true },
-  { id: '16', name: 'Driving / night', tracks: 64, tag: 'Owned', coverStyle: 'wave', coverSeed: 0.33, owned: true },
-  { id: '17', name: 'mood · blue', tracks: 27, tag: 'Owned', coverStyle: 'sphere', coverSeed: 0.88, owned: true },
-  { id: '18', name: 'throwback 2017', tracks: 72, tag: 'Owned', coverStyle: 'grid', coverSeed: 0.11, owned: true },
-  { id: '19', name: 'gym · hard', tracks: 45, tag: 'Owned', coverStyle: 'linear', coverSeed: 0.99, owned: true },
-  { id: '20', name: 'Discover Weekly', tracks: 30, tag: 'Spotify', coverStyle: 'radial', coverSeed: 0.50, owned: false },
-  { id: '21', name: 'Release Radar', tracks: 30, tag: 'Spotify', coverStyle: 'sphere', coverSeed: 0.60, owned: false },
-  { id: '22', name: 'Liked Songs', tracks: 1843, tag: 'Owned', coverStyle: 'grid', coverSeed: 0.05, owned: true },
-];

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Nav from '@/components/ui/Nav';
@@ -10,8 +10,37 @@ interface DoneScreenProps {
   playlistId: string;
 }
 
+interface DoneData {
+  spotifyUrl: string;
+  name: string;
+  genres: string[];
+  tracks: number;
+  tracksAdded: number;
+  durationMs?: number;
+  ownerName?: string;
+}
+
 export default function DoneScreen({ playlistId }: DoneScreenProps) {
   const router = useRouter();
+  const [data, setData] = useState<DoneData | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem('sortify_done');
+      if (raw) setData(JSON.parse(raw));
+    } catch {}
+  }, []);
+
+  const trackCount = data?.tracksAdded ?? data?.tracks ?? 0;
+  const genreCount = data?.genres?.length ?? 0;
+  const mins = Math.floor(trackCount * 3.5);
+  const runtime = (mins >= 60 ? Math.floor(mins / 60) + 'h ' : '') + String(mins % 60).padStart(2, '0') + 'm';
+  const cardName = data?.genres && data.genres.length > 2
+    ? data.genres.slice(0, 2).join(' + ') + ' +' + (data.genres.length - 2)
+    : data?.genres?.join(' + ') ?? '—';
+  const duration = data?.durationMs != null
+    ? `${String(Math.floor(data.durationMs / 60000)).padStart(2, '0')}:${String(Math.floor((data.durationMs % 60000) / 1000)).padStart(2, '0')}.${String(Math.floor((data.durationMs % 1000) / 10)).padStart(2, '0')}`
+    : null;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -35,13 +64,15 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
             <b>sortify::write</b>
           </div>
           <div className="center">
-            <span>exit code</span>
-            <span className="status">0 · success</span>
+            <span>status</span>
+            <span className="status">complete</span>
           </div>
-          <div className="col right">
-            <span>duration</span>
-            <b>00:04.82</b>
-          </div>
+          {duration && (
+            <div className="col right">
+              <span>duration</span>
+              <b>{duration}</b>
+            </div>
+          )}
         </header>
 
         <main className="d-main">
@@ -55,19 +86,15 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
               </h1>
               <p className="d-sub">
                 {'// your new playlist has been written to your spotify.'}<br />
-                <span className="mute">source untouched · 3 tracks skipped (no genre data)</span>
+                <span className="mute">source untouched · {data?.name ?? '—'}</span>
               </p>
               <div className="d-kvs">
-                <div className="d-kv"><span className="k">Tracks</span><span className="v">87</span></div>
-                <div className="d-kv"><span className="k">Genres</span><span className="v">4</span></div>
-                <div className="d-kv"><span className="k">Runtime</span><span className="v">5h 04m</span></div>
-                <div className="d-kv"><span className="k">Written</span><span className="v">04:82s</span></div>
+                <div className="d-kv"><span className="k">Tracks</span><span className="v">{trackCount || '—'}</span></div>
+                <div className="d-kv"><span className="k">Genres</span><span className="v">{genreCount || '—'}</span></div>
+                <div className="d-kv"><span className="k">Runtime</span><span className="v">{trackCount ? runtime : '—'}</span></div>
               </div>
               <div className="d-chips">
-                <span className="c">electronic</span>
-                <span className="c">house</span>
-                <span className="c">synthwave</span>
-                <span className="c">techno</span>
+                {data?.genres?.map((g) => <span key={g} className="c">{g}</span>) ?? null}
               </div>
             </div>
           </div>
@@ -84,12 +111,12 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
                 <span className="d-cover-id">#00041</span>
               </div>
               <div className="d-card-meta">
-                <div className="d-card-name">electronic + house +2</div>
-                <div className="d-card-sub"><b>87</b><br />tracks</div>
+                <div className="d-card-name">{cardName}</div>
+                <div className="d-card-sub"><b>{trackCount || '—'}</b><br />tracks</div>
               </div>
               <div className="d-card-foot">
                 <span>user · just now</span>
-                <a className="open" href="#" target="_blank" rel="noopener noreferrer">
+                <a className="open" href={data?.spotifyUrl || '#'} target="_blank" rel="noopener noreferrer">
                   <span>Open in Spotify</span>
                   <span>↗</span>
                 </a>
@@ -111,18 +138,23 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
                 <Link className="btn" href="/dashboard">
                   <span>Sort another playlist</span><span className="arrow">↻</span>
                 </Link>
-                <a className="btn" href="#" style={{ borderColor: 'var(--border)' }}>
-                  <span>Share sortify</span><span className="arrow">↗</span>
-                </a>
               </div>
             </div>
           </div>
         </main>
 
         <footer className="d-foot">
-          <div className="col"><span>written to</span> · <b>Spotify / user</b></div>
+          <div className="col"><span>written to</span> · <b>Spotify / {data?.ownerName ?? 'user'}</b></div>
           <div className="tip">tip · press <b>D</b> for dashboard · <b>R</b> to run again</div>
-          <div className="col right">sortify · v2.4 · build 04.18.26</div>
+          <div className="col right" style={{ display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'flex-end' }}>
+            <span style={{ color: 'var(--fg-mute)', fontSize: 11 }}>made by</span>
+            <a href="https://sbandiera.dev" target="_blank" rel="noopener noreferrer" className="btn" style={{ padding: '4px 10px', fontSize: 11 }}>
+              <span>simon</span><span className="arrow">↗</span>
+            </a>
+            <a href="https://hgalan.dev" target="_blank" rel="noopener noreferrer" className="btn" style={{ padding: '4px 10px', fontSize: 11 }}>
+              <span>hugo</span><span className="arrow">↗</span>
+            </a>
+          </div>
         </footer>
       </div>
     </>

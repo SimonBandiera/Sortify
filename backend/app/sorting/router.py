@@ -1,30 +1,35 @@
 import asyncio
+from typing import Annotated
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends
 
-from app.auth.session import decode_token
+from app.auth.session import require_session
 from app.sorting.worker import run_sort
 from app.ws.manager import ws_manager
 
-router = APIRouter(tags=["sorting"])
+router = APIRouter(prefix="/api/sort", tags=["sorting"])
+
+Session = Annotated[dict, Depends(require_session)]
+
+_active_sorts: dict[str, asyncio.Task] = {}
+
+_EMPTY = {"current": 0, "total": 0, "track": "", "genre": "", "done": False, "error": None}
 
 
-@router.websocket("/ws/sort/{playlist_id}")
-async def sort_websocket(websocket: WebSocket, playlist_id: str):
-    token = websocket.cookies.get("sortify_session")
-    session = decode_token(token) if token else None
-    if not session:
-        await websocket.close(code=4001, reason="unauthorized")
-        return
+@router.get("/{playlist_id}/status")
+async def sort_status(playlist_id: str, session: Session):
+    status = ws_manager.get_status(playlist_id)
 
-    await ws_manager.connect(playlist_id, websocket)
-    task = asyncio.create_task(run_sort(playlist_id, session))
+    # Sort already finished — return it once, then clear so next visit re-sorts
+    if status and (status.get("done") or status.get("error")):
+        ws_manager.clear_status(playlist_id)
+        _active_sorts.pop(playlist_id, None)
+        return status
 
-    try:
-        while True:
-            await websocket.receive_text()
-    except WebSocketDisconnect:
-        pass
-    finally:
-        ws_manager.disconnect(playlist_id, websocket)
-        task.cancel()
+    # Start if not currently running
+    if playlist_id not in _active_sorts or _active_sorts[playlist_id].done():
+        ws_manager.clear_status(playlist_id)
+        _active_sorts[playlist_id] = asyncio.create_task(run_sort(playlist_id, session))
+        return dict(_EMPTY)
+
+    return status or dict(_EMPTY)

@@ -1,4 +1,7 @@
 import asyncio
+import logging
+
+logger = logging.getLogger(__name__)
 
 from app.db.database import async_session
 from app.playlists.spotify_client import get_playlist_tracks
@@ -18,7 +21,7 @@ async def run_sort(playlist_id: str, session: dict):
     await ws_manager.send(playlist_id, {"type": "start", "total": total})
 
     sorted_tracks: dict[str, set[str]] = {}
-    sem = asyncio.Semaphore(4)
+    sem = asyncio.Semaphore(2)
 
     async def process_track(index: int, item: dict):
         track = item.get("track")
@@ -32,8 +35,11 @@ async def run_sort(playlist_id: str, session: dict):
             async with async_session() as db:
                 tags = await get_cached_tags(db, name, artist)
 
-            if not tags:
+            if tags:
+                logger.info(f"[CACHE HIT] {artist} — {name}: {tags}")
+            else:
                 tags = await scrape_tags(name, artist)
+                logger.info(f"[API] {artist} — {name}: {tags}")
                 if tags:
                     async with async_session() as db:
                         await cache_tags(db, name, artist, tags)

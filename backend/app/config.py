@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     base_url: str = "http://127.0.0.1:3000"
     backend_url: str = "http://localhost:8000"
     jwt_secret: str = "change-me-in-production"
+    lastfm_api_key: str = ""
     database_url: str = "sqlite+aiosqlite:///./tags.db"
     cors_origins: list[str] = ["http://127.0.0.1:3000", "http://localhost:3000"]
 

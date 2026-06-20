@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-from fastapi import Request, Response
+from fastapi import HTTPException, Request, Response
 from jose import JWTError, jwt
 
 from app.config import settings
@@ -46,3 +46,10 @@ def get_session(request: Request) -> dict | None:
 
 def clear_session_cookie(response: Response) -> None:
     response.delete_cookie(COOKIE_NAME, path="/")
+
+
+def require_session(request: Request) -> dict:
+    session = get_session(request)
+    if not session:
+        raise HTTPException(status_code=401, detail="unauthorized")
+    return session

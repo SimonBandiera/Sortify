@@ -2,6 +2,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
+@font-face {
+  font-family: 'Array';
+  src: url('/fonts/Array-Regular.woff2') format('woff2'),
+       url('/fonts/Array-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: block;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -110,13 +118,14 @@ button {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-.nav-brand .mark {
-  width: 20px; height: 20px;
-  display: inline-block;
-  position: relative;
+  font-family: 'Array', var(--mono);
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 .nav-links {
   display: flex;

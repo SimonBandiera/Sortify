@@ -23,9 +23,10 @@
 .l-head .col span:first-child { color: var(--fg-faint); }
 .l-head .col b { color: var(--fg); font-weight: 500; letter-spacing: 0.1em; }
 .l-brand {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg);
-  font-weight: 500;
+  display: flex; align-items: center;
+  font-family: 'Array', var(--mono);
+  font-size: 28px; letter-spacing: 0.03em; color: var(--fg);
+  font-weight: 400;
 }
 
 .l-stage {
@@ -146,41 +147,17 @@
 .l-foot .col span:first-child { color: var(--fg-faint); }
 .l-foot .col b { color: var(--accent); font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: 0.08em; }
 .l-progress {
-  position: relative;
-  height: 28px;
-  display: flex; flex-direction: column; gap: 6px;
+  display: flex; flex-direction: column; gap: 8px;
   justify-content: flex-end;
 }
 .l-progress-label {
   display: flex; justify-content: space-between; align-items: baseline;
 }
-.l-progress-label .pct {
-  font-size: 24px; font-weight: 500; color: var(--accent);
-  letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
-  text-transform: none;
+.l-progress-label .pct-small {
+  font-size: 11px; font-weight: 500; color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  text-transform: none; letter-spacing: 0.06em;
 }
-.l-progress-track {
-  position: relative;
-  height: 2px;
-  background: var(--fg-faint);
-}
-.l-progress-track .bar {
-  position: absolute; inset: 0; right: auto;
-  background: var(--accent);
-  transition: width .4s ease;
-}
-.l-progress-track .ticks {
-  position: absolute; inset: -3px 0 -3px 0;
-  pointer-events: none;
-  display: grid;
-  grid-template-columns: repeat(20, 1fr);
-}
-.l-progress-track .ticks i {
-  border-left: 1px solid var(--border);
-  height: 8px;
-  margin-top: -4px;
-}
-.l-progress-track .ticks i:first-child { border: 0; }
 
 .l-corner {
   position: absolute;

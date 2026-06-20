@@ -3,9 +3,11 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://127.0.0.1:3000';
 
 const SCOPES = [
   'playlist-read-private',
+  'playlist-read-collaborative',
   'playlist-modify-private',
   'playlist-modify-public',
   'user-read-private',
+  'user-library-read',
 ].join(' ');
 
 export function getSpotifyAuthUrl(): string {
