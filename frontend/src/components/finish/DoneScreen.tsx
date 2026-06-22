@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Nav from '@/components/ui/Nav';
 import DitherCanvas from '@/components/dither/DitherCanvas';
+import { useT } from '@/lib/translations';
+import { useLangPath } from '@/lib/useLocale';
 
 interface DoneScreenProps {
   playlistId: string;
@@ -22,6 +24,8 @@ interface DoneData {
 
 export default function DoneScreen({ playlistId }: DoneScreenProps) {
   const router = useRouter();
+  const t = useT();
+  const lp = useLangPath();
   const [data, setData] = useState<DoneData | null>(null);
 
   useEffect(() => {
@@ -44,12 +48,12 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === 'd') router.push('/dashboard');
-      if (e.key.toLowerCase() === 'r') router.push('/dashboard');
+      if (e.key.toLowerCase() === 'd') router.push(lp('/dashboard'));
+      if (e.key.toLowerCase() === 'r') router.push(lp('/dashboard'));
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [router]);
+  }, [router, lp]);
 
   return (
     <>
@@ -60,38 +64,37 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
 
         <header className="d-head">
           <div className="col">
-            <span>process</span>
-            <b>sortify::write</b>
+            <span>{t.done_process}</span>
+            <b>{t.done_process_name}</b>
           </div>
           <div className="center">
-            <span>status</span>
-            <span className="status">complete</span>
+            <span>{t.done_status_label}</span>
+            <span className="status">{t.done_status}</span>
           </div>
           {duration && (
             <div className="col right">
-              <span>duration</span>
+              <span>{t.done_duration_label}</span>
               <b>{duration}</b>
             </div>
           )}
         </header>
 
         <main className="d-main">
-          {/* LEFT */}
           <div className="d-side">
             <div className="d-side-inner">
-              <div className="d-phase">Complete</div>
+              <div className="d-phase">{t.done_phase_complete}</div>
               <h1 className="d-title">
-                {"It's"}<br />
-                <span className="lo">done.</span>
+                {t.done_title_1}<br />
+                <span className="lo">{t.done_title_2}</span>
               </h1>
               <p className="d-sub">
-                {'// your new playlist has been written to your spotify.'}<br />
-                <span className="mute">source untouched · {data?.name ?? '—'}</span>
+                {t.done_sub_technical}<br />
+                <span className="mute">{t.done_source_untouched} {data?.name ?? '—'}</span>
               </p>
               <div className="d-kvs">
-                <div className="d-kv"><span className="k">Tracks</span><span className="v">{trackCount || '—'}</span></div>
-                <div className="d-kv"><span className="k">Genres</span><span className="v">{genreCount || '—'}</span></div>
-                <div className="d-kv"><span className="k">Runtime</span><span className="v">{trackCount ? runtime : '—'}</span></div>
+                <div className="d-kv"><span className="k">{t.done_kv_tracks}</span><span className="v">{trackCount || '—'}</span></div>
+                <div className="d-kv"><span className="k">{t.done_kv_genres}</span><span className="v">{genreCount || '—'}</span></div>
+                <div className="d-kv"><span className="k">{t.done_kv_runtime}</span><span className="v">{trackCount ? runtime : '—'}</span></div>
               </div>
               <div className="d-chips">
                 {data?.genres?.map((g) => <span key={g} className="c">{g}</span>) ?? null}
@@ -99,7 +102,6 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
             </div>
           </div>
 
-          {/* CARD */}
           <div className="d-card-wrap">
             <div className="d-card-halo">
               <DitherCanvas animated animType="halo" style={{ width: '100%', height: '100%' }} />
@@ -115,28 +117,25 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
                 <div className="d-card-sub"><b>{trackCount || '—'}</b><br />tracks</div>
               </div>
               <div className="d-card-foot">
-                <span>user · just now</span>
+                <span>{t.done_user_now}</span>
                 <a className="open" href={data?.spotifyUrl || '#'} target="_blank" rel="noopener noreferrer">
-                  <span>Open in Spotify</span>
+                  <span>{t.done_open_spotify}</span>
                   <span>↗</span>
                 </a>
               </div>
             </div>
           </div>
 
-          {/* RIGHT */}
           <div className="d-side right d-side-right">
             <div className="d-side-inner">
-              <div className="d-phase">Next</div>
-              <p className="d-sub">
-                {'// do it again with a different source, or head back to the dashboard to review all your playlists.'}
-              </p>
+              <div className="d-phase">{t.done_phase_next}</div>
+              <p className="d-sub">{t.done_next_sub}</p>
               <div className="d-actions">
-                <Link className="btn btn-solid" href="/dashboard">
-                  <span>Return to dashboard</span><span className="arrow">→</span>
+                <Link className="btn btn-solid" href={lp('/dashboard')}>
+                  <span>{t.done_return}</span><span className="arrow">→</span>
                 </Link>
-                <Link className="btn" href="/dashboard">
-                  <span>Sort another playlist</span><span className="arrow">↻</span>
+                <Link className="btn" href={lp('/dashboard')}>
+                  <span>{t.done_sort_another}</span><span className="arrow">↻</span>
                 </Link>
               </div>
             </div>
@@ -144,10 +143,10 @@ export default function DoneScreen({ playlistId }: DoneScreenProps) {
         </main>
 
         <footer className="d-foot">
-          <div className="col"><span>written to</span> · <b>Spotify / {data?.ownerName ?? 'user'}</b></div>
-          <div className="tip">tip · press <b>D</b> for dashboard · <b>R</b> to run again</div>
+          <div className="col"><span>{t.done_written_to}</span> · <b>Spotify / {data?.ownerName ?? 'user'}</b></div>
+          <div className="tip">{t.done_tip}</div>
           <div className="col right" style={{ display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'flex-end' }}>
-            <span style={{ color: 'var(--fg-mute)', fontSize: 11 }}>made by</span>
+            <span style={{ color: 'var(--fg-mute)', fontSize: 11 }}>{t.done_made_by}</span>
             <a href="https://sbandiera.dev" target="_blank" rel="noopener noreferrer" className="btn" style={{ padding: '4px 10px', fontSize: 11 }}>
               <span>simon</span><span className="arrow">↗</span>
             </a>

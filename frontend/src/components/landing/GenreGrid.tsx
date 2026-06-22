@@ -3,6 +3,7 @@
 import Reveal from '@/components/ui/Reveal';
 import DitherCanvas from '@/components/dither/DitherCanvas';
 import type { CoverStyle } from '@/components/dither/dither';
+import { useT } from '@/lib/translations';
 
 const GENRE_CELLS: [string, CoverStyle, number][] = [
   ['Electronic',  'rings',   0.15],
@@ -26,14 +27,16 @@ const GENRE_CELLS: [string, CoverStyle, number][] = [
 ];
 
 export default function GenreGrid() {
+  const t = useT();
+
   return (
     <section className="section" id="genres">
       <div className="page">
         <Reveal>
           <div className="section-head">
-            <div className="section-label">004 · Catalog</div>
-            <h2 className="section-title">Every genre. No limits.</h2>
-            <div className="tiny mute">Powered by community tags</div>
+            <div className="section-label">{t.genres_label}</div>
+            <h2 className="section-title">{t.genres_title}</h2>
+            <div className="tiny mute">{t.genres_powered}</div>
           </div>
         </Reveal>
 

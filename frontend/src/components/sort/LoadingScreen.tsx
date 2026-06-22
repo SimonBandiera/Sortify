@@ -4,16 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import DitherCanvas from '@/components/dither/DitherCanvas';
 import PixelProgressBar from './PixelProgressBar';
-
-const PHASES = ['Fetching tracks', 'Analysing', 'Deduplicating genres', 'Sorting buckets', 'Finalising'];
-
-function getPhase(pct: number) {
-  if (pct < 15) return PHASES[0];
-  if (pct < 70) return PHASES[1];
-  if (pct < 85) return PHASES[2];
-  if (pct < 97) return PHASES[3];
-  return PHASES[4];
-}
+import { useT } from '@/lib/translations';
+import { useLangPath } from '@/lib/useLocale';
 
 function fmt(s: number) {
   const m = Math.floor(s / 60);
@@ -28,6 +20,25 @@ interface LoadingScreenProps {
 
 export default function LoadingScreen({ playlistId, playlistName: propName }: LoadingScreenProps) {
   const router = useRouter();
+  const t = useT();
+  const lp = useLangPath();
+
+  const PHASES = [
+    t.sort_phase_fetching,
+    t.sort_phase_analysing,
+    t.sort_phase_dedup,
+    t.sort_phase_sorting,
+    t.sort_phase_finalising,
+  ];
+
+  function getPhase(pct: number) {
+    if (pct < 15) return PHASES[0];
+    if (pct < 70) return PHASES[1];
+    if (pct < 85) return PHASES[2];
+    if (pct < 97) return PHASES[3];
+    return PHASES[4];
+  }
+
   const [current, setCurrent] = useState(0);
   const [total, setTotal] = useState(0);
   const [trackName, setTrackName] = useState('—');
@@ -42,7 +53,6 @@ export default function LoadingScreen({ playlistId, playlistName: propName }: Lo
 
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
 
-  // Elapsed timer
   useEffect(() => {
     const iv = setInterval(() => {
       setElapsed((Date.now() - startTime.current) / 1000);
@@ -58,7 +68,7 @@ export default function LoadingScreen({ playlistId, playlistName: propName }: Lo
         try {
           const res = await fetch(`/api/sort/${playlistId}/status`);
           if (!res.ok) {
-            setError('Could not connect to the sorting service.');
+            setError(t.sort_error);
             return;
           }
           const data = await res.json();
@@ -70,10 +80,10 @@ export default function LoadingScreen({ playlistId, playlistName: propName }: Lo
             else setTrackName(data.track);
           }
           if (data.genre) setTrackGenre(data.genre);
-          if (data.done) { router.push(`/create/${playlistId}`); return; }
-          if (data.error) { router.push('/dashboard'); return; }
+          if (data.done) { router.push(lp(`/create/${playlistId}`)); return; }
+          if (data.error) { router.push(lp('/dashboard')); return; }
         } catch {
-          setError('Could not connect to the sorting service.');
+          setError(t.sort_error);
           return;
         }
         await new Promise<void>(r => setTimeout(r, 800));
@@ -82,7 +92,7 @@ export default function LoadingScreen({ playlistId, playlistName: propName }: Lo
 
     poll();
     return () => { active = false; };
-  }, [playlistId, router]);
+  }, [playlistId, router, t.sort_error, lp]);
 
   const rawEta = total > 0 && current > 0 ? Math.max(0, (elapsed / current) * total - elapsed) : 0;
   if (current > 0) {
@@ -101,8 +111,8 @@ export default function LoadingScreen({ playlistId, playlistName: propName }: Lo
         <span className="l-corner br" />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 16, color: 'var(--fg-mute)', fontSize: 13 }}>
           <span>{error}</span>
-          <button className="btn" style={{ padding: '8px 16px', fontSize: 11 }} onClick={() => router.push('/dashboard')}>
-            <span>Back to dashboard</span><span className="arrow">←</span>
+          <button className="btn" style={{ padding: '8px 16px', fontSize: 11 }} onClick={() => router.push(lp('/dashboard'))}>
+            <span>{t.sort_back}</span><span className="arrow">←</span>
           </button>
         </div>
       </div>
@@ -118,14 +128,14 @@ export default function LoadingScreen({ playlistId, playlistName: propName }: Lo
 
       <header className="l-head">
         <div className="col">
-          <span>process</span>
-          <b>sortify::analyse</b>
+          <span>{t.sort_process}</span>
+          <b>{t.sort_process_name}</b>
         </div>
         <div className="l-brand">
           sortify
         </div>
         <div className="col right">
-          <span>source</span>
+          <span>{t.sort_source_label}</span>
           <b>{playlistName}</b>
         </div>
       </header>
@@ -135,12 +145,12 @@ export default function LoadingScreen({ playlistId, playlistName: propName }: Lo
           <div className="l-phase">{getPhase(pct)}</div>
           <h1 className="l-title">Loa<span className="lo">ding</span><span className="cur" /></h1>
           <p className="l-sub">
-            {'// fetching the genres of your music, hold tight.'}<br />
-            <span className="mute">up to 500ms per track · no data leaves this worker</span>
+            {t.sort_sub_technical}<br />
+            <span className="mute">{t.sort_sub_note}</span>
           </p>
 
           <div className="l-ticker">
-            <span className="l-tag">now</span>
+            <span className="l-tag">{t.sort_now}</span>
             <div className="l-current">
               <b>{trackName}</b>{trackArtist && <span> — {trackArtist}</span>}
               {trackGenre && <span className="g" style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--fg-mute)', marginLeft: 10 }}>{trackGenre}</span>}
@@ -160,18 +170,18 @@ export default function LoadingScreen({ playlistId, playlistName: propName }: Lo
 
       <footer className="l-foot">
         <div className="col">
-          <span>elapsed</span>
+          <span>{t.sort_elapsed}</span>
           <b>{fmt(elapsed)}</b>
         </div>
         <div className="col l-progress">
           <div className="l-progress-label">
-            <span>progress</span>
+            <span>{t.sort_progress}</span>
             <span className="pct-small">{pct}%</span>
           </div>
           <PixelProgressBar pct={pct} />
         </div>
         <div className="col right">
-          <span>eta</span>
+          <span>{t.sort_eta}</span>
           <b>~{fmt(eta)}</b>
         </div>
       </footer>

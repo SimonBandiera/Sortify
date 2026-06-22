@@ -6,6 +6,8 @@ import DitherCanvas from '@/components/dither/DitherCanvas';
 import Reveal from '@/components/ui/Reveal';
 import Nav from '@/components/ui/Nav';
 import type { CoverStyle } from '@/components/dither/dither';
+import { useT } from '@/lib/translations';
+import { useLangPath } from '@/lib/useLocale';
 
 interface Playlist {
   id: string;
@@ -57,10 +59,12 @@ type Filter = (typeof FILTERS)[number];
 
 export default function DashboardClient() {
   const router = useRouter();
+  const t = useT();
+  const lp = useLangPath();
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
-  const [syncLabel, setSyncLabel] = useState('just now');
+  const [syncLabel, setSyncLabel] = useState('');
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState('user');
   const [lookupUrl, setLookupUrl] = useState('');
@@ -89,7 +93,7 @@ export default function DashboardClient() {
     try {
       const res = await fetch('/api/playlists');
       if (res.status === 401) {
-        router.push('/');
+        router.push(lp('/'));
         return;
       }
       const data = await res.json();
@@ -103,9 +107,10 @@ export default function DashboardClient() {
     } finally {
       setLoading(false);
     }
-  }, [router, mapPlaylists]);
+  }, [router, mapPlaylists, lp]);
 
   useEffect(() => {
+    setSyncLabel(t.dash_sync_now);
     try {
       const cached = sessionStorage.getItem('sortify_playlists');
       if (cached) {
@@ -121,7 +126,7 @@ export default function DashboardClient() {
         if (data?.display_name) setUserName(data.display_name);
       })
       .catch(() => {});
-  }, [fetchPlaylists, mapPlaylists]);
+  }, [fetchPlaylists, mapPlaylists, t.dash_sync_now]);
 
   const filtered = playlists.filter((p) => {
     if (filter === 'owned' && !p.owned) return false;
@@ -135,13 +140,13 @@ export default function DashboardClient() {
   const totalTracks = playlists.reduce((a, b) => a + b.tracks, 0);
 
   const handleRefresh = () => {
-    setSyncLabel('syncing…');
-    fetchPlaylists().then(() => setSyncLabel('just now'));
+    setSyncLabel(t.dash_sync_syncing);
+    fetchPlaylists().then(() => setSyncLabel(t.dash_sync_now));
   };
 
   const navigateToSort = (id: string, name: string) => {
     try { sessionStorage.setItem('sortify_sort_name', name); } catch {}
-    router.push(`/sort/${id}`);
+    router.push(lp(`/sort/${id}`));
   };
 
   const handleLookup = useCallback(async () => {
@@ -154,7 +159,7 @@ export default function DashboardClient() {
     const playlistId = match ? match[1] : input;
 
     if (!/^[a-zA-Z0-9]{22}$/.test(playlistId)) {
-      setLookupError('Invalid Spotify playlist URL or ID.');
+      setLookupError(t.dash_lookup_error_invalid);
       setLookupLoading(false);
       return;
     }
@@ -168,7 +173,7 @@ export default function DashboardClient() {
     try {
       const res = await fetch(`/api/playlists/lookup/${playlistId}`);
       if (!res.ok) {
-        setLookupError(res.status === 404 ? 'Playlist not found — check the link and try again.' : 'Something went wrong.');
+        setLookupError(res.status === 404 ? t.dash_lookup_error_not_found : t.dash_lookup_error_generic);
         setLookupLoading(false);
         return;
       }
@@ -188,11 +193,11 @@ export default function DashboardClient() {
       setLookupUrl('');
       navigateToSort(playlistId, p.name);
     } catch {
-      setLookupError('Could not reach the server.');
+      setLookupError(t.dash_lookup_error_server);
     } finally {
       setLookupLoading(false);
     }
-  }, [lookupUrl, playlists, router]);
+  }, [lookupUrl, playlists, router, t, lp]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -209,6 +214,14 @@ export default function DashboardClient() {
   const displayTotal = playlists.length;
   const displayTotalTracks = totalTracks;
 
+  const filterLabels: Record<Filter, string> = {
+    all: t.dash_filter_all,
+    owned: t.dash_filter_owned,
+    followed: t.dash_filter_followed,
+    spotify: t.dash_filter_spotify,
+    blend: t.dash_filter_blend,
+  };
+
   return (
     <>
     <Nav variant="dashboard" userName={userName} />
@@ -217,15 +230,13 @@ export default function DashboardClient() {
         <div className="dash-head">
           <div>
             <h1>Dashb<span className="lo">oard.</span></h1>
-            <p className="sub">
-              {'// choose a playlist to sort. sortify will read its tracks, detect genres, and split it into new playlists on your spotify.'}
-            </p>
+            <p className="sub">{t.dash_sub}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-end', textAlign: 'right' }}>
-            <span style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--fg-mute)' }}>last sync</span>
+            <span style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--fg-mute)' }}>{t.dash_last_sync}</span>
             <span id="lastSync" style={{ fontSize: 14, fontWeight: 500, fontVariantNumeric: 'tabular-nums' }}>{syncLabel}</span>
             <button className="btn" style={{ padding: '6px 12px', fontSize: 10 }} onClick={handleRefresh}>
-              <span>Refresh</span><span className="arrow">↻</span>
+              <span>{t.dash_refresh}</span><span className="arrow">↻</span>
             </button>
           </div>
         </div>
@@ -241,7 +252,7 @@ export default function DashboardClient() {
                 className={`f-pill ${filter === f ? 'on' : ''}`}
                 onClick={() => setFilter(f)}
               >
-                {f.charAt(0).toUpperCase() + f.slice(1)}
+                {filterLabels[f]}
               </button>
             ))}
           </div>
@@ -254,7 +265,7 @@ export default function DashboardClient() {
           <input
             type="text"
             id="searchInput"
-            placeholder="search playlists…"
+            placeholder={t.dash_search_placeholder}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -264,13 +275,13 @@ export default function DashboardClient() {
 
       {loading && playlists.length === 0 ? (
         <div style={{ padding: '80px 0', textAlign: 'center', color: 'var(--fg-mute)', fontSize: 13 }}>
-          Loading playlists…
+          {t.dash_loading}
         </div>
       ) : !loading && displayPlaylists.length === 0 ? (
         <div style={{ padding: '80px 0', textAlign: 'center', color: 'var(--fg-mute)', fontSize: 13, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-          <span>{playlists.length === 0 ? 'No playlists found.' : 'No playlists match your filters.'}</span>
+          <span>{playlists.length === 0 ? t.dash_no_playlists : t.dash_no_match}</span>
           <button className="btn" style={{ padding: '8px 16px', fontSize: 11 }} onClick={playlists.length === 0 ? handleRefresh : () => { setFilter('all'); setQuery(''); }}>
-            <span>{playlists.length === 0 ? 'Refresh' : 'Clear filters'}</span><span className="arrow">{playlists.length === 0 ? '↻' : '×'}</span>
+            <span>{playlists.length === 0 ? t.dash_refresh : t.dash_clear_filters}</span><span className="arrow">{playlists.length === 0 ? '↻' : '×'}</span>
           </button>
         </div>
       ) : (
@@ -298,15 +309,15 @@ export default function DashboardClient() {
                 <span className="pl-tag">{p.tag}</span>
                 <span className="pl-label">{p.name}</span>
                 <div className="pl-hover">
-                  <span className="arrow-big">Sort <span>→</span></span>
+                  <span className="arrow-big">{t.dash_sort_hover} <span>→</span></span>
                 </div>
               </div>
               <div className="pl-meta">
                 <div className="pl-name">{p.name}</div>
               </div>
               <div className="pl-info">
-                <span className="tracks">tracks · <b>{p.tracks.toLocaleString()}</b></span>
-                <span className="pl-owner">{p.tag === 'Owned' ? 'you' : p.tag.toLowerCase()}</span>
+                <span className="tracks">{t.dash_tracks_label} <b>{p.tracks.toLocaleString()}</b></span>
+                <span className="pl-owner">{p.tag === 'Owned' ? t.dash_owner_you : p.tag.toLowerCase()}</span>
               </div>
             </div>
           ))}
@@ -315,10 +326,8 @@ export default function DashboardClient() {
 
       <div className="dash-missing">
         <div className="dash-missing-text">
-          <span className="dash-missing-title">A playlist missing?</span>
-          <span className="dash-missing-sub">
-            Spotify restricts API access to Blends, Daylist, Wrapped and other playlists they own. To sort one of those, copy its tracks into a new playlist first. You can also paste any user-created playlist link below.
-          </span>
+          <span className="dash-missing-title">{t.dash_missing_title}</span>
+          <span className="dash-missing-sub">{t.dash_missing_sub}</span>
         </div>
         <div className="dash-missing-input">
           <div className="search" style={{ flex: 1, minWidth: 0 }}>
@@ -327,7 +336,7 @@ export default function DashboardClient() {
             </svg>
             <input
               type="text"
-              placeholder="https://open.spotify.com/playlist/..."
+              placeholder={t.dash_lookup_placeholder}
               value={lookupUrl}
               onChange={(e) => { setLookupUrl(e.target.value); setLookupError(''); }}
               onKeyDown={(e) => { if (e.key === 'Enter') handleLookup(); }}
@@ -339,7 +348,7 @@ export default function DashboardClient() {
             onClick={handleLookup}
             disabled={lookupLoading || !lookupUrl.trim()}
           >
-            <span>{lookupLoading ? 'Looking up…' : 'Sort this playlist'}</span>
+            <span>{lookupLoading ? t.dash_lookup_loading : t.dash_lookup_btn}</span>
             <span className="arrow">→</span>
           </button>
         </div>
@@ -349,7 +358,7 @@ export default function DashboardClient() {
       </div>
 
       <div className="dash-foot">
-        <span>showing <b style={{ color: 'var(--fg)' }}>{displayPlaylists.length}</b> / {displayTotal} · total tracks <b style={{ color: 'var(--fg)' }}>{displayTotalTracks.toLocaleString()}</b></span>
+        <span>{t.dash_showing} <b style={{ color: 'var(--fg)' }}>{displayPlaylists.length}</b> / {displayTotal} · {t.dash_total_tracks} <b style={{ color: 'var(--fg)' }}>{displayTotalTracks.toLocaleString()}</b></span>
       </div>
     </main>
     </>

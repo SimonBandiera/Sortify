@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import Nav from '@/components/ui/Nav';
+import { useT } from '@/lib/translations';
 
 export default function NotFound() {
+  const t = useT();
+
   return (
     <>
       <Nav />
@@ -24,14 +29,14 @@ export default function NotFound() {
           marginRight: 'auto',
           lineHeight: 1.6,
         }}>
-          {'// there is nothing there. the page you are looking for does not exist or has been moved.'}
+          {t.notfound_msg || '// there is nothing there. the page you are looking for does not exist or has been moved.'}
         </p>
         <Link
           className="btn btn-solid"
           href="/"
           style={{ marginTop: 32, display: 'inline-flex' }}
         >
-          <span>Back to home</span>
+          <span>{t.notfound_back || 'Back to home'}</span>
           <span className="arrow">→</span>
         </Link>
       </div>

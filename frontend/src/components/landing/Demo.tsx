@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import Reveal from '@/components/ui/Reveal';
+import { useT } from '@/lib/translations';
 
 const TRACKS = [
   ['Strobe', 'deadmau5', 'electronic'],
@@ -33,6 +34,7 @@ const TRACKS = [
 const GENRES = Array.from(new Set(TRACKS.map((t) => t[2])));
 
 export default function Demo() {
+  const t = useT();
   const [selected, setSelected] = useState<Set<string>>(new Set(['electronic', 'synthwave']));
   const [highlightIdx, setHighlightIdx] = useState(-1);
   const [running, setRunning] = useState(false);
@@ -51,7 +53,7 @@ export default function Demo() {
     });
   };
 
-  const outputTracks = running ? matched : TRACKS.filter((t) => selected.has(t[2]));
+  const outputTracks = running ? matched : TRACKS.filter((tr) => selected.has(tr[2]));
 
   const runSort = useCallback(async () => {
     if (running) return;
@@ -63,7 +65,7 @@ export default function Demo() {
     for (let i = 0; i < TRACKS.length; i++) {
       setProgress((i + 1) / TRACKS.length);
       setCursorPos(i + 1);
-      setStateLabel('reading');
+      setStateLabel(t.demo_state_reading);
       setProgLabel(`analysing ${TRACKS[i][0].toLowerCase()}`);
       setHighlightIdx(i);
       await new Promise((r) => setTimeout(r, 95));
@@ -72,20 +74,20 @@ export default function Demo() {
         setMatched([...m]);
       }
     }
-    setStateLabel('done');
-    setProgLabel(`✓ ${m.length} tracks written to new playlist`);
+    setStateLabel(t.demo_state_done.replace('{n}', String(m.length)));
+    setProgLabel(t.demo_state_done.replace('{n}', String(m.length)));
     setHighlightIdx(-1);
     setRunning(false);
-  }, [selected, running]);
+  }, [selected, running, t]);
 
   return (
     <section className="section" id="demo">
       <div className="page">
         <Reveal>
           <div className="section-head">
-            <div className="section-label">002 · Preview</div>
-            <h2 className="section-title">Watch it sort, live.</h2>
-            <div className="tiny mute">Sample · 24 tracks</div>
+            <div className="section-label">{t.demo_label}</div>
+            <h2 className="section-title">{t.demo_title}</h2>
+            <div className="tiny mute">{t.demo_sample}</div>
           </div>
         </Reveal>
 
@@ -93,29 +95,29 @@ export default function Demo() {
           <div className="demo">
             <div className="demo-pane">
               <div className="demo-header">
-                <span className="h-label">Input · chaos.playlist</span>
+                <span className="h-label">{t.demo_input_label}</span>
                 <span className="h-count">24 tracks</span>
               </div>
               <ul className="track-list">
-                {TRACKS.map((t, i) => (
+                {TRACKS.map((tr, i) => (
                   <li key={i} className={`track ${highlightIdx === i ? 'matched' : ''}`}>
                     <span className="t-idx">{String(i + 1).padStart(2, '0')}</span>
                     <span className="t-name">
-                      <b>{t[0]}</b> <span>— {t[1]}</span>
+                      <b>{tr[0]}</b> <span>— {tr[1]}</span>
                     </span>
-                    <span className="t-genre">{t[2]}</span>
+                    <span className="t-genre">{tr[2]}</span>
                   </li>
                 ))}
               </ul>
               <div className="demo-footer">
-                <span>cursor {cursorPos} / 24</span>
+                <span>{t.demo_cursor} {cursorPos} / 24</span>
                 <span>{stateLabel}</span>
               </div>
             </div>
 
             <div className="demo-pane">
               <div className="demo-header">
-                <span className="h-label">Output · sorted</span>
+                <span className="h-label">{t.demo_output_label}</span>
                 <span className="h-count">{outputTracks.length} track{outputTracks.length === 1 ? '' : 's'}</span>
               </div>
               <div className="genre-select">
@@ -130,13 +132,13 @@ export default function Demo() {
                 ))}
               </div>
               <ul className="track-list" style={{ flex: 1 }}>
-                {outputTracks.map((t, i) => (
+                {outputTracks.map((tr, i) => (
                   <li key={i} className="track">
                     <span className="t-idx">{String(i + 1).padStart(2, '0')}</span>
                     <span className="t-name">
-                      <b>{t[0]}</b> <span>— {t[1]}</span>
+                      <b>{tr[0]}</b> <span>— {tr[1]}</span>
                     </span>
-                    <span className="t-genre">{t[2]}</span>
+                    <span className="t-genre">{tr[2]}</span>
                   </li>
                 ))}
               </ul>
@@ -154,7 +156,7 @@ export default function Demo() {
                   disabled={running}
                   style={{ padding: '6px 12px', fontSize: 10 }}
                 >
-                  <span>Run sort</span>
+                  <span>{t.demo_run_sort}</span>
                   <span className="arrow">→</span>
                 </button>
               </div>

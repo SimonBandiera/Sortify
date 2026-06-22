@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Reveal from '@/components/ui/Reveal';
+import { useT } from '@/lib/translations';
 
 interface CounterProps {
   target: number;
@@ -47,22 +48,24 @@ function Counter({ target, suffix = '' }: CounterProps) {
   );
 }
 
-const STATS = [
-  { label: 'Songs analysed', target: 8421736, suffix: '', sub: '+ ~1,200/hour across active sessions.' },
-  { label: 'Playlists sorted', target: 41280, suffix: '', sub: 'Since launch, april 2022.' },
-  { label: 'Genres detected', target: 1482, suffix: '', sub: 'Deduped to 42 canonical buckets.' },
-  { label: 'Median runtime', target: 4, suffix: 's', sub: 'Per 500-track playlist.' },
-];
-
 export default function Stats() {
+  const t = useT();
+
+  const STATS = [
+    { label: t.stat_songs_label, target: 8421736, suffix: '', sub: t.stat_songs_sub },
+    { label: t.stat_playlists_label, target: 41280, suffix: '', sub: t.stat_playlists_sub },
+    { label: t.stat_genres_label, target: 1482, suffix: '', sub: t.stat_genres_sub },
+    { label: t.stat_runtime_label, target: 4, suffix: 's', sub: t.stat_runtime_sub },
+  ];
+
   return (
     <section className="section">
       <div className="page">
         <Reveal>
           <div className="section-head">
-            <div className="section-label">003 · Counters</div>
-            <h2 className="section-title">Already at work.</h2>
-            <div className="tiny mute">Live · updates every 60s</div>
+            <div className="section-label">{t.stats_label}</div>
+            <h2 className="section-title">{t.stats_title}</h2>
+            <div className="tiny mute">{t.stats_live}</div>
           </div>
         </Reveal>
 

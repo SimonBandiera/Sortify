@@ -2,40 +2,25 @@
 
 import Reveal from '@/components/ui/Reveal';
 import DitherCanvas from '@/components/dither/DitherCanvas';
-
-const STEPS = [
-  {
-    num: '01',
-    label: 'Read',
-    angle: 180,
-    title: 'We read every track in your playlist.',
-    body: 'Spotify oauth token, scoped to read + modify. Nothing is stored server-side. Your library stays yours.',
-  },
-  {
-    num: '02',
-    label: 'Analyse',
-    angle: 200,
-    title: 'We pull the genres from each song.',
-    body: 'Artist metadata, audio features, collaborative tags. We run them through a dedup pass and land on ~40 canonical buckets.',
-  },
-  {
-    num: '03',
-    label: 'Sort',
-    angle: 220,
-    title: 'You pick. We build the new playlists.',
-    body: 'Select any combination of genres. Sortify spins up fresh playlists on your Spotify, titled and ordered. Keep, rename, delete.',
-  },
-];
+import { useT } from '@/lib/translations';
 
 export default function HowItWorks() {
+  const t = useT();
+
+  const STEPS = [
+    { num: '01', label: t.how_step1_label, angle: 180, title: t.how_step1_title, body: t.how_step1_body },
+    { num: '02', label: t.how_step2_label, angle: 200, title: t.how_step2_title, body: t.how_step2_body },
+    { num: '03', label: t.how_step3_label, angle: 220, title: t.how_step3_title, body: t.how_step3_body },
+  ];
+
   return (
     <section className="section" id="how">
       <div className="page">
         <Reveal>
           <div className="section-head">
-            <div className="section-label">001 · Process</div>
-            <h2 className="section-title">How it works.</h2>
-            <div className="tiny mute">Est. runtime · 3–12s</div>
+            <div className="section-label">{t.how_label}</div>
+            <h2 className="section-title">{t.how_title}</h2>
+            <div className="tiny mute">{t.how_runtime}</div>
           </div>
         </Reveal>
 

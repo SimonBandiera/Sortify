@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Nav from '@/components/ui/Nav';
 import Reveal from '@/components/ui/Reveal';
+import { useT } from '@/lib/translations';
+import { useLangPath } from '@/lib/useLocale';
 
 interface Genre {
   name: string;
   count: number;
 }
-
-const SUGGESTIONS = ['For the car', 'Late night', 'Sunday morning', 'Deep focus', 'Workout', 'Nostalgia'];
 
 type Filter = 'all' | 'popular' | 'selected';
 
@@ -21,6 +21,18 @@ interface GenrePickerClientProps {
 
 export default function GenrePickerClient({ playlistId }: GenrePickerClientProps) {
   const router = useRouter();
+  const t = useT();
+  const lp = useLangPath();
+
+  const SUGGESTIONS = [
+    t.create_suggestion_car,
+    t.create_suggestion_night,
+    t.create_suggestion_sunday,
+    t.create_suggestion_focus,
+    t.create_suggestion_workout,
+    t.create_suggestion_nostalgia,
+  ];
+
   const [genres, setGenres] = useState<Genre[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [filter, setFilter] = useState<Filter>('all');
@@ -95,12 +107,12 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
         if (spotifyUrl) {
           try { sessionStorage.setItem('sortify_done', JSON.stringify({ spotifyUrl, name: playlistName, genres: selectedArr, tracks: totalTracks, tracksAdded: data?.tracks?.total ?? totalTracks, durationMs, ownerName: data?.owner_name })); } catch {}
         }
-        router.push(`/finish/${playlistId}`);
+        router.push(lp(`/finish/${playlistId}`));
       }
     } catch {
       // stay on page — user can retry
     }
-  }, [playlistId, playlistName, selectedArr, router]);
+  }, [playlistId, playlistName, selectedArr, router, lp]);
 
   const mins = Math.floor(totalTracks * 3.5);
   const hh = Math.floor(mins / 60);
@@ -108,6 +120,12 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
   const runtime = (hh > 0 ? hh + 'h ' : '') + String(mm).padStart(2, '0') + 'm';
   const size = totalTracks > 0 ? Math.round(totalTracks * 3.8) + ' mb' : '—';
   const canCreate = selectedArr.length > 0 && playlistName.trim().length > 0;
+
+  const filterLabels: Record<Filter, string> = {
+    all: t.create_filter_all,
+    popular: t.create_filter_popular,
+    selected: t.create_filter_selected,
+  };
 
   return (
     <>
@@ -117,52 +135,50 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
           <div className="pg-head">
             <div>
               <h1>Last <span className="lo">step.</span></h1>
-              <p className="pg-sub">
-                {'// choose the genres you want in your new playlist by clicking them. sortify will write a fresh playlist to your spotify with just those tracks — your source stays untouched.'}
-              </p>
+              <p className="pg-sub">{t.create_sub}</p>
             </div>
             <div className="pg-source">
-              <span>sorting from</span>
+              <span>{t.create_sorting_from}</span>
               <b>{sourceName}</b>
-              <span style={{ color: 'var(--fg-dim)' }}>{genres.length} genres</span>
+              <span style={{ color: 'var(--fg-dim)' }}>{t.create_genres_count.replace('{n}', String(genres.length))}</span>
             </div>
           </div>
         </Reveal>
 
         <div className="pg-toolbar">
           <div className="left">
-            <span><b>{selectedArr.length}</b> selected · <b>{totalTracks}</b> tracks</span>
+            <span><b>{selectedArr.length}</b> {t.create_selected_label} · <b>{totalTracks}</b> {t.create_tracks_label}</span>
             <div className="pg-actions">
               {(['all', 'popular', 'selected'] as const).map((f) => (
                 <button key={f} className={`f-pill ${filter === f ? 'on' : ''}`} onClick={() => setFilter(f)}>
-                  {f.charAt(0).toUpperCase() + f.slice(1)}
+                  {filterLabels[f]}
                 </button>
               ))}
             </div>
           </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
             <button className="f-pill" onClick={() => { filtered.forEach((x) => selected.add(x.name)); setSelected(new Set(selected)); }}>
-              Select all
+              {t.create_select_all}
             </button>
             <button className="f-pill" onClick={() => { setSelected(new Set()); setUserTouchedName(false); }}>
-              Clear
+              {t.create_clear}
             </button>
             <div className="search">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2">
                 <circle cx="5" cy="5" r="3.5" /><path d="M8 8 L11 11" />
               </svg>
-              <input type="text" placeholder="search genres…" value={query} onChange={(e) => setQuery(e.target.value)} />
+              <input type="text" placeholder={t.create_search_placeholder} value={query} onChange={(e) => setQuery(e.target.value)} />
             </div>
           </div>
         </div>
 
         {loading ? (
           <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--fg-mute)', fontSize: 13 }}>
-            Loading genres…
+            {t.create_loading}
           </div>
         ) : genres.length === 0 ? (
           <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--fg-mute)', fontSize: 13 }}>
-            No genres found. Try sorting the playlist again.
+            {t.create_no_genres}
           </div>
         ) : (
         <div className="g-grid">
@@ -185,22 +201,22 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
         <div className="pg-bottom">
           <div className="pane">
             <div className="pane-label">
-              <span>◇ Playlist name</span>
-              <span className="mute">{playlistName.trim() ? 'ok' : 'required'}</span>
+              <span>{t.create_pl_name_section}</span>
+              <span className="mute">{playlistName.trim() ? t.create_pl_name_ok : t.create_pl_name_required}</span>
             </div>
             <input
               className="pl-name-input"
-              placeholder="untitled · electronic + house"
+              placeholder={t.create_pl_name_placeholder}
               maxLength={60}
               value={playlistName}
               onChange={(e) => { setPlaylistName(e.target.value); setUserTouchedName(e.target.value.length > 0); }}
             />
             <div className="pl-name-hint">
-              <span className="mute">auto-generated from your selection · editable</span>
+              <span className="mute">{t.create_pl_name_hint}</span>
               <span className="count"><b>{playlistName.length}</b>/60</span>
             </div>
             <div style={{ marginTop: 4 }}>
-              <div className="pane-label" style={{ marginBottom: 8 }}><span>Suggestions</span><span /></div>
+              <div className="pane-label" style={{ marginBottom: 8 }}><span>{t.create_suggestions_label}</span><span /></div>
               <div className="suggest">
                 {SUGGESTIONS.map((s) => (
                   <button key={s} className="s" onClick={() => { setPlaylistName(s); setUserTouchedName(true); }}>
@@ -212,16 +228,16 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
           </div>
 
           <div className="pane">
-            <div className="pane-label"><span>◇ Summary</span><span className="mute">preview</span></div>
+            <div className="pane-label"><span>{t.create_summary_section}</span><span className="mute">{t.create_summary_preview}</span></div>
             <div className="sum-kvs">
-              <div className="sum-kv"><span className="k">Genres</span><span className="v">{selectedArr.length}</span></div>
-              <div className="sum-kv"><span className="k">Tracks</span><span className="v">{totalTracks}</span></div>
-              <div className="sum-kv"><span className="k">Runtime</span><span className="v">{runtime}</span></div>
-              <div className="sum-kv"><span className="k">Est. size</span><span className="v">{size}</span></div>
+              <div className="sum-kv"><span className="k">{t.create_kv_genres}</span><span className="v">{selectedArr.length}</span></div>
+              <div className="sum-kv"><span className="k">{t.create_kv_tracks}</span><span className="v">{totalTracks}</span></div>
+              <div className="sum-kv"><span className="k">{t.create_kv_runtime}</span><span className="v">{runtime}</span></div>
+              <div className="sum-kv"><span className="k">{t.create_kv_est_size}</span><span className="v">{size}</span></div>
             </div>
             <div className="sum-chips">
               {selectedArr.length === 0 ? (
-                <span className="c" style={{ color: 'var(--fg-mute)' }}>no genres selected</span>
+                <span className="c" style={{ color: 'var(--fg-mute)' }}>{t.create_no_genres_selected}</span>
               ) : (
                 <>
                   {selectedArr.slice(0, 10).map((n) => <span key={n} className="c">{n}</span>)}
@@ -230,24 +246,28 @@ export default function GenrePickerClient({ playlistId }: GenrePickerClientProps
               )}
             </div>
             <div style={{ marginTop: 'auto', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--fg-mute)' }}>
-              target · <span style={{ color: 'var(--fg)' }}>Spotify / user</span>
+              {t.create_target} <span style={{ color: 'var(--fg)' }}>Spotify / user</span>
             </div>
           </div>
         </div>
 
         <div className="pg-cta-row">
-          <Link className="back" href="/dashboard">
-            <span>←</span><span>Back to dashboard</span>
+          <Link className="back" href={lp('/dashboard')}>
+            <span>←</span><span>{t.create_back}</span>
           </Link>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
             <span style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--fg-mute)' }}>
-              {selectedArr.length === 0 ? 'select at least 1 genre' : !playlistName.trim() ? 'name your playlist' : `ready to write ${totalTracks} tracks`}
+              {selectedArr.length === 0
+                ? t.create_hint_select
+                : !playlistName.trim()
+                  ? t.create_hint_name
+                  : t.create_hint_ready.replace('{n}', String(totalTracks))}
             </span>
             <button
               className={`btn btn-solid ${canCreate ? '' : 'disabled'}`}
               onClick={handleCreate}
             >
-              <span>Create playlist</span><span className="arrow">→</span>
+              <span>{t.create_btn}</span><span className="arrow">→</span>
             </button>
           </div>
         </div>

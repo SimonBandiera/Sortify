@@ -1,38 +1,17 @@
-import type { Metadata } from 'next';
-import '@/styles/globals.css';
+import { cookies } from 'next/headers';
+import { hasLocale, DEFAULT_LOCALE } from '@/lib/locales';
 
-export const metadata: Metadata = {
-  title: {
-    default: 'sortify — sort your Spotify playlists by genre',
-    template: '%s · sortify',
-  },
-  description:
-    'Free, open-source utility that reads your Spotify playlists, detects genres via Last.fm tags, and splits them into clean new playlists. No signup, no ads.',
-  keywords: ['spotify', 'playlist', 'genre', 'sort', 'music', 'organizer', 'free', 'open source'],
-  authors: [
-    { name: 'Hugo Galan', url: 'https://hgalan.dev' },
-    { name: 'Simon Bandiera', url: 'https://sbandiera.dev' },
-  ],
-  openGraph: {
-    title: 'sortify — sort your Spotify playlists by genre',
-    description: 'Reads your playlists, detects genres, splits them into new clean ones. Free and open source.',
-    siteName: 'sortify',
-    type: 'website',
-    locale: 'en_US',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const cookieLang = cookieStore.get('NEXT_LOCALE')?.value;
+  const lang = cookieLang && hasLocale(cookieLang) ? cookieLang : DEFAULT_LOCALE;
+
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body>{children}</body>
     </html>
   );

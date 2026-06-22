@@ -2,12 +2,15 @@
 
 import Reveal from '@/components/ui/Reveal';
 import DitherCanvas from '@/components/dither/DitherCanvas';
+import { useT } from '@/lib/translations';
 
 interface HeroProps {
   spotifyAuthUrl: string;
 }
 
 export default function Hero({ spotifyAuthUrl }: HeroProps) {
+  const t = useT();
+
   return (
     <section className="hero">
       <div className="page hero-grid">
@@ -16,34 +19,29 @@ export default function Hero({ spotifyAuthUrl }: HeroProps) {
             <div className="hero-head-top">
               <Reveal>
                 <h1 className="hero-title">
-                  Sort your<br />
-                  playlists<br />
-                  <span className="lo">faster than a</span><br />
-                  heartbeat<span className="blink">&nbsp;</span>
+                  {t.hero_title_1}<br />
+                  {t.hero_title_2}<br />
+                  <span className="lo">{t.hero_title_3}</span><br />
+                  {t.hero_title_4}<span className="blink">&nbsp;</span>
                 </h1>
               </Reveal>
               <Reveal>
                 <div className="hero-sub">
-                  <p style={{ margin: 0 }}>
-                    {'// a utility that reads your playlists, detects the genres, and splits them into new, clean ones — in seconds, not evenings.'}
-                  </p>
-                  <p className="mute" style={{ margin: 0 }}>
-                    Free. Open source. No ads. No model training.<br />
-                    Works on every playlist you own or follow.
-                  </p>
+                  <p style={{ margin: 0 }}>{t.hero_sub_technical}</p>
+                  <p className="mute" style={{ margin: 0 }}>{t.hero_sub_note}</p>
                 </div>
               </Reveal>
             </div>
             <Reveal>
               <div className="hero-cta">
                 <a className="btn btn-solid" href={spotifyAuthUrl}>
-                  <span>Connect Spotify</span>
+                  <span>{t.nav_connect_spotify}</span>
                   <span className="arrow">→</span>
                 </a>
                 <a className="btn" href="#how">
-                  <span>How it works</span>
+                  <span>{t.hero_cta_how}</span>
                 </a>
-                <span className="hero-cta-note">◇ no card · no signup · oauth only</span>
+                <span className="hero-cta-note">{t.hero_cta_note}</span>
               </div>
             </Reveal>
           </div>

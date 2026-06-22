@@ -2,26 +2,28 @@
 
 import { useState } from 'react';
 import Reveal from '@/components/ui/Reveal';
-
-const FAQS = [
-  ['Is it really free?', 'Yes. Sortify is free and will stay free. It costs us about €4/month to run. No paywalls, no premium tier, no dark patterns.'],
-  ['Does Sortify store my data?', 'No. We use Spotify oauth to read your playlists on-the-fly, compute the genres in memory, and write the new playlists back. Nothing is persisted server-side beyond session duration. Full source is on github if you want to verify.'],
-  ['How accurate are the genres?', "Good enough. We look up each track on Last.fm and use the community-voted genre tags to classify it. Results are cached so repeat runs are instant. Edge cases exist, a pop-punk track might land in \"rock\" or \"punk\" depending on how the community tagged it. You can re-run at any time."],
-  ['Will it modify my original playlist?', "Never. Sortify only reads the source playlist and creates new ones. Your originals are untouched. You can delete the generated ones from Spotify anytime if you don't like them."],
-  ["Why is it only for Spotify?", "Because that's what we use. If you'd like to see it on Apple Music, Deezer, or Tidal, open an issue or send a PR. The core sort logic is platform-agnostic."],
-  ['Can I self-host it?', "Yes. The repo includes a docker-compose and a small python worker. You'll need to register your own Spotify developer app. Takes ~10 minutes if you've done oauth before."],
-];
+import { useT } from '@/lib/translations';
 
 export default function FAQ() {
+  const t = useT();
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  const FAQS = [
+    [t.faq_q1, t.faq_a1],
+    [t.faq_q2, t.faq_a2],
+    [t.faq_q3, t.faq_a3],
+    [t.faq_q4, t.faq_a4],
+    [t.faq_q5, t.faq_a5],
+    [t.faq_q6, t.faq_a6],
+  ];
 
   return (
     <section className="section" id="faq">
       <div className="page">
         <Reveal>
           <div className="section-head">
-            <div className="section-label">005 · Q&A</div>
-            <h2 className="section-title">Common questions.</h2>
+            <div className="section-label">{t.faq_label}</div>
+            <h2 className="section-title">{t.faq_title}</h2>
             <div className="tiny mute">6 entries</div>
           </div>
         </Reveal>
