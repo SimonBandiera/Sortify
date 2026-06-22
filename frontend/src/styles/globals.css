@@ -138,8 +138,13 @@ button {
 .nav-links a { transition: color .15s; }
 .nav-links a:hover { color: var(--fg); }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .nav-links { display: none; }
+}
+@media (max-width: 400px) {
+  .nav-inner { gap: 12px; }
+  .nav-brand { font-size: 22px; }
+  .nav .btn { padding: 9px 12px; letter-spacing: 0.08em; gap: 6px; }
 }
 
 /* ————— buttons ————— */
@@ -337,10 +342,16 @@ h1.hero-title .lo {
 .hero-canvas-corner.bl { bottom: 0; left: 0; }
 .hero-canvas-corner.br { bottom: 0; right: 0; }
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .hero-head-top { grid-template-columns: 1fr; gap: 32px; }
   .hero-canvas-wrap { aspect-ratio: 4/3; }
-  .hero-grid { padding: 100px 0 60px; gap: 48px; }
+  .hero-grid { padding: 100px 0 60px; gap: 40px; }
+}
+@media (max-width: 560px) {
+  .hero-grid { padding: 88px 0 48px; gap: 32px; }
+  .hero-meta { flex-wrap: wrap; gap: 18px; }
+  .hero-cta-note { margin-left: 0; flex-basis: 100%; }
+  .hero-canvas-wrap { aspect-ratio: 1 / 1; }
 }
 
 /* ————— how it works ————— */
@@ -394,9 +405,9 @@ h1.hero-title .lo {
   position: absolute; inset: 0; width: 100%; height: 100%;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .steps { grid-template-columns: 1fr; }
-  .step { border-right: 0; border-bottom: 1px solid var(--border); }
+  .step { border-right: 0; border-bottom: 1px solid var(--border); min-height: 0; }
   .step:last-child { border-bottom: 0; }
 }
 
@@ -530,8 +541,8 @@ h1.hero-title .lo {
   transition: transform .3s linear;
 }
 
-@media (max-width: 780px) {
-  .demo { grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+  .demo { grid-template-columns: 1fr; min-height: 0; }
   .demo-pane + .demo-pane { border-left: 0; border-top: 1px solid var(--border); }
 }
 
@@ -577,9 +588,9 @@ h1.hero-title .lo {
   color: var(--fg-dim);
 }
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .stats { grid-template-columns: 1fr 1fr; }
-  .stat { border-right: 0; border-bottom: 1px solid var(--border); }
+  .stat { border-right: 0; border-bottom: 1px solid var(--border); min-height: 0; }
   .stat:nth-child(2n) { border-right: 0; }
   .stat:nth-child(odd) { border-right: 1px solid var(--border); }
 }
@@ -621,7 +632,7 @@ h1.hero-title .lo {
   letter-spacing: -0.01em;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 900px) {
   .genre-grid { grid-template-columns: repeat(3, 1fr); }
   .genre-cell:nth-child(6n) { border-right: 1px solid var(--border); }
   .genre-cell:nth-child(3n) { border-right: 0; }
@@ -710,7 +721,7 @@ h1.hero-title .lo {
   -webkit-mask-image: linear-gradient(to left, #000 60%, transparent 100%);
   mask-image: linear-gradient(to left, #000 60%, transparent 100%);
 }
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .os-cta-bg-side { width: 100%; opacity: 0.18; -webkit-mask-image: none; mask-image: none; }
 }
 .os-cta-content { position: relative; z-index: 1; }
@@ -736,8 +747,12 @@ h1.hero-title .lo {
   color: var(--bg);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .os-cta { grid-template-columns: 1fr; padding: 32px 24px; }
+}
+@media (max-width: 400px) {
+  .os-cta { padding: 28px 20px; }
+  .os-cta-actions .btn { width: 100%; justify-content: center; }
 }
 
 /* ————— footer ————— */
@@ -819,8 +834,22 @@ h1.hero-title .lo {
   gap: 10px;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+/* ————— shared responsive breakpoints: 1100 / 900 / 768 / 560 / 400 ————— */
+@media (max-width: 768px) {
+  .section { padding: 64px 0; }
+  .section-head { gap: 18px; margin-bottom: 36px; }
+}
+@media (max-width: 560px) {
+  .section { padding: 48px 0; }
+  .section-head { grid-template-columns: 1fr; align-items: start; gap: 12px; margin-bottom: 28px; }
+  .section-title { font-size: clamp(26px, 8vw, 40px); }
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+  .footer-author { padding: 12px 14px; }
+  .footer-bottom { justify-content: flex-start; }
 }
 
 /* ————— blink cursor ————— */

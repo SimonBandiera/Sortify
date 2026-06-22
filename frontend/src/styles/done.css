@@ -5,6 +5,7 @@
   grid-template-rows: auto 1fr auto;
   padding: 56px clamp(24px, 4vw, 64px) 48px;
   position: relative;
+  overflow-x: clip;
 }
 .d-corner {
   position: absolute;
@@ -54,13 +55,6 @@
   gap: 40px;
   min-height: 60vh;
 }
-@media (max-width: 1000px) {
-  .d-main { grid-template-columns: 1fr; gap: 56px; text-align: center; }
-  .d-side { align-items: center !important; text-align: center; }
-  .d-side-right { order: 3; }
-  .d-side-right .d-side-inner { align-items: center !important; }
-}
-
 .d-side {
   display: flex;
   flex-direction: column;
@@ -243,4 +237,41 @@
   text-align: center;
   padding: 8px 16px;
   border: 1px dashed var(--border-strong);
+}
+
+/* ————— responsive (defined after base rules so the cascade wins) ————— */
+@media (max-width: 1100px) {
+  .d-main { grid-template-columns: 1fr; gap: 44px; text-align: center; min-height: 0; }
+  /* surface the result card in the first viewport, details below it */
+  .d-card-wrap { order: -1; }
+  .d-side { order: 1; align-items: center; text-align: center; }
+  .d-side-right { order: 2; }
+  .d-side .d-side-inner,
+  .d-side.right .d-side-inner { align-items: center; max-width: 420px; }
+  /* normalise the phase rule so it reads the same on both sides */
+  .d-side.right .d-phase { flex-direction: row; }
+  .d-side.right .d-phase::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--accent); }
+  .d-side.right .d-phase::after { display: none; }
+  .d-kvs,
+  .d-side.right .d-kvs { grid-template-columns: repeat(3, auto); justify-content: center; gap: 14px 26px; text-align: center; }
+  .d-chips,
+  .d-side.right .d-chips { justify-content: center; }
+  .d-actions,
+  .d-side.right .d-actions { align-items: stretch; }
+}
+@media (max-width: 768px) {
+  .done-wrap { padding: 48px 20px 40px; gap: 20px; }
+  .d-head { grid-template-columns: 1fr 1fr; gap: 8px 16px; padding-bottom: 24px; align-items: start; }
+  .d-head .center { grid-column: 1 / -1; order: -1; align-items: center; margin-bottom: 4px; }
+  .d-main { gap: 36px; }
+  .d-card-halo { inset: -30px; }
+  .d-foot { grid-template-columns: 1fr; text-align: center; gap: 16px; padding-top: 28px; }
+  .d-foot .col, .d-foot .col.right { text-align: center; align-items: center; justify-content: center !important; }
+  .d-corner { display: none; }
+}
+@media (max-width: 560px) {
+  .d-title { font-size: clamp(40px, 13vw, 64px); }
+  .d-kvs, .d-side.right .d-kvs { gap: 12px 18px; }
+  .d-actions { width: 100%; }
+  .d-actions .btn { width: 100%; }
 }
