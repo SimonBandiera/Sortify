@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useCallback } from 'react';
 import { LOCALES, DEFAULT_LOCALE } from './locales';
 import type { Locale } from './locales';
 
@@ -12,5 +13,5 @@ export function useLocale(): Locale {
 
 export function useLangPath() {
   const locale = useLocale();
-  return (path: string) => `/${locale}${path}`;
+  return useCallback((path: string) => `/${locale}${path}`, [locale]);
 }

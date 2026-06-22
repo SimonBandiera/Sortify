@@ -109,6 +109,8 @@ export default function DashboardClient() {
     }
   }, [router, mapPlaylists, lp]);
 
+  // Run once on mount: hydrate from cache, then fetch fresh playlists + profile.
+  // Intentionally mount-only — fetchPlaylists/mapPlaylists are memoized and stable.
   useEffect(() => {
     setSyncLabel(t.dash_sync_now);
     try {
@@ -126,7 +128,8 @@ export default function DashboardClient() {
         if (data?.display_name) setUserName(data.display_name);
       })
       .catch(() => {});
-  }, [fetchPlaylists, mapPlaylists, t.dash_sync_now]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filtered = playlists.filter((p) => {
     if (filter === 'owned' && !p.owned) return false;
