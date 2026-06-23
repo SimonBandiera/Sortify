@@ -1,0 +1,15 @@
+# Sortify
+
+> Free, open-source web app that sorts your Spotify playlists by genre. It reads a playlist, detects each track's genre from Last.fm tags, and splits it into clean new playlists. No signup beyond Spotify login, no ads.
+
+Sortify is privacy-friendly and open source. Users connect with Spotify (OAuth), pick a playlist, and Sortify generates new genre-based playlists in their account. The interface is available in 14 languages.
+
+## Pages
+
+- [Home](https://www.sortify.fr/): What Sortify does, how it works, supported genres, FAQ, and the Spotify connect entry point.
+
+## Notes
+
+- Authentication is handled entirely through Spotify OAuth; Sortify stores no passwords.
+- Genre detection relies on Last.fm tags for the tracks in a playlist.
+- The dashboard, sorting, and playlist-creation flows are only available after signing in with Spotify.

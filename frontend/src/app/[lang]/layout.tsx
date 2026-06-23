@@ -4,6 +4,7 @@ import { getDictionary } from '@/lib/dictionary';
 import { hasLocale, LOCALES } from '@/lib/locales';
 import type { Locale } from '@/lib/locales';
 import { TranslationsProvider } from '@/lib/translations';
+import { SITE_URL } from '@/lib/site';
 import '@/styles/globals.css';
 
 export async function generateStaticParams() {
@@ -11,6 +12,7 @@ export async function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'sortify — sort your Spotify playlists by genre',
     template: '%s · sortify',

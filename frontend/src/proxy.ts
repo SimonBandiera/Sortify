@@ -35,6 +35,9 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|auth|spotify|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    // Skip API/auth/Next internals, the metadata routes, and any path with a
+    // file extension (fonts, svg, llms.txt, …) so static assets are served
+    // directly instead of being redirected into a locale prefix.
+    '/((?!api|auth|spotify|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|llms.txt|.*\\..*).*)',
   ],
 };
