@@ -57,7 +57,7 @@
   "genres_title": "Her tür. Sınır yok.",
   "genres_powered": "Topluluk etiketleriyle güçlendirilmiştir",
 
-  "faq_label": "005 · S&C",
+  "faq_label": "004 · S&C",
   "faq_title": "Sık sorulan sorular.",
   "faq_q1": "Gerçekten ücretsiz mi?",
   "faq_a1": "Evet. Sortify ücretsizdir ve ücretsiz kalacak. Bize aylık yaklaşık 4 € maliyeti var. Ödeme duvarı yok, premium katman yok, karanlık desenler yok.",
@@ -72,7 +72,7 @@
   "faq_q6": "Kendi sunucumda barındırabilir miyim?",
   "faq_a6": "Evet. Repo bir docker-compose ve küçük bir Python worker içeriyor. Kendi Spotify geliştirici uygulamanızı kayıt ettirmeniz gerekecek. Daha önce OAuth yaptıysanız ~10 dakika sürer.",
 
-  "cta_label": "006 · Açık",
+  "cta_label": "005 · Açık",
   "cta_title": "Ücretsiz. Açık kaynak. Fork etmek için sizin.",
   "cta_body": "Sortify MIT lisanslıdır ve tek bir Python worker üzerinde çalışır. Kaynağı okuyun, kendiniz barındırın veya bir PR gönderin.",
   "cta_view_source": "Kaynağı görüntüle",

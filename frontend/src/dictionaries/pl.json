@@ -57,7 +57,7 @@
   "genres_title": "Każdy gatunek. Bez ograniczeń.",
   "genres_powered": "Zasilane tagami społeczności",
 
-  "faq_label": "005 · P&O",
+  "faq_label": "004 · P&O",
   "faq_title": "Częste pytania.",
   "faq_q1": "Czy to naprawdę darmowe?",
   "faq_a1": "Tak. Sortify jest darmowe i takie pozostanie. Kosztuje nas około 4 €/miesiąc w utrzymaniu. Bez paywall, bez premium, bez ciemnych wzorców.",
@@ -72,7 +72,7 @@
   "faq_q6": "Czy mogę to sam hostować?",
   "faq_a6": "Tak. Repozytorium zawiera docker-compose i małego workera Python. Musisz zarejestrować własną aplikację Spotify Developer. Zajmuje ~10 minut, jeśli robiłeś już OAuth.",
 
-  "cta_label": "006 · Otwarte",
+  "cta_label": "005 · Otwarte",
   "cta_title": "Darmowe. Open source. Twoje do forkowania.",
   "cta_body": "Sortify jest na licencji MIT i działa na jednym workerze Python. Czytaj kod, hostuj własne lub wyślij PR.",
   "cta_view_source": "Zobacz kod źródłowy",

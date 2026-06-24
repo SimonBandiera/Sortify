@@ -57,7 +57,7 @@
   "genres_title": "Elk genre. Geen grenzen.",
   "genres_powered": "Aangedreven door community-tags",
 
-  "faq_label": "005 · V&A",
+  "faq_label": "004 · V&A",
   "faq_title": "Veelgestelde vragen.",
   "faq_q1": "Is het echt gratis?",
   "faq_a1": "Ja. Sortify is gratis en blijft gratis. Het kost ons ongeveer €4/maand om te draaien. Geen paywalls, geen premium tier, geen dark patterns.",
@@ -72,7 +72,7 @@
   "faq_q6": "Kan ik het zelf hosten?",
   "faq_a6": "Ja. De repo bevat een docker-compose en een kleine Python-worker. Je moet je eigen Spotify-ontwikkelaarsapp registreren. Duurt ~10 minuten als je OAuth al eerder hebt gedaan.",
 
-  "cta_label": "006 · Open",
+  "cta_label": "005 · Open",
   "cta_title": "Gratis. Open source. Van jou om te forken.",
   "cta_body": "Sortify is MIT-gelicenseerd en draait op een enkele Python-worker. Lees de broncode, host je eigen, of dien een PR in.",
   "cta_view_source": "Broncode bekijken",

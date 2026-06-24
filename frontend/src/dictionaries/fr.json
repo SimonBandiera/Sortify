@@ -57,7 +57,7 @@
   "genres_title": "Tous les genres. Sans limites.",
   "genres_powered": "Propulsé par les tags communautaires",
 
-  "faq_label": "005 · Q&R",
+  "faq_label": "004 · Q&R",
   "faq_title": "Questions fréquentes.",
   "faq_q1": "Est-ce vraiment gratuit ?",
   "faq_a1": "Oui. Sortify est gratuit et le restera. Cela nous coûte environ 4 €/mois à faire tourner. Pas de paywall, pas de niveau premium, pas de dark patterns.",
@@ -72,7 +72,7 @@
   "faq_q6": "Puis-je l'auto-héberger ?",
   "faq_a6": "Oui. Le dépôt inclut un docker-compose et un petit worker Python. Vous devrez enregistrer votre propre application Spotify Developer. Comptez ~10 minutes si vous avez déjà fait de l'OAuth.",
 
-  "cta_label": "006 · Ouvert",
+  "cta_label": "005 · Ouvert",
   "cta_title": "Gratuit. Open source. À vous de forker.",
   "cta_body": "Sortify est sous licence MIT et tourne sur un seul worker Python. Lisez le source, hébergez-le vous-même, ou soumettez une PR.",
   "cta_view_source": "Voir le source",

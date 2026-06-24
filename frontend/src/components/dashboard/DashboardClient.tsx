@@ -310,7 +310,6 @@ export default function DashboardClient() {
                   />
                 )}
                 <span className="pl-tag">{p.tag}</span>
-                <span className="pl-label">{p.name}</span>
                 <div className="pl-hover">
                   <span className="arrow-big">{t.dash_sort_hover} <span>→</span></span>
                 </div>

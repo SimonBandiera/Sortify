@@ -57,7 +57,7 @@
   "genres_title": "每种流派。无限制。",
   "genres_powered": "由社区标签驱动",
 
-  "faq_label": "005 · 问答",
+  "faq_label": "004 · 问答",
   "faq_title": "常见问题。",
   "faq_q1": "真的免费吗？",
   "faq_a1": "是的。Sortify 是免费的，并将持续免费。运营成本约为每月4欧元。没有付费墙，没有高级套餐，没有暗黑模式。",
@@ -72,7 +72,7 @@
   "faq_q6": "我可以自行托管吗？",
   "faq_a6": "可以。仓库包含 docker-compose 和一个小型 Python worker。您需要注册自己的 Spotify 开发者应用。如果您曾经做过 OAuth，大约需要10分钟。",
 
-  "cta_label": "006 · 开放",
+  "cta_label": "005 · 开放",
   "cta_title": "免费。开源。可以 fork。",
   "cta_body": "Sortify 采用 MIT 许可证，运行在单个 Python worker 上。阅读源代码、自行托管或提交 PR。",
   "cta_view_source": "查看源码",

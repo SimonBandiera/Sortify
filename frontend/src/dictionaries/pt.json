@@ -57,7 +57,7 @@
   "genres_title": "Todo gênero. Sem limites.",
   "genres_powered": "Alimentado por tags da comunidade",
 
-  "faq_label": "005 · P&R",
+  "faq_label": "004 · P&R",
   "faq_title": "Perguntas frequentes.",
   "faq_q1": "É realmente gratuito?",
   "faq_a1": "Sim. O Sortify é gratuito e continuará sendo. Custa-nos cerca de €4/mês para funcionar. Sem paywalls, sem nível premium, sem padrões obscuros.",
@@ -72,7 +72,7 @@
   "faq_q6": "Posso hospedar por conta própria?",
   "faq_a6": "Sim. O repositório inclui um docker-compose e um pequeno worker Python. Você precisará registrar seu próprio app de desenvolvedor Spotify. Leva ~10 minutos se já fez OAuth antes.",
 
-  "cta_label": "006 · Aberto",
+  "cta_label": "005 · Aberto",
   "cta_title": "Gratuito. Código aberto. Seu para fazer fork.",
   "cta_body": "O Sortify tem licença MIT e roda em um único worker Python. Leia o código, hospede o seu próprio ou envie um PR.",
   "cta_view_source": "Ver código-fonte",

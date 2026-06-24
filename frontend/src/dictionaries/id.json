@@ -57,7 +57,7 @@
   "genres_title": "Setiap genre. Tanpa batas.",
   "genres_powered": "Didukung oleh tag komunitas",
 
-  "faq_label": "005 · T&J",
+  "faq_label": "004 · T&J",
   "faq_title": "Pertanyaan umum.",
   "faq_q1": "Apakah benar-benar gratis?",
   "faq_a1": "Ya. Sortify gratis dan akan tetap gratis. Biaya operasional kami sekitar €4/bulan. Tanpa paywall, tanpa tier premium, tanpa pola gelap.",
@@ -72,7 +72,7 @@
   "faq_q6": "Bisakah saya meng-host sendiri?",
   "faq_a6": "Ya. Repo ini menyertakan docker-compose dan Python worker kecil. Kamu perlu mendaftarkan aplikasi Spotify Developer sendiri. Butuh ~10 menit jika pernah melakukan OAuth sebelumnya.",
 
-  "cta_label": "006 · Terbuka",
+  "cta_label": "005 · Terbuka",
   "cta_title": "Gratis. Open source. Milikmu untuk di-fork.",
   "cta_body": "Sortify berlisensi MIT dan berjalan pada satu Python worker. Baca kodenya, host sendiri, atau kirim PR.",
   "cta_view_source": "Lihat kode sumber",

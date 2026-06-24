@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Reveal from '@/components/ui/Reveal';
+import DitherCanvas from '@/components/dither/DitherCanvas';
+import type { CoverStyle } from '@/components/dither/dither';
 import { useT } from '@/lib/translations';
 
-const TRACKS = [
+const TRACKS: [string, string, string][] = [
   ['Strobe', 'deadmau5', 'electronic'],
   ['Redbone', 'Childish Gambino', 'r&b'],
   ['Midnight City', 'M83', 'synthwave'],
@@ -31,54 +33,98 @@ const TRACKS = [
   ['Alive', 'Daft Punk', 'electronic'],
 ];
 
-const GENRES = Array.from(new Set(TRACKS.map((t) => t[2])));
+// Output buckets, in display order. The genre id matches TRACKS[i][2].
+const BUCKETS: { id: string; name: string; style: CoverStyle; seed: number }[] = [
+  { id: 'electronic', name: 'Electronic', style: 'rings', seed: 0.15 },
+  { id: 'indie', name: 'Indie', style: 'wave', seed: 0.4 },
+  { id: 'rock', name: 'Rock', style: 'grid', seed: 0.25 },
+  { id: 'r&b', name: 'R&B', style: 'sphere', seed: 0.5 },
+  { id: 'hip-hop', name: 'Hip-hop', style: 'radial', seed: 0.7 },
+  { id: 'jazz', name: 'Jazz', style: 'wave', seed: 0.85 },
+  { id: 'trip-hop', name: 'Trip-hop', style: 'rings', seed: 0.65 },
+  { id: 'synthwave', name: 'Synthwave', style: 'linear', seed: 0.1 },
+  { id: 'ambient', name: 'Ambient', style: 'radial', seed: 0.3 },
+];
+
+// Accent (vermilion) for the soundwave, matching --accent. Module-level so the
+// array identity is stable across renders.
+const WAVE_FG: [number, number, number] = [255, 90, 31];
 
 export default function Demo() {
   const t = useT();
-  const [selected, setSelected] = useState<Set<string>>(new Set(['electronic', 'synthwave']));
-  const [highlightIdx, setHighlightIdx] = useState(-1);
-  const [running, setRunning] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [cursorPos, setCursorPos] = useState(0);
-  const [stateLabel, setStateLabel] = useState('idle');
-  const [progLabel, setProgLabel] = useState('ready');
-  const [matched, setMatched] = useState<string[][]>([]);
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [activeIdx, setActiveIdx] = useState(-1);
+  const [flashId, setFlashId] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
+  const listRef = useRef<HTMLUListElement>(null);
 
-  const toggleGenre = (g: string) => {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(g)) next.delete(g);
-      else next.add(g);
-      return next;
-    });
-  };
+  useEffect(() => {
+    const reduce =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const outputTracks = running ? matched : TRACKS.filter((tr) => selected.has(tr[2]));
-
-  const runSort = useCallback(async () => {
-    if (running) return;
-    setRunning(true);
-    setMatched([]);
-    setProgress(0);
-    const m: string[][] = [];
-
-    for (let i = 0; i < TRACKS.length; i++) {
-      setProgress((i + 1) / TRACKS.length);
-      setCursorPos(i + 1);
-      setStateLabel(t.demo_state_reading);
-      setProgLabel(`analysing ${TRACKS[i][0].toLowerCase()}`);
-      setHighlightIdx(i);
-      await new Promise((r) => setTimeout(r, 95));
-      if (selected.has(TRACKS[i][2])) {
-        m.push(TRACKS[i]);
-        setMatched([...m]);
-      }
+    if (reduce) {
+      const full: Record<string, number> = {};
+      for (const [, , g] of TRACKS) full[g] = (full[g] || 0) + 1;
+      setCounts(full);
+      setActiveIdx(TRACKS.length);
+      setDone(true);
+      return;
     }
-    setStateLabel(t.demo_state_done.replace('{n}', String(m.length)));
-    setProgLabel(t.demo_state_done.replace('{n}', String(m.length)));
-    setHighlightIdx(-1);
-    setRunning(false);
-  }, [selected, running, t]);
+
+    let cancelled = false;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const wait = (ms: number) =>
+      new Promise<void>((res) => {
+        timers.push(setTimeout(res, ms));
+      });
+
+    const run = async () => {
+      while (!cancelled) {
+        setCounts({});
+        setActiveIdx(-1);
+        setFlashId(null);
+        setDone(false);
+        await wait(700);
+        if (cancelled) return;
+
+        const acc: Record<string, number> = {};
+        for (let i = 0; i < TRACKS.length; i++) {
+          if (cancelled) return;
+          setActiveIdx(i);
+          await wait(150);
+          if (cancelled) return;
+          const g = TRACKS[i][2];
+          acc[g] = (acc[g] || 0) + 1;
+          setCounts({ ...acc });
+          setFlashId(g);
+        }
+        setActiveIdx(TRACKS.length);
+        setFlashId(null);
+        setDone(true);
+        await wait(2800);
+      }
+    };
+    run();
+
+    return () => {
+      cancelled = true;
+      timers.forEach(clearTimeout);
+    };
+  }, []);
+
+  // Keep the track being read centered in the (capped) list, so the sort stays
+  // visible without making the list its full 24-row height — key for mobile.
+  useEffect(() => {
+    const ul = listRef.current;
+    if (!ul || activeIdx < 0) return;
+    const li = ul.children[activeIdx] as HTMLElement | undefined;
+    if (!li) return;
+    const target = li.offsetTop - ul.clientHeight / 2 + li.clientHeight / 2;
+    ul.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+  }, [activeIdx]);
+
+  const cursor = Math.min(Math.max(activeIdx + 1, 0), TRACKS.length);
 
   return (
     <section className="section" id="demo">
@@ -92,15 +138,21 @@ export default function Demo() {
         </Reveal>
 
         <Reveal>
-          <div className="demo">
-            <div className="demo-pane">
+          <div className="sortflow">
+            {/* input — one messy playlist */}
+            <div className="sf-pane">
               <div className="demo-header">
                 <span className="h-label">{t.demo_input_label}</span>
                 <span className="h-count">24 tracks</span>
               </div>
-              <ul className="track-list">
+              <ul className="track-list sf-tracks" ref={listRef}>
                 {TRACKS.map((tr, i) => (
-                  <li key={i} className={`track ${highlightIdx === i ? 'matched' : ''}`}>
+                  <li
+                    key={i}
+                    className={`track ${activeIdx === i ? 'reading' : ''} ${
+                      done || activeIdx > i ? 'sorted' : ''
+                    }`}
+                  >
                     <span className="t-idx">{String(i + 1).padStart(2, '0')}</span>
                     <span className="t-name">
                       <b>{tr[0]}</b> <span>— {tr[1]}</span>
@@ -110,55 +162,55 @@ export default function Demo() {
                 ))}
               </ul>
               <div className="demo-footer">
-                <span>{t.demo_cursor} {cursorPos} / 24</span>
-                <span>{stateLabel}</span>
+                <span>{t.demo_cursor} {cursor} / 24</span>
+                <span>{done ? t.demo_state_done.replace('{n}', '24') : t.demo_state_reading}</span>
               </div>
             </div>
 
-            <div className="demo-pane">
-              <div className="demo-header">
-                <span className="h-label">{t.demo_output_label}</span>
-                <span className="h-count">{outputTracks.length} track{outputTracks.length === 1 ? '' : 's'}</span>
-              </div>
-              <div className="genre-select">
-                {GENRES.map((g) => (
-                  <span
-                    key={g}
-                    className={`chip ${selected.has(g) ? 'on' : ''}`}
-                    onClick={() => toggleGenre(g)}
-                  >
-                    {g}
-                  </span>
-                ))}
-              </div>
-              <ul className="track-list" style={{ flex: 1 }}>
-                {outputTracks.map((tr, i) => (
-                  <li key={i} className="track">
-                    <span className="t-idx">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="t-name">
-                      <b>{tr[0]}</b> <span>— {tr[1]}</span>
-                    </span>
-                    <span className="t-genre">{tr[2]}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="progress">
-                <div
-                  className="progress-bar"
-                  style={{ transform: `scaleX(${progress})` }}
+            {/* flow — the signature: a dithered soundwave that is the arrow */}
+            <div className="sf-flow" aria-hidden="true">
+              <div className="sf-wave">
+                <DitherCanvas
+                  animated
+                  animType="soundwave"
+                  scale={2}
+                  fg={WAVE_FG}
+                  style={{ width: '100%', height: '100%', display: 'block' }}
                 />
               </div>
-              <div className="demo-footer" style={{ borderTop: 0, paddingTop: 10 }}>
-                <span>{progLabel}</span>
-                <button
-                  className="btn"
-                  onClick={runSort}
-                  disabled={running}
-                  style={{ padding: '6px 12px', fontSize: 10 }}
-                >
-                  <span>{t.demo_run_sort}</span>
-                  <span className="arrow">→</span>
-                </button>
+              <span className="sf-arrow sf-arrow-h">→</span>
+              <span className="sf-arrow sf-arrow-v">↓</span>
+            </div>
+
+            {/* output — clean genre playlists, filling live */}
+            <div className="sf-pane">
+              <div className="demo-header">
+                <span className="h-label">{t.demo_output_label}</span>
+                <span className="h-count">9 playlists</span>
+              </div>
+              <div className="sf-buckets">
+                {BUCKETS.map((b) => (
+                  <div
+                    key={b.id}
+                    className={`sf-bucket ${counts[b.id] ? 'on' : ''} ${
+                      flashId === b.id ? 'flash' : ''
+                    }`}
+                  >
+                    <div className="sf-bg">
+                      <DitherCanvas
+                        coverStyle={b.style}
+                        coverSeed={b.seed}
+                        style={{ width: '100%', height: '100%', display: 'block' }}
+                      />
+                    </div>
+                    <div className="sf-bucket-name">{b.name}</div>
+                    <div className="sf-bucket-count">{counts[b.id] || 0}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="demo-footer">
+                <span>{t.genres_title}</span>
+                <span>{t.genres_powered}</span>
               </div>
             </div>
           </div>

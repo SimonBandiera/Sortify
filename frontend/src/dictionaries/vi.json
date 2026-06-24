@@ -57,7 +57,7 @@
   "genres_title": "Mọi thể loại. Không giới hạn.",
   "genres_powered": "Được hỗ trợ bởi thẻ cộng đồng",
 
-  "faq_label": "005 · H&Đ",
+  "faq_label": "004 · H&Đ",
   "faq_title": "Câu hỏi thường gặp.",
   "faq_q1": "Nó có thực sự miễn phí không?",
   "faq_a1": "Có. Sortify miễn phí và sẽ luôn miễn phí. Chi phí vận hành khoảng €4/tháng. Không paywall, không cấp cao cấp, không mô hình tối.",
@@ -72,7 +72,7 @@
   "faq_q6": "Tôi có thể tự lưu trữ không?",
   "faq_a6": "Có. Kho lưu trữ bao gồm docker-compose và một Python worker nhỏ. Bạn cần đăng ký ứng dụng Spotify Developer của riêng mình. Mất ~10 phút nếu bạn đã làm OAuth trước đó.",
 
-  "cta_label": "006 · Mở",
+  "cta_label": "005 · Mở",
   "cta_title": "Miễn phí. Mã nguồn mở. Của bạn để fork.",
   "cta_body": "Sortify được cấp phép MIT và chạy trên một Python worker duy nhất. Đọc mã nguồn, tự lưu trữ hoặc gửi PR.",
   "cta_view_source": "Xem mã nguồn",

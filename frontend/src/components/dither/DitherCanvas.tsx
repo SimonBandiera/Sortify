@@ -15,6 +15,7 @@ interface DitherCanvasProps {
   contrast?: number;
   seed?: number;
   angle?: number;
+  fg?: [number, number, number];
   className?: string;
   style?: React.CSSProperties;
 }
@@ -30,6 +31,7 @@ export default function DitherCanvas({
   contrast = 0.95,
   seed = 0.4,
   angle = 0,
+  fg,
   className,
   style,
 }: DitherCanvasProps) {
@@ -69,8 +71,9 @@ export default function DitherCanvas({
       seed,
       angle,
       time: t,
+      fg,
     });
-  }, [type, coverStyle, coverSeed, animType, timeOffset, scale, contrast, seed, angle]);
+  }, [type, coverStyle, coverSeed, animType, timeOffset, scale, contrast, seed, angle, fg]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

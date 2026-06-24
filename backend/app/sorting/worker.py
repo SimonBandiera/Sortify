@@ -22,6 +22,7 @@ async def run_sort(playlist_id: str, session: dict):
 
     sorted_tracks: dict[str, set[str]] = {}
     sem = asyncio.Semaphore(2)
+    stats = {"cache": 0, "api": 0}
 
     async def process_track(index: int, item: dict):
         track = item.get("track")
@@ -36,10 +37,12 @@ async def run_sort(playlist_id: str, session: dict):
                 tags = await get_cached_tags(db, name, artist)
 
             if tags:
-                logger.info(f"[CACHE HIT] {artist} — {name}: {tags}")
+                stats["cache"] += 1
+                logger.debug(f"[CACHE HIT] {artist} — {name}: {tags}")
             else:
+                stats["api"] += 1
                 tags = await scrape_tags(name, artist)
-                logger.info(f"[API] {artist} — {name}: {tags}")
+                logger.debug(f"[API] {artist} — {name}: {tags}")
                 if tags:
                     async with async_session() as db:
                         await cache_tags(db, name, artist, tags)
@@ -55,6 +58,11 @@ async def run_sort(playlist_id: str, session: dict):
 
     tasks = [process_track(i, item) for i, item in enumerate(tracks)]
     await asyncio.gather(*tasks)
+
+    logger.info(
+        f"sorted {total} tracks ({stats['cache']} cache, {stats['api']} api) "
+        f"into {len(sorted_tracks)} groups"
+    )
 
     sort_results[playlist_id] = {
         "sorted_tracks": sorted_tracks,

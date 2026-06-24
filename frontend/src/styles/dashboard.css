@@ -131,16 +131,6 @@
 .pl-cover canvas {
   width: 100%; height: 100%; display: block;
 }
-.pl-cover .pl-label {
-  position: absolute;
-  left: 10px; bottom: 10px;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--fg);
-  mix-blend-mode: difference;
-  font-weight: 500;
-}
 .pl:hover .pl-name { color: var(--accent); }
 .pl-cover .pl-tag {
   position: absolute;
